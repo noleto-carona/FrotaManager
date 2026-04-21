@@ -30,6 +30,30 @@
       <h3><i class="fas fa-clipboard-list"></i> Ordens de Serviço</h3>
       <button class="btn btn-sm" id="btn-nova-ordem"><i class="fas fa-plus"></i> Nova Ordem</button>
     </div>
+
+    <!-- Filtros de Busca -->
+    <div class="search-filters">
+      <div class="filter-group">
+        <label><i class="fas fa-filter"></i> Status</label>
+        <select id="filter-status">
+          <option value="ativos">ATIVOS (PEN/AND)</option>
+          <option value="finalizados">FINALIZADOS (FIN)</option>
+          <option value="todos">TODOS</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label><i class="fas fa-calendar-alt"></i> Data</label>
+        <input type="date" id="filter-date">
+      </div>
+      <div class="filter-group">
+        <label><i class="fas fa-search"></i> Nº OS</label>
+        <input type="text" id="filter-os" placeholder="0001" maxlength="4">
+      </div>
+      <button class="btn-icon-round btn-sm" id="btn-clear-filters" title="Limpar Filtros">
+        <i class="fas fa-eraser"></i>
+      </button>
+    </div>
+
     <div id="lista-ordens"><div class="empty-msg">Carregando...</div></div>
   </div>
 

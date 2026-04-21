@@ -78,5 +78,11 @@
     - **PEN**: Se todos os serviços estiverem pendentes.
 - **Arquivamento Corrigido**: Melhoria na lógica de filtragem para garantir que ordens totalmente finalizadas sejam removidas da lista principal instantaneamente, mantendo a tela focada apenas no trabalho ativo.
 
+### 13. Sistema de Busca e Filtros Avançados
+- **Filtro de Status**: Agora é possível alternar entre exibir apenas ordens **ATIVAS** (PEN/AND), apenas **FINALIZADAS** (FIN) ou **TODAS** simultaneamente.
+- **Busca por Data**: Campo de data para localizar ordens criadas/previstas em um dia específico.
+- **Busca por Nº OS**: Campo de busca em tempo real para localizar ordens pelo seu código identificador (ex: 0001).
+- **Interface Otimizada**: Painel de filtros compacto e intuitivo posicionado no topo da aba de Ordens, com botão de limpeza rápida para resetar as buscas.
+
 ---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*

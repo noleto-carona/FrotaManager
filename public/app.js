@@ -501,39 +501,62 @@ function renderOrdens() {
     return;
   }
 
-  // Filtrar ordens: se todos os serviços de todas as placas forem FINALIZADO, não mostra
-  const ordensAtivas = state.ordens.filter(o => {
-    // Ordem sem placas (recém criada) aparece
-    if (!o.placas || o.placas.length === 0) return true; 
-    
+  // Pegar valores dos filtros
+  const fStatus = document.getElementById('filter-status').value;
+  const fDate = document.getElementById('filter-date').value; // YYYY-MM-DD
+  const fOS = document.getElementById('filter-os').value.trim();
+
+  // Filtrar ordens
+  const ordensFiltradas = state.ordens.filter(o => {
+    // 1. Filtro por Status
     let hasServicoAtivo = false;
     let totalServicos = 0;
 
-    o.placas.forEach(p => {
-      p.servicos.forEach(s => {
-        totalServicos++;
-        // Normaliza a string para comparação
-        const statusClean = (s.status_nome || '').trim().toUpperCase();
-        if (statusClean !== 'FINALIZADO') {
-          hasServicoAtivo = true;
-        }
+    if (o.placas && o.placas.length > 0) {
+      o.placas.forEach(p => {
+        p.servicos.forEach(s => {
+          totalServicos++;
+          const statusClean = (s.status_nome || '').trim().toUpperCase();
+          if (statusClean !== 'FINALIZADO') hasServicoAtivo = true;
+        });
       });
-    });
-
-    // Se a ordem tem serviços e NENHUM é ativo (todos finalizados), oculta
-    if (totalServicos > 0 && !hasServicoAtivo) {
-      return false;
     }
-    
+
+    const isFinalizado = totalServicos > 0 && !hasServicoAtivo;
+
+    if (fStatus === 'ativos' && isFinalizado) return false;
+    if (fStatus === 'finalizados' && !isFinalizado) return false;
+
+    // 2. Filtro por Data (Previsao)
+    if (fDate) {
+      // o.previsao é "DD/MM/YY HH:MM"
+      if (!o.previsao) return false;
+      const parts = o.previsao.split(' ');
+      const dParts = parts[0].split('/'); // [DD, MM, YY]
+      if (dParts.length === 3) {
+        const fullYear = dParts[2].length === 2 ? '20' + dParts[2] : dParts[2];
+        const oDateStr = `${fullYear}-${dParts[1]}-${dParts[0]}`; // YYYY-MM-DD
+        if (oDateStr !== fDate) return false;
+      } else {
+        return false;
+      }
+    }
+
+    // 3. Filtro por Nº OS (o.codigo é OS-XXXX)
+    if (fOS) {
+      const codeNum = o.codigo.replace('OS-', '');
+      if (!codeNum.includes(fOS)) return false;
+    }
+
     return true;
   });
 
-  if (!ordensAtivas.length) {
-    el.innerHTML = '<div class="empty-msg"><i class="fas fa-check-circle" style="font-size:2rem;opacity:.3;color:var(--accent-green)"></i><br>Tudo pronto! Todas as ordens foram finalizadas.</div>';
+  if (!ordensFiltradas.length) {
+    el.innerHTML = '<div class="empty-msg"><i class="fas fa-search" style="font-size:2rem;opacity:.3"></i><br>Nenhuma ordem encontrada para os filtros aplicados.</div>';
     return;
   }
 
-  el.innerHTML = ordensAtivas.map(o => {
+  el.innerHTML = ordensFiltradas.map(o => {
     const firstPlacaNum = o.placas && o.placas.length > 0 ? o.placas[0].numero : '';
     const osTitle = firstPlacaNum
       ? `ORDEM DE SERVIÇO — ${o.codigo} - ${firstPlacaNum}`
@@ -1447,4 +1470,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load all data
   await loadAll();
+
+  // Listeners para os filtros de busca
+  document.getElementById('filter-status').addEventListener('change', renderOrdens);
+  document.getElementById('filter-date').addEventListener('change', renderOrdens);
+  document.getElementById('filter-os').addEventListener('input', renderOrdens);
+  document.getElementById('btn-clear-filters').addEventListener('click', () => {
+    document.getElementById('filter-status').value = 'ativos';
+    document.getElementById('filter-date').value = '';
+    document.getElementById('filter-os').value = '';
+    renderOrdens();
+  });
 });

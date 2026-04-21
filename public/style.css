@@ -372,13 +372,16 @@ input[type="color"] {
 .ordem-card {
   background: var(--card-bg);
   border-radius: 32px;
-  padding: 0; /* Removido padding interno para o header ocupar tudo */
-  margin-bottom: 8px; /* Reduzido de 20px para 8px */
+  padding: 0;
+  margin-bottom: 8px;
   border: 1.5px solid #dbd9d9;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
+  width: 98%; /* Aumenta a largura do card para ocupar quase toda a tela lateral */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Destaque para OS não enviada ao WhatsApp */
@@ -461,21 +464,32 @@ input[type="color"] {
 
 /* Ajustes específicos para mobile */
 @media (max-width: 480px) {
+  .ordem-card {
+    border-radius: 20px; /* Bordas um pouco menos arredondadas no mobile para ganhar espaço interno */
+  }
+
   .ordem-header-click {
-    padding: 8px 8px; /* Mais compacto no celular */
+    padding: 8px 6px; /* Padding lateral mínimo */
   }
   
   .header-main-info {
-    gap: 4px; /* Espaço mínimo entre ícone, status e OS */
+    gap: 4px; 
   }
 
   .ordem-codigo {
-    font-size: 0.69rem;
-    padding: 2px 6px;
+    font-size: 0.75rem; /* Aumentado de 0.69 para 0.75 para ficar bem visível */
+    padding: 3px 8px;
+    background: rgba(44, 125, 160, 0.15); /* Destaque um pouco mais forte */
   }
   
   .item-actions {
-    gap: 3px; /* Aproxima os botões de ação para sobrar espaço à esquerda */
+    gap: 4px;
+  }
+
+  .btn-xs {
+    width: 32px; /* Botões de ação levemente menores para sobrar espaço para a OS */
+    height: 32px;
+    font-size: 0.85rem;
   }
 }
 .ordem-motorista {

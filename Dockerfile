@@ -14,7 +14,8 @@ RUN npm install --omit=dev
 COPY . .
 
 # Garante que as pastas de dados existam com as permissões corretas
-RUN mkdir -p db uploads
+# Não criamos as pastas db e uploads aqui para não conflitar com os volumes do docker-compose
+# RUN mkdir -p db uploads
 
 # Define a porta que o app vai rodar
 EXPOSE 3000

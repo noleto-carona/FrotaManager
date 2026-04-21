@@ -15,7 +15,4 @@ services:
       - RENDER=false
     restart: always
 
-# Define os volumes para garantir que o Docker trate as pastas como persistentes
-volumes:
-  db:
-  uploads:
+# Removido volumes nomeados para usar apenas bind mounts (pastas locais)

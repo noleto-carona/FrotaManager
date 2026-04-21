@@ -394,13 +394,21 @@ input[type="color"] {
 }
 
 .ordem-header-click {
-  padding: 10px 18px; /* Reduzido o padding interno (altura) do cabeçalho */
+  padding: 10px 12px; /* Reduzido de 18px para 12px nas laterais */
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.02);
   transition: background 0.2s;
+}
+
+.header-main-info {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Reduzido de 12px para 6px para ganhar espaço */
+  flex: 1;
+  min-width: 0;
 }
 .ordem-header-click:hover {
   background: rgba(0,0,0,0.05);
@@ -443,18 +451,31 @@ input[type="color"] {
   font-size: 0.72rem;
   color: var(--primary-blue);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible; /* Permitir que o conteúdo apareça 100% */
   background: rgba(44, 125, 160, 0.1);
-  padding: 2px 10px;
+  padding: 2px 8px;
   border-radius: 8px;
   border: 1px solid rgba(44, 125, 160, 0.2);
+  flex-shrink: 0; /* Impede que o botão da OS encolha */
 }
 
-/* Redução de fonte para mobile */
+/* Ajustes específicos para mobile */
 @media (max-width: 480px) {
+  .ordem-header-click {
+    padding: 8px 8px; /* Mais compacto no celular */
+  }
+  
+  .header-main-info {
+    gap: 4px; /* Espaço mínimo entre ícone, status e OS */
+  }
+
   .ordem-codigo {
     font-size: 0.69rem;
+    padding: 2px 6px;
+  }
+  
+  .item-actions {
+    gap: 3px; /* Aproxima os botões de ação para sobrar espaço à esquerda */
   }
 }
 .ordem-motorista {

@@ -91,4 +91,23 @@
 - **Ajustes Visuais**: Padronização de sombras, bordas e alinhamento de todos os campos de filtro e botões de ação.
 
 ---
+
+**Data:** 21 de Abril de 2026  
+**Projeto:** Sistema de Gerenciamento de Frota (Full Stack)
+
+---
+
+## 🚀 Implementações Realizadas
+
+### 15. Deploy e Infraestrutura no Render (21/04/2026 09:30)
+- **Produção:** Configuração completa para o ambiente Render com detecção automática via variáveis de ambiente.
+- **Persistência Estruturada:** Adaptação do banco de dados para utilizar o diretório `/data` em produção, preparando para o uso de discos persistentes.
+- **Logs de Diagnóstico:** Inclusão de logs detalhados de inicialização do banco de dados para facilitar a manutenção no painel do Render.
+- **Keep-Alive:** Sistema de auto-ping integrado para evitar que o servidor entre em modo de hibernação no plano gratuito.
+
+### 16. Melhorias de Acessibilidade Mobile (21/04/2026 10:15)
+- **Flexibilidade de Mídia:** Remoção da captura forçada de câmera. Agora o usuário pode escolher entre **Tirar Foto** ou **Selecionar da Galeria**, facilitando o uso de fotos já existentes no aparelho.
+- **Estabilidade de Banco:** Tratamento de erros em exclusões de status. O sistema agora identifica e avisa quando um status não pode ser removido por estar em uso em alguma ordem de serviço, evitando erros genéricos 500.
+
+---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*

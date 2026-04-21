@@ -8,9 +8,16 @@ const fs = require('fs');
 const IS_RENDER = process.env.RENDER === 'true';
 const dbDir = IS_RENDER ? '/opt/render/project/src/data' : path.join(__dirname, '..', 'db');
 
-if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
+console.log(`[DB] Modo Render: ${IS_RENDER}`);
+console.log(`[DB] Caminho do banco: ${path.join(dbDir, 'frota.db')}`);
 
-const _db = new DatabaseSync(path.join(dbDir, 'frota.db'));
+if (!fs.existsSync(dbDir)) {
+  console.log(`[DB] Criando diretório: ${dbDir}`);
+  fs.mkdirSync(dbDir, { recursive: true });
+}
+
+const dbPath = path.join(dbDir, 'frota.db');
+const _db = new DatabaseSync(dbPath);
 
 // Thin compatibility wrapper — same API surface as better-sqlite3
 const db = {

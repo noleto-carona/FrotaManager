@@ -21,8 +21,16 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  db.prepare('DELETE FROM status_servico WHERE id = ?').run(req.params.id);
-  res.json({ success: true });
+  try {
+    db.prepare('DELETE FROM status_servico WHERE id = ?').run(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Erro ao excluir status:', err.message);
+    if (err.message.includes('FOREIGN KEY')) {
+      return res.status(400).json({ error: 'Este status está sendo usado em serviços e não pode ser removido.' });
+    }
+    res.status(500).json({ error: 'Erro interno ao excluir status' });
+  }
 });
 
 module.exports = router;

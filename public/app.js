@@ -1473,8 +1473,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Listeners para os filtros de busca
   document.getElementById('filter-status').addEventListener('change', renderOrdens);
-  document.getElementById('filter-date').addEventListener('change', renderOrdens);
-  document.getElementById('filter-os').addEventListener('input', renderOrdens);
+  
+  document.getElementById('filter-date').addEventListener('change', () => {
+    // Se escolheu data, limpa o filtro de Nº OS
+    const osInput = document.getElementById('filter-os');
+    if (osInput.value) {
+      osInput.value = '';
+    }
+    renderOrdens();
+  });
+
+  document.getElementById('filter-os').addEventListener('input', (e) => {
+    // Se digitou Nº OS, limpa o filtro de data
+    const dateInput = document.getElementById('filter-date');
+    if (e.target.value.trim() !== '' && dateInput.value) {
+      dateInput.value = '';
+    }
+    renderOrdens();
+  });
+
   document.getElementById('btn-clear-filters').addEventListener('click', () => {
     document.getElementById('filter-status').value = 'ativos';
     document.getElementById('filter-date').value = '';

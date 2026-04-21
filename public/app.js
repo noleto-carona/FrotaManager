@@ -494,11 +494,53 @@ function renderOrdens() {
     return;
   }
 
-  el.innerHTML = state.ordens.map(o => {
+  // Filtrar ordens: se todos os serviços de todas as placas forem FINALIZADO, não mostra
+  const ordensAtivas = state.ordens.filter(o => {
+    if (!o.placas || o.placas.length === 0) return true; // Ordem sem placas (recém criada) aparece
+    
+    let totalServicos = 0;
+    let totalFinalizados = 0;
+
+    o.placas.forEach(p => {
+      p.servicos.forEach(s => {
+        totalServicos++;
+        if (s.status_nome === 'FINALIZADO') {
+          totalFinalizados++;
+        }
+      });
+    });
+
+    // Se tiver serviços e todos forem finalizados, oculta
+    if (totalServicos > 0 && totalFinalizados === totalServicos) {
+      return false;
+    }
+    return true;
+  });
+
+  if (!ordensAtivas.length) {
+    el.innerHTML = '<div class="empty-msg"><i class="fas fa-check-circle" style="font-size:2rem;opacity:.3;color:var(--accent-green)"></i><br>Tudo pronto! Todas as ordens foram finalizadas.</div>';
+    return;
+  }
+
+  el.innerHTML = ordensAtivas.map(o => {
     const firstPlacaNum = o.placas && o.placas.length > 0 ? o.placas[0].numero : '';
     const osTitle = firstPlacaNum
       ? `ORDEM DE SERVIÇO — ${o.codigo} - ${firstPlacaNum}`
       : `ORDEM DE SERVIÇO — ${o.codigo}`;
+
+    // Determina o status global da Ordem
+    let hasPendente = false;
+    let totalS = 0;
+    o.placas.forEach(p => {
+      p.servicos.forEach(s => {
+        totalS++;
+        if (s.status_nome !== 'FINALIZADO') hasPendente = true;
+      });
+    });
+    
+    const globalStatusText = (totalS > 0 && !hasPendente) ? 'FINALIZADO' : 'EM ANDAMENTO';
+    const globalStatusColor = globalStatusText === 'FINALIZADO' ? '#10b981' : '#3b82f6';
+    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.6rem; margin-left: 8px;">${globalStatusText}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();
@@ -538,9 +580,10 @@ function renderOrdens() {
     return `
       <div class="ordem-card ${collapsedClass} ${waStatusClass}" id="ordem-${o.id}">
         <div class="ordem-header-click" onclick="toggleOrdem(${o.id})">
-          <div style="display:flex; align-items:center; gap:12px">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap: wrap;">
             <i class="fas fa-chevron-down expand-icon"></i>
             <div class="ordem-codigo" style="margin-bottom:0">${esc(osTitle)}</div>
+            ${globalStatusHtml}
           </div>
           <div class="item-actions" onclick="event.stopPropagation()">
             <button class="btn btn-xs btn-outline" onclick="editOrdem(${o.id})" title="Editar ordem"><i class="fas fa-edit"></i></button>

@@ -662,7 +662,7 @@ function renderOrdens() {
       }
     }
     
-    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.65rem; min-width: 42px; justify-content: center; height: 22px; margin-right: 5px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
+    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.65rem; min-width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();
@@ -707,9 +707,9 @@ function renderOrdens() {
             <div class="ordem-codigo" style="margin-bottom:0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(osTitle)}</div>
           </div>
           <div class="item-actions" style="display: flex; align-items: center; gap: 5px;" onclick="event.stopPropagation()">
-            ${globalStatusHtml}
             <button class="btn btn-xs btn-outline" onclick="editOrdem(${o.id})" title="Editar ordem"><i class="fas fa-edit"></i></button>
             <button class="btn btn-xs btn-danger" onclick="delOrdem(${o.id})" title="Excluir ordem"><i class="fas fa-trash"></i></button>
+            ${globalStatusHtml}
             <button class="btn btn-xs btn-wa ${waStatusClass}" onclick="shareWA(${o.id})" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
           </div>
         </div>

@@ -125,6 +125,13 @@
 
 ## 🚀 Implementações Realizadas
 
+### 20. Otimização de Interface Mobile e Simplificação (21/04/2026 16:30)
+- **Filtros Retráteis:** Implementada seção de busca minimizada com botão "PESQUISAR", economizando espaço em telas de Android.
+- **Simplificação de Títulos:** Título das Ordens de Serviço simplificado para exibir apenas o código (ex: `OS-0001`), removendo o nome do motorista para evitar cortes e poluição visual.
+- **Ajuste de Estilo:** Adicionado destaque visual (fundo azul claro e bordas) para o código da OS, melhorando a leitura rápida.
+- **Sincronização de Dados:** Realizada a sincronização completa do banco de dados `frota.db` e pastas de `uploads` entre o ambiente local e o servidor Oracle.
+- **Workflow de Deploy:** Garantida a atualização do servidor via `git pull` e `docker compose` para refletir as mudanças de UI.
+
 ### 19. Finalização do Deploy na Oracle Cloud (21/04/2026 15:50)
 - **Sucesso no Acesso SSH:** Resolução de problemas de permissão de chave privada no Windows e configuração de porta 22.
 - **Configuração de Firewall OCI:** Abertura das portas 22 (SSH) e 3000 (Aplicação) nas Ingress Rules.

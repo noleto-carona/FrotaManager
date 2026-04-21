@@ -33,4 +33,5 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Frota Manager rodando em http://localhost:${PORT}`));
+const HOST = '0.0.0.0'; // Necessário para o Render
+app.listen(PORT, HOST, () => console.log(`Frota Manager rodando na porta ${PORT}`));

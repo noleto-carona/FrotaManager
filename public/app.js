@@ -624,9 +624,12 @@ function renderOrdens() {
 
   el.innerHTML = ordensFiltradas.map(o => {
     const firstPlacaNum = o.placas && o.placas.length > 0 ? o.placas[0].numero : '';
+    const motoristaNome = o.motorista_nome || 'SEM MOTORISTA';
+    
+    // Novo padrão de título: Motorista | OS | Placa
     const osTitle = firstPlacaNum
-      ? `ORDEM DE SERVIÇO — ${o.codigo} - ${firstPlacaNum}`
-      : `ORDEM DE SERVIÇO — ${o.codigo}`;
+      ? `${motoristaNome} | ${o.codigo} | ${firstPlacaNum}`
+      : `${motoristaNome} | ${o.codigo}`;
 
     // Determina o status global da Ordem
     let hasNaoFinalizado = false;

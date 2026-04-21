@@ -628,8 +628,8 @@ function renderOrdens() {
     
     // Novo padrão de título: Motorista | OS | Placa
     const osTitle = firstPlacaNum
-      ? `${motoristaNome} | ${o.codigo} | ${firstPlacaNum}`
-      : `${motoristaNome} | ${o.codigo}`;
+      ? `<span class="os-full-text">${motoristaNome} | ${o.codigo} | ${firstPlacaNum}</span><span class="os-short-text">${o.codigo}</span>`
+      : `<span class="os-full-text">${motoristaNome} | ${o.codigo}</span><span class="os-short-text">${o.codigo}</span>`;
 
     // Determina o status global da Ordem
     let hasNaoFinalizado = false;

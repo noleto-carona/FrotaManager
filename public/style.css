@@ -442,22 +442,41 @@ input[type="color"] {
   font-weight: 800;
   font-size: 0.72rem;
   color: var(--primary-blue);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+}
+
+.os-full-text {
   letter-spacing: 0.05em;
   background: rgba(0,119,211,0.1);
   padding: 4px 12px;
   border-radius: 12px;
   display: inline-block;
   margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 75%; /* Evita que o texto encoste no ícone de expandir */
 }
 
-/* Redução de fonte para mobile (Android) */
+.os-short-text {
+  display: none; /* Escondido por padrão */
+}
+
+/* Quando for celular (Android) */
 @media (max-width: 480px) {
   .ordem-codigo {
     font-size: 0.69rem;
+  }
+  
+  /* Esconde o texto longo e mostra apenas o curto (OS-0000) */
+  .os-full-text {
+    display: none;
+  }
+  .os-short-text {
+    display: inline-block;
+    background: rgba(44, 125, 160, 0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(44, 125, 160, 0.2);
   }
 }
 .ordem-motorista {

@@ -1497,6 +1497,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Status
   document.getElementById('btn-add-status').addEventListener('click', addStatus);
+
+  // Toggle Filtros
+  const toggleBtn = document.getElementById('btn-toggle-filters');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const container = toggleBtn.parentElement;
+      const content = document.getElementById('filters-content');
+      container.classList.toggle('active');
+      content.classList.toggle('collapsed');
+    });
+  }
   document.getElementById('input-status').addEventListener('keydown', e => { if (e.key === 'Enter') addStatus(); });
 
   // Ordens

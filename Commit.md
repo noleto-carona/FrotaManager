@@ -70,10 +70,13 @@
 - **Memória de Expansão:** O sistema agora lembra quais Ordens de Serviço estão expandidas na lista principal. Ao editar um serviço ou adicionar fotos, o card da ordem permanece aberto, facilitando a edição de múltiplos itens sem interrupções.
 - **Sincronização em Tempo Real:** Melhoria na comunicação entre o painel de serviços e o modal de ordens, garantindo que as alterações sejam refletidas instantaneamente em todas as telas abertas sem perder o foco do usuário.
 
-### 12. Fluxo de Conclusão e Status Global
-- **Status Automático**: A Ordem agora exibe um badge de status global no cabeçalho (**EM ANDAMENTO** ou **FINALIZADO**).
-- **Lógica de Conclusão**: Uma ordem só é considerada **FINALIZADA** quando todos os itens de todas as placas vinculadas a ela atingem o status de "FINALIZADO".
-- **Arquivamento Inteligente**: Para manter a tela limpa e focada no trabalho pendente, as ordens totalmente concluídas são ocultadas automaticamente da lista principal. Assim que o último item é finalizado, a ordem "some" para dar lugar às novas demandas.
+### 12. Fluxo de Conclusão e Status Abreviado
+- **Status Global Dinâmico**: O cabeçalho da Ordem agora exibe badges abreviados (**PEN**, **AND**, **FIN**) com cores específicas (Amarelo, Azul, Verde).
+- **Lógica de Hierarquia**:
+    - **FIN**: Somente se TODOS os serviços forem finalizados.
+    - **AND**: Se houver ao menos um serviço "Em Andamento".
+    - **PEN**: Se todos os serviços estiverem pendentes.
+- **Arquivamento Corrigido**: Melhoria na lógica de filtragem para garantir que ordens totalmente finalizadas sejam removidas da lista principal instantaneamente, mantendo a tela focada apenas no trabalho ativo.
 
 ---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*

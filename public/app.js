@@ -117,7 +117,14 @@ function fmtDate(isoStr) {
 function statusBadgeHtml(nome, cor) {
   if (!nome) return '';
   const text = isDark(cor) ? '#ffffff' : '#1e293b';
-  return `<span class="status-badge" style="background:${esc(cor)};color:${text}">${esc(nome)}</span>`;
+  
+  // Abreviação do status
+  let displayNome = nome;
+  if (nome === 'PENDENTE') displayNome = 'PEN';
+  else if (nome === 'EM ANDAMENTO') displayNome = 'AND';
+  else if (nome === 'FINALIZADO') displayNome = 'FIN';
+
+  return `<span class="status-badge" style="background:${esc(cor)};color:${text}">${esc(displayNome)}</span>`;
 }
 
 function isDark(hex) {
@@ -496,24 +503,28 @@ function renderOrdens() {
 
   // Filtrar ordens: se todos os serviços de todas as placas forem FINALIZADO, não mostra
   const ordensAtivas = state.ordens.filter(o => {
-    if (!o.placas || o.placas.length === 0) return true; // Ordem sem placas (recém criada) aparece
+    // Ordem sem placas (recém criada) aparece
+    if (!o.placas || o.placas.length === 0) return true; 
     
+    let hasServicoAtivo = false;
     let totalServicos = 0;
-    let totalFinalizados = 0;
 
     o.placas.forEach(p => {
       p.servicos.forEach(s => {
         totalServicos++;
-        if (s.status_nome === 'FINALIZADO') {
-          totalFinalizados++;
+        // Se encontrar QUALQUER serviço que não seja FINALIZADO, a ordem é ativa
+        if (s.status_nome !== 'FINALIZADO') {
+          hasServicoAtivo = true;
         }
       });
     });
 
-    // Se tiver serviços e todos forem finalizados, oculta
-    if (totalServicos > 0 && totalFinalizados === totalServicos) {
+    // Se a ordem tem serviços e NENHUM é ativo (todos finalizados), oculta
+    if (totalServicos > 0 && !hasServicoAtivo) {
       return false;
     }
+    
+    // Se não tem serviços ainda, mantém visível
     return true;
   });
 
@@ -529,18 +540,39 @@ function renderOrdens() {
       : `ORDEM DE SERVIÇO — ${o.codigo}`;
 
     // Determina o status global da Ordem
-    let hasPendente = false;
+    let hasNaoFinalizado = false;
+    let hasAndamento = false;
     let totalS = 0;
+
     o.placas.forEach(p => {
       p.servicos.forEach(s => {
         totalS++;
-        if (s.status_nome !== 'FINALIZADO') hasPendente = true;
+        if (s.status_nome !== 'FINALIZADO') {
+          hasNaoFinalizado = true;
+        }
+        if (s.status_nome === 'EM ANDAMENTO') {
+          hasAndamento = true;
+        }
       });
     });
     
-    const globalStatusText = (totalS > 0 && !hasPendente) ? 'FINALIZADO' : 'EM ANDAMENTO';
-    const globalStatusColor = globalStatusText === 'FINALIZADO' ? '#10b981' : '#3b82f6';
-    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.6rem; margin-left: 8px;">${globalStatusText}</span>`;
+    let globalStatusText = 'PEN'; // Padrão se não tiver nada
+    let globalStatusColor = '#f59e0b'; // Cor de Pendente
+
+    if (totalS > 0) {
+      if (!hasNaoFinalizado) {
+        globalStatusText = 'FIN';
+        globalStatusColor = '#10b981';
+      } else if (hasAndamento) {
+        globalStatusText = 'AND';
+        globalStatusColor = '#3b82f6';
+      } else {
+        globalStatusText = 'PEN';
+        globalStatusColor = '#f59e0b';
+      }
+    }
+    
+    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.65rem; margin-left: 8px; min-width: 40px; justify-content: center;">${globalStatusText}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();

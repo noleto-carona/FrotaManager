@@ -160,22 +160,25 @@ try {
 
   // TRIGGERS para resetar enviada_whatsapp = 0 em qualquer alteração
   // 1. Alteração em servicos
+  db.exec(`DROP TRIGGER IF EXISTS trg_servicos_reset_wa_ins`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_servicos_reset_wa_ins AFTER INSERT ON servicos
+    CREATE TRIGGER trg_servicos_reset_wa_ins AFTER INSERT ON servicos
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 
       WHERE id = (SELECT ordem_id FROM ordem_placas WHERE id = NEW.ordem_placa_id);
     END;
   `);
+  db.exec(`DROP TRIGGER IF EXISTS trg_servicos_reset_wa_upd`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_servicos_reset_wa_upd AFTER UPDATE ON servicos
+    CREATE TRIGGER trg_servicos_reset_wa_upd AFTER UPDATE ON servicos
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 
       WHERE id = (SELECT ordem_id FROM ordem_placas WHERE id = NEW.ordem_placa_id);
     END;
   `);
+  db.exec(`DROP TRIGGER IF EXISTS trg_servicos_reset_wa_del`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_servicos_reset_wa_del AFTER DELETE ON servicos
+    CREATE TRIGGER trg_servicos_reset_wa_del AFTER DELETE ON servicos
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 
       WHERE id = (SELECT ordem_id FROM ordem_placas WHERE id = OLD.ordem_placa_id);
@@ -183,35 +186,40 @@ try {
   `);
 
   // 2. Alteração em ordem_placas
+  db.exec(`DROP TRIGGER IF EXISTS trg_placas_reset_wa_ins`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_placas_reset_wa_ins AFTER INSERT ON ordem_placas
+    CREATE TRIGGER trg_placas_reset_wa_ins AFTER INSERT ON ordem_placas
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 WHERE id = NEW.ordem_id;
     END;
   `);
+  db.exec(`DROP TRIGGER IF EXISTS trg_placas_reset_wa_upd`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_placas_reset_wa_upd AFTER UPDATE ON ordem_placas
+    CREATE TRIGGER trg_placas_reset_wa_upd AFTER UPDATE ON ordem_placas
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 WHERE id = NEW.ordem_id;
     END;
   `);
+  db.exec(`DROP TRIGGER IF EXISTS trg_placas_reset_wa_del`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_placas_reset_wa_del AFTER DELETE ON ordem_placas
+    CREATE TRIGGER trg_placas_reset_wa_del AFTER DELETE ON ordem_placas
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 WHERE id = OLD.ordem_id;
     END;
   `);
 
   // 3. Alteração em servico_fotos
+  db.exec(`DROP TRIGGER IF EXISTS trg_fotos_reset_wa_ins`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_fotos_reset_wa_ins AFTER INSERT ON servico_fotos
+    CREATE TRIGGER trg_fotos_reset_wa_ins AFTER INSERT ON servico_fotos
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 
       WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = NEW.servico_id);
     END;
   `);
+  db.exec(`DROP TRIGGER IF EXISTS trg_fotos_reset_wa_del`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_fotos_reset_wa_del AFTER DELETE ON servico_fotos
+    CREATE TRIGGER trg_fotos_reset_wa_del AFTER DELETE ON servico_fotos
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 
       WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = OLD.servico_id);
@@ -219,8 +227,9 @@ try {
   `);
 
   // 4. Alteração em observacoes_servico
+  db.exec(`DROP TRIGGER IF EXISTS trg_obs_reset_wa_ins`);
   db.exec(`
-    CREATE TRIGGER IF NOT EXISTS trg_obs_reset_wa_ins AFTER INSERT ON observacoes_servico
+    CREATE TRIGGER trg_obs_reset_wa_ins AFTER INSERT ON observacoes_servico
     BEGIN
       UPDATE ordens SET enviada_whatsapp = 0 
       WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = NEW.servico_id);

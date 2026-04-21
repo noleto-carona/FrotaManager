@@ -8,6 +8,7 @@ const state = {
   placas: [],
   statusList: [],
   ordens: [],
+  expandedOrderIds: new Set(), // Rastreia quais ordens estão expandidas na lista principal
   // Modal temp state
   modal: {
     isEdit: false,
@@ -175,6 +176,12 @@ async function reloadOrdens() {
 function toggleOrdem(id) {
   const el = document.getElementById(`ordem-${id}`);
   if (el) {
+    const isCollapsed = el.classList.contains('collapsed');
+    if (isCollapsed) {
+      state.expandedOrderIds.add(id);
+    } else {
+      state.expandedOrderIds.delete(id);
+    }
     el.classList.toggle('collapsed');
   }
 }
@@ -526,9 +533,10 @@ function renderOrdens() {
       : '';
 
     const waStatusClass = o.enviada_whatsapp ? 'sent' : 'not-sent';
+    const collapsedClass = state.expandedOrderIds.has(o.id) ? '' : 'collapsed';
 
     return `
-      <div class="ordem-card collapsed ${waStatusClass}" id="ordem-${o.id}">
+      <div class="ordem-card ${collapsedClass} ${waStatusClass}" id="ordem-${o.id}">
         <div class="ordem-header-click" onclick="toggleOrdem(${o.id})">
           <div style="display:flex; align-items:center; gap:12px">
             <i class="fas fa-chevron-down expand-icon"></i>
@@ -567,6 +575,7 @@ async function delOrdem(id) {
   try {
     await api.del('/ordens/' + id);
     state.ordens = state.ordens.filter(o => o.id !== id);
+    state.expandedOrderIds.delete(id);
     renderOrdens();
     toast('Ordem excluída');
   } catch (err) { toast(err.message, 'error'); }
@@ -1232,6 +1241,24 @@ async function savePanelServico() {
     await api.put('/servicos/' + id, { descricao, status_id });
     toast('Serviço atualizado');
     await reloadOrdens();
+    
+    // Se o modal de Ordem estiver aberto, sincroniza os dados para não perder as alterações no modal
+    if (document.getElementById('ordem-modal').style.display === 'flex' && state.modal.ordemId) {
+      const updated = state.ordens.find(o => o.id === state.modal.ordemId);
+      if (updated) {
+        state.modal.tempPlacas = updated.placas.map(p => ({
+          id: p.id,
+          placa_id: p.placa_id,
+          tipo: p.tipo,
+          numero: p.numero,
+          modelo: p.modelo,
+          km_horimetro: p.km_horimetro,
+          servicos: p.servicos.map(s => ({ id: s.id, descricao: s.descricao, status_id: s.status_id }))
+        }));
+        renderModalPlacas();
+      }
+    }
+
     closePanel();
   } catch (err) { toast(err.message, 'error'); }
 }
@@ -1257,8 +1284,25 @@ async function addObservacao() {
     inp.value = '';
     document.getElementById('obs-char').textContent = '0';
     toast('Observação adicionada');
-    // Refresh order data silently
+    
     await reloadOrdens();
+
+    // Sincroniza o modal se estiver aberto
+    if (document.getElementById('ordem-modal').style.display === 'flex' && state.modal.ordemId) {
+      const updated = state.ordens.find(o => o.id === state.modal.ordemId);
+      if (updated) {
+        state.modal.tempPlacas = updated.placas.map(p => ({
+          id: p.id,
+          placa_id: p.placa_id,
+          tipo: p.tipo,
+          numero: p.numero,
+          modelo: p.modelo,
+          km_horimetro: p.km_horimetro,
+          servicos: p.servicos.map(s => ({ id: s.id, descricao: s.descricao, status_id: s.status_id }))
+        }));
+        renderModalPlacas();
+      }
+    }
   } catch (err) { toast(err.message, 'error'); }
 }
 

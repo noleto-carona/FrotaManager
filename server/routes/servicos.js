@@ -54,17 +54,25 @@ router.post('/:id/fotos', upload.single('foto'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Nenhum arquivo enviado' });
 
   try {
-    const count = db.prepare('SELECT COUNT(*) as total FROM servico_fotos WHERE servico_id = ?').get(req.params.id).total;
-    if (count >= 5) {
-      fs.unlinkSync(req.file.path); // Remove arquivo se exceder limite
-      return res.status(400).json({ error: 'Limite de 5 fotos atingido' });
-    }
-
     const relPath = '/uploads/' + req.file.filename;
-    db.prepare('INSERT INTO servico_fotos (servico_id, arquivo_path) VALUES (?,?)').run(req.params.id, relPath);
+    db.transaction(() => {
+      const count = db.prepare('SELECT COUNT(*) as total FROM servico_fotos WHERE servico_id = ?').get(req.params.id).total;
+      if (count >= 5) {
+        throw new Error('LIMITE_FOTOS');
+      }
+
+      db.prepare('INSERT INTO servico_fotos (servico_id, arquivo_path) VALUES (?,?)').run(req.params.id, relPath);
+      
+      // Reset WhatsApp status on parent order
+      db.prepare(`
+        UPDATE ordens SET enviada_whatsapp = 0 
+        WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = ?)
+      `).run(req.params.id);
+    })();
     res.json({ success: true, path: relPath });
   } catch (err) {
     if (req.file) fs.unlinkSync(req.file.path);
+    if (err.message === 'LIMITE_FOTOS') return res.status(400).json({ error: 'Limite de 5 fotos atingido' });
     res.status(500).json({ error: 'Erro no banco: ' + err.message });
   }
 });
@@ -72,12 +80,20 @@ router.post('/:id/fotos', upload.single('foto'), (req, res) => {
 // Excluir foto
 router.delete('/:id/fotos/:fotoId', (req, res) => {
   try {
-    const foto = db.prepare('SELECT arquivo_path FROM servico_fotos WHERE id = ?').get(req.params.fotoId);
-    if (foto) {
-      const fullPath = path.join(__dirname, '../../', foto.arquivo_path);
-      if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
-      db.prepare('DELETE FROM servico_fotos WHERE id = ?').run(req.params.fotoId);
-    }
+    db.transaction(() => {
+      const foto = db.prepare('SELECT arquivo_path FROM servico_fotos WHERE id = ?').get(req.params.fotoId);
+      if (foto) {
+        const fullPath = path.join(__dirname, '../../', foto.arquivo_path);
+        if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
+        db.prepare('DELETE FROM servico_fotos WHERE id = ?').run(req.params.fotoId);
+        
+        // Reset WhatsApp status on parent order
+        db.prepare(`
+          UPDATE ordens SET enviada_whatsapp = 0 
+          WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = ?)
+        `).run(req.params.id);
+      }
+    })();
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -87,8 +103,21 @@ router.delete('/:id/fotos/:fotoId', (req, res) => {
 router.put('/:id', (req, res) => {
   const { descricao, status_id } = req.body;
   if (!descricao || !descricao.trim()) return res.status(400).json({ error: 'Descrição obrigatória' });
-  db.prepare('UPDATE servicos SET descricao=?, status_id=? WHERE id=?').run(descricao.trim(), status_id || null, req.params.id);
-  res.json({ success: true });
+  
+  try {
+    db.transaction(() => {
+      db.prepare('UPDATE servicos SET descricao=?, status_id=? WHERE id=?').run(descricao.trim(), status_id || null, req.params.id);
+      
+      // Reset WhatsApp status on parent order
+      db.prepare(`
+        UPDATE ordens SET enviada_whatsapp = 0 
+        WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = ?)
+      `).run(req.params.id);
+    })();
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.post('/:id/observacoes', (req, res) => {
@@ -97,8 +126,17 @@ router.post('/:id/observacoes', (req, res) => {
   if (texto.trim().length > 150) return res.status(400).json({ error: 'Máximo 150 caracteres' });
 
   try {
-    const result = db.prepare('INSERT INTO observacoes_servico (servico_id, texto) VALUES (?,?)').run(req.params.id, texto.trim());
-    const obs = db.prepare('SELECT * FROM observacoes_servico WHERE id = ?').get(result.lastInsertRowid);
+    let obs;
+    db.transaction(() => {
+      const result = db.prepare('INSERT INTO observacoes_servico (servico_id, texto) VALUES (?,?)').run(req.params.id, texto.trim());
+      obs = db.prepare('SELECT * FROM observacoes_servico WHERE id = ?').get(result.lastInsertRowid);
+      
+      // Reset WhatsApp status on parent order
+      db.prepare(`
+        UPDATE ordens SET enviada_whatsapp = 0 
+        WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = ?)
+      `).run(req.params.id);
+    })();
     res.json(obs);
   } catch (err) {
     console.error('Erro ao salvar observação:', err);

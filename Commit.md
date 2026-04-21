@@ -66,5 +66,9 @@
 - **Destaque Dinâmico Reversivo:** Sempre que uma Ordem é editada, uma nova foto é adicionada/excluída ou um serviço é alterado, o status "Enviada" é resetado para "Pendente" (Verde Neon).
 - **Garantia de Atualização:** Isso garante que o gestor saiba exatamente quais ordens precisam ser reenviadas após modificações, mantendo a comunicação sempre sincronizada com o estado real da frota.
 
+### 11. Preservação de Estado e UX Avançada
+- **Memória de Expansão:** O sistema agora lembra quais Ordens de Serviço estão expandidas na lista principal. Ao editar um serviço ou adicionar fotos, o card da ordem permanece aberto, facilitando a edição de múltiplos itens sem interrupções.
+- **Sincronização em Tempo Real:** Melhoria na comunicação entre o painel de serviços e o modal de ordens, garantindo que as alterações sejam refletidas instantaneamente em todas as telas abertas sem perder o foco do usuário.
+
 ---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*

@@ -157,6 +157,75 @@ try {
     const stmt = db.prepare('INSERT INTO status_servico (nome, cor) VALUES (?, ?)');
     defaultStatus.forEach(s => stmt.run(s.nome, s.cor));
   }
+
+  // TRIGGERS para resetar enviada_whatsapp = 0 em qualquer alteração
+  // 1. Alteração em servicos
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_servicos_reset_wa_ins AFTER INSERT ON servicos
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 
+      WHERE id = (SELECT ordem_id FROM ordem_placas WHERE id = NEW.ordem_placa_id);
+    END;
+  `);
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_servicos_reset_wa_upd AFTER UPDATE ON servicos
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 
+      WHERE id = (SELECT ordem_id FROM ordem_placas WHERE id = NEW.ordem_placa_id);
+    END;
+  `);
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_servicos_reset_wa_del AFTER DELETE ON servicos
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 
+      WHERE id = (SELECT ordem_id FROM ordem_placas WHERE id = OLD.ordem_placa_id);
+    END;
+  `);
+
+  // 2. Alteração em ordem_placas
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_placas_reset_wa_ins AFTER INSERT ON ordem_placas
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 WHERE id = NEW.ordem_id;
+    END;
+  `);
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_placas_reset_wa_upd AFTER UPDATE ON ordem_placas
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 WHERE id = NEW.ordem_id;
+    END;
+  `);
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_placas_reset_wa_del AFTER DELETE ON ordem_placas
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 WHERE id = OLD.ordem_id;
+    END;
+  `);
+
+  // 3. Alteração em servico_fotos
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_fotos_reset_wa_ins AFTER INSERT ON servico_fotos
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 
+      WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = NEW.servico_id);
+    END;
+  `);
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_fotos_reset_wa_del AFTER DELETE ON servico_fotos
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 
+      WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = OLD.servico_id);
+    END;
+  `);
+
+  // 4. Alteração em observacoes_servico
+  db.exec(`
+    CREATE TRIGGER IF NOT EXISTS trg_obs_reset_wa_ins AFTER INSERT ON observacoes_servico
+    BEGIN
+      UPDATE ordens SET enviada_whatsapp = 0 
+      WHERE id = (SELECT op.ordem_id FROM ordem_placas op JOIN servicos s ON s.ordem_placa_id = op.id WHERE s.id = NEW.servico_id);
+    END;
+  `);
 } catch (err) {
   console.error('Erro ao inicializar banco de dados:', err);
 }

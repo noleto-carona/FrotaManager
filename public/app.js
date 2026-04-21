@@ -1126,6 +1126,7 @@ async function deleteFoto(fotoId) {
     const s = await api.get('/servicos/' + state.panel.servicoId);
     renderFotosGrid(s.fotos || []);
     toast('Foto excluída');
+    await reloadOrdens(); // Atualiza status do WhatsApp na lista principal
   } catch (err) { toast(err.message, 'error'); }
 }
 
@@ -1194,6 +1195,7 @@ async function uploadFotoFile(blob, fileName) {
     const s = await api.get('/servicos/' + state.panel.servicoId);
     renderFotosGrid(s.fotos || []);
     toast('Foto enviada com sucesso');
+    await reloadOrdens(); // Atualiza status do WhatsApp na lista principal
   } catch (err) { 
     console.error('Erro no upload:', err);
     toast('Erro ao salvar foto: ' + err.message, 'error'); 

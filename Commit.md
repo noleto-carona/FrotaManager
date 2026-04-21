@@ -61,5 +61,10 @@
 - **Persistência Visual:** Ordens que já possuem placas abrem por padrão com os detalhes minimizados, economizando rolagem de tela em dispositivos móveis.
 - **Controle Manual:** Botão "Detalhes da Ordem" permite expandir ou recolher as informações a qualquer momento.
 
+### 10. Rastreio Inteligente de Alterações (WhatsApp)
+- **Reset Automático de Status:** Implementação de TRIGGERS no SQLite que monitoram qualquer alteração em serviços, placas, fotos ou observações.
+- **Destaque Dinâmico Reversivo:** Sempre que uma Ordem é editada, uma nova foto é adicionada/excluída ou um serviço é alterado, o status "Enviada" é resetado para "Pendente" (Verde Neon).
+- **Garantia de Atualização:** Isso garante que o gestor saiba exatamente quais ordens precisam ser reenviadas após modificações, mantendo a comunicação sempre sincronizada com o estado real da frota.
+
 ---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*

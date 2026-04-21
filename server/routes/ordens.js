@@ -94,7 +94,7 @@ router.put('/:id', (req, res) => {
   try {
     db.transaction(() => {
       db.prepare(
-        'UPDATE ordens SET motorista_id=?, gestor_id=?, encarregado_id=?, destino=?, situacao=?, previsao=?, observacao=? WHERE id=?'
+        'UPDATE ordens SET motorista_id=?, gestor_id=?, encarregado_id=?, destino=?, situacao=?, previsao=?, observacao=?, enviada_whatsapp=0 WHERE id=?'
       ).run(motorista_id, gestor_id, encarregado_id, destino || '', situacao || '', previsao || '', observacao || '', ordemId);
 
       if (!Array.isArray(placas)) return;

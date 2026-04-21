@@ -6,11 +6,13 @@ const path = require('path');
 const fs = require('fs');
 
 // Configuração do Multer para salvar arquivos reais
+const IS_RENDER = process.env.RENDER === 'true';
+const uploadsDir = IS_RENDER ? '/opt/render/project/src/data/uploads' : path.join(__dirname, '../../uploads');
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = path.join(__dirname, '../../uploads');
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
+    if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);

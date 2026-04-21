@@ -3,7 +3,11 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const fs = require('fs');
 
-const dbDir = path.join(__dirname, '..', 'db');
+// No Render, usamos o diretório /data para persistência (Disk)
+// Localmente, mantemos a pasta ../db
+const IS_RENDER = process.env.RENDER === 'true';
+const dbDir = IS_RENDER ? '/opt/render/project/src/data' : path.join(__dirname, '..', 'db');
+
 if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 
 const _db = new DatabaseSync(path.join(dbDir, 'frota.db'));

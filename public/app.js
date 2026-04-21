@@ -421,7 +421,7 @@ async function editPlaca(id) {
 }
 
 async function addPlaca() {
-  const tipo = document.getElementById('input-placa-tipo').value.trim().toUpperCase();
+  const tipo = document.getElementById('input-placa-tipo').value;
   const numero = document.getElementById('input-placa-numero').value.trim().toUpperCase();
   const modelo = document.getElementById('input-placa-modelo').value.trim().toUpperCase();
   if (!tipo || !numero) { toast('Preencha tipo e número', 'error'); return; }

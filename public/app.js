@@ -628,8 +628,8 @@ function renderOrdens() {
     
     // Novo padrão de título simplificado (sem motorista)
     const osTitle = firstPlacaNum
-      ? `<span class="os-full-text">${esc(o.codigo)} | ${esc(firstPlacaNum)}</span><span class="os-short-text">${esc(o.codigo)}</span>`
-      : `<span class="os-full-text">${esc(o.codigo)}</span><span class="os-short-text">${esc(o.codigo)}</span>`;
+      ? `<span class="os-full-text">${o.codigo} | ${firstPlacaNum}</span><span class="os-short-text">${o.codigo}</span>`
+      : `<span class="os-full-text">${o.codigo}</span><span class="os-short-text">${o.codigo}</span>`;
 
     // Determina o status global da Ordem
     let hasNaoFinalizado = false;

@@ -99,6 +99,64 @@ function customConfirm(message) {
   });
 }
 
+function customPrompt(message, defaultValue = '', options = null) {
+  return new Promise((resolve) => {
+    const modal = document.getElementById('prompt-modal');
+    const msgEl = document.getElementById('prompt-message');
+    const inputEl = document.getElementById('prompt-input');
+    const selectEl = document.getElementById('prompt-select');
+    const okBtn = document.getElementById('prompt-btn-ok');
+    const cancelBtn = document.getElementById('prompt-btn-cancel');
+
+    msgEl.textContent = message;
+    modal.style.display = 'flex';
+
+    if (options) {
+      inputEl.style.display = 'none';
+      selectEl.style.display = 'block';
+      selectEl.innerHTML = options.map(opt => `<option value="${opt.value}" ${opt.value === defaultValue ? 'selected' : ''}>${opt.label}</option>`).join('');
+      setTimeout(() => selectEl.focus(), 100);
+    } else {
+      inputEl.style.display = 'block';
+      selectEl.style.display = 'none';
+      inputEl.value = defaultValue;
+      setTimeout(() => {
+        inputEl.focus();
+        inputEl.select();
+      }, 100);
+    }
+
+    const onOk = () => {
+      const val = options ? selectEl.value : inputEl.value;
+      cleanup();
+      resolve(val);
+    };
+
+    const onCancel = () => {
+      cleanup();
+      resolve(null);
+    };
+
+    const onKey = (e) => {
+      if (e.key === 'Enter') onOk();
+      if (e.key === 'Escape') onCancel();
+    };
+
+    const cleanup = () => {
+      okBtn.removeEventListener('click', onOk);
+      cancelBtn.removeEventListener('click', onCancel);
+      inputEl.removeEventListener('keydown', onKey);
+      selectEl.removeEventListener('keydown', onKey);
+      modal.style.display = 'none';
+    };
+
+    okBtn.addEventListener('click', onOk);
+    cancelBtn.addEventListener('click', onCancel);
+    inputEl.addEventListener('keydown', onKey);
+    selectEl.addEventListener('keydown', onKey);
+  });
+}
+
 // ===========================
 // UTILS
 // ===========================
@@ -226,7 +284,7 @@ function renderMotoristas() {
 }
 
 async function editMotorista(id, currentNome) {
-  const novoNome = prompt('Editar nome do motorista:', currentNome);
+  const novoNome = await customPrompt('Editar nome do motorista:', currentNome);
   if (novoNome === null || novoNome.trim() === '' || novoNome.trim() === currentNome) return;
   try {
     const updated = await api.put('/motoristas/' + id, { nome: novoNome.trim().toUpperCase() });
@@ -282,7 +340,7 @@ function renderGestores() {
 }
 
 async function editGestor(id, currentNome) {
-  const novoNome = prompt('Editar nome do gestor:', currentNome);
+  const novoNome = await customPrompt('Editar nome do gestor:', currentNome);
   if (novoNome === null || novoNome.trim() === '' || novoNome.trim() === currentNome) return;
   try {
     const updated = await api.put('/gestores/' + id, { nome: novoNome.trim().toUpperCase() });
@@ -338,7 +396,7 @@ function renderEncarregados() {
 }
 
 async function editEncarregado(id, currentNome) {
-  const novoNome = prompt('Editar nome do encarregado:', currentNome);
+  const novoNome = await customPrompt('Editar nome do encarregado:', currentNome);
   if (novoNome === null || novoNome.trim() === '' || novoNome.trim() === currentNome) return;
   try {
     const updated = await api.put('/encarregados/' + id, { nome: novoNome.trim().toUpperCase() });
@@ -398,13 +456,17 @@ async function editPlaca(id) {
   const p = state.placas.find(x => x.id === id);
   if (!p) return;
   
-  const tipo = prompt('Editar tipo (CV / CR / TRUCK):', p.tipo);
+  const tipo = await customPrompt('Editar tipo:', p.tipo, [
+    { value: 'CV', label: 'CV (CAVALO)' },
+    { value: 'CR', label: 'CR (CARRETA)' },
+    { value: 'TRUCK', label: 'TRUCK' }
+  ]);
   if (tipo === null) return;
   
-  const numero = prompt('Editar número (AXR6527):', p.numero);
+  const numero = await customPrompt('Editar Placa:', p.numero);
   if (numero === null) return;
   
-  const modelo = prompt('Editar modelo/observação:', p.modelo);
+  const modelo = await customPrompt('Editar Marca / Modelo:', p.modelo);
   if (modelo === null) return;
   
   try {

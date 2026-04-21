@@ -233,11 +233,27 @@
 <!-- Custom Confirm Dialog -->
 <div id="confirm-modal" class="confirm-overlay" style="display:none">
   <div class="confirm-box">
-    <div class="confirm-icon"><i class="fas fa-question"></i></div>
+    <div class="confirm-icon"><i class="fas fa-question-circle"></i></div>
     <div class="confirm-msg" id="confirm-message">Deseja continuar?</div>
     <div class="confirm-buttons">
       <button class="btn btn-sm btn-cancel" id="confirm-btn-cancel">Não</button>
       <button class="btn btn-sm" id="confirm-btn-ok">Sim</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Prompt Dialog -->
+<div id="prompt-modal" class="confirm-overlay" style="display:none">
+  <div class="confirm-box">
+    <div class="confirm-icon"><i class="fas fa-edit"></i></div>
+    <div class="confirm-msg" id="prompt-message">Digite o valor:</div>
+    <div class="form-group" style="width: 100%; margin-top: 15px;">
+      <input type="text" id="prompt-input" style="text-align: center;">
+      <select id="prompt-select" style="display: none; text-align: center;"></select>
+    </div>
+    <div class="confirm-buttons">
+      <button class="btn btn-sm btn-cancel" id="prompt-btn-cancel">Cancelar</button>
+      <button class="btn btn-sm" id="prompt-btn-ok">OK</button>
     </div>
   </div>
 </div>

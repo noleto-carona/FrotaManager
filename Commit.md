@@ -117,5 +117,19 @@
 
 ---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*
+
+**Data:** 21 de Abril de 2026  
+**Projeto:** Sistema de Gerenciamento de Frota (Full Stack)
+
+---
+
+## 🚀 Implementações Realizadas
+
+### 18. Automação de Deploy VPS (21/04/2026 13:30)
+- **Script de Setup:** Criado o `setup-server.sh` para automatizar a instalação do Docker e Docker Compose em servidores Linux (Ubuntu/Oracle Linux).
+- **Configuração de Permissões:** O script já configura o usuário para rodar Docker sem necessidade de `sudo`.
+- **Documentação de Deploy:** Atualização do `README.md` com o guia passo a passo para deploy na infraestrutura da Oracle Cloud.
+- **Preparação de Rede:** Concluída a orientação para configuração de VCN, Sub-rede Pública, Internet Gateway e Ingress Rules (Porta 3000).
+
 ### foi criado um novo reposório para o projeto FrotaManenger
 O endereço do pasta raiz estava incorreto.

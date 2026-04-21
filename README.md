@@ -11,6 +11,39 @@ npm start
 
 Acesse: http://localhost:3000
 
+## 🚀 Deploy na Oracle Cloud (VPS)
+
+Para colocar o sistema online em seu próprio servidor:
+
+### 1. Preparar o Servidor
+Após criar sua instância na Oracle Cloud e abrir a porta **3000** nas Ingress Rules:
+
+1. Conecte-se ao servidor via SSH:
+   ```bash
+   ssh -i "sua-chave.key" ubuntu@seu-ip-publico
+   ```
+
+2. No servidor, crie o arquivo de setup:
+   ```bash
+   nano setup-server.sh
+   ```
+   (Cole o conteúdo do arquivo `setup-server.sh` do projeto, salve com `Ctrl+O` e saia com `Ctrl+X`).
+
+3. Execute o setup:
+   ```bash
+   chmod +x setup-server.sh
+   ./setup-server.sh
+   ```
+
+4. **Saia e entre novamente no SSH** para aplicar as permissões.
+
+### 2. Subir o Sistema
+1. Envie os arquivos do seu projeto para o servidor (via `git clone` ou `scp`).
+2. Rode o comando final:
+   ```bash
+   docker-compose up -d --build
+   ```
+
 ## Deploy no Render
 
 1. `git init && git add . && git commit -m "initial"`

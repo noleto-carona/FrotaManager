@@ -1,0 +1,5 @@
+node_modules/
+db/frota.db
+db/frota.db-shm
+db/frota.db-wal
+.env

@@ -125,6 +125,13 @@
 
 ## 🚀 Implementações Realizadas
 
+### 19. Finalização do Deploy na Oracle Cloud (21/04/2026 15:50)
+- **Sucesso no Acesso SSH:** Resolução de problemas de permissão de chave privada no Windows e configuração de porta 22.
+- **Configuração de Firewall OCI:** Abertura das portas 22 (SSH) e 3000 (Aplicação) nas Ingress Rules.
+- **Firewall Interno (Ubuntu):** Aplicação de regras de `iptables` para permitir tráfego na porta 3000.
+- **Docker Compose V2:** Migração para o comando `docker compose` (V2) para maior estabilidade e compatibilidade.
+- **Deploy Ativo:** Sistema rodando em produção no IP `137.131.205.215:3000`.
+
 ### 18. Automação de Deploy VPS (21/04/2026 13:30)
 - **Script de Setup:** Criado o `setup-server.sh` para automatizar a instalação do Docker e Docker Compose em servidores Linux (Ubuntu/Oracle Linux).
 - **Configuração de Permissões:** O script já configura o usuário para rodar Docker sem necessidade de `sudo`.

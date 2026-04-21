@@ -41,7 +41,7 @@ Após criar sua instância na Oracle Cloud e abrir a porta **3000** nas Ingress 
 1. Envie os arquivos do seu projeto para o servidor (via `git clone` ou `scp`).
 2. Rode o comando final:
    ```bash
-   docker-compose up -d --build
+   docker compose up -d --build
    ```
 
 ## Deploy no Render

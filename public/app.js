@@ -626,10 +626,8 @@ function renderOrdens() {
     const firstPlacaNum = o.placas && o.placas.length > 0 ? o.placas[0].numero : '';
     const motoristaNome = o.motorista_nome || 'SEM MOTORISTA';
     
-    // Novo padrão de título simplificado (sem motorista)
-    const osTitle = firstPlacaNum
-      ? `<span class="os-full-text">${o.codigo} | ${firstPlacaNum}</span><span class="os-short-text">${o.codigo}</span>`
-      : `<span class="os-full-text">${o.codigo}</span><span class="os-short-text">${o.codigo}</span>`;
+    // Padrão simplificado: Apenas o código da OS
+    const osTitle = o.codigo;
 
     // Determina o status global da Ordem
     let hasNaoFinalizado = false;
@@ -708,7 +706,7 @@ function renderOrdens() {
           <div style="display:flex; align-items:center; gap:12px; flex: 1; min-width: 0;">
             <i class="fas fa-chevron-down expand-icon"></i>
             ${globalStatusHtml}
-            <div class="ordem-codigo" style="margin-bottom:0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${osTitle}</div>
+            <div class="ordem-codigo" style="margin-bottom:0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(osTitle)}</div>
           </div>
           <div class="item-actions" style="display: flex; align-items: center; gap: 5px;" onclick="event.stopPropagation()">
             <button class="btn btn-xs btn-outline" onclick="editOrdem(${o.id})" title="Editar ordem"><i class="fas fa-edit"></i></button>

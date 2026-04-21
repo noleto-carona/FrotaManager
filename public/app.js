@@ -512,8 +512,9 @@ function renderOrdens() {
     o.placas.forEach(p => {
       p.servicos.forEach(s => {
         totalServicos++;
-        // Se encontrar QUALQUER serviço que não seja FINALIZADO, a ordem é ativa
-        if (s.status_nome !== 'FINALIZADO') {
+        // Normaliza a string para comparação
+        const statusClean = (s.status_nome || '').trim().toUpperCase();
+        if (statusClean !== 'FINALIZADO') {
           hasServicoAtivo = true;
         }
       });
@@ -524,7 +525,6 @@ function renderOrdens() {
       return false;
     }
     
-    // Se não tem serviços ainda, mantém visível
     return true;
   });
 
@@ -547,17 +547,18 @@ function renderOrdens() {
     o.placas.forEach(p => {
       p.servicos.forEach(s => {
         totalS++;
-        if (s.status_nome !== 'FINALIZADO') {
+        const statusClean = (s.status_nome || '').trim().toUpperCase();
+        if (statusClean !== 'FINALIZADO') {
           hasNaoFinalizado = true;
         }
-        if (s.status_nome === 'EM ANDAMENTO') {
+        if (statusClean === 'EM ANDAMENTO') {
           hasAndamento = true;
         }
       });
     });
     
-    let globalStatusText = 'PEN'; // Padrão se não tiver nada
-    let globalStatusColor = '#f59e0b'; // Cor de Pendente
+    let globalStatusText = 'PEN';
+    let globalStatusColor = '#f59e0b';
 
     if (totalS > 0) {
       if (!hasNaoFinalizado) {
@@ -572,7 +573,7 @@ function renderOrdens() {
       }
     }
     
-    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.65rem; margin-left: 8px; min-width: 40px; justify-content: center;">${globalStatusText}</span>`;
+    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.65rem; min-width: 42px; justify-content: center; height: 22px; margin-right: 5px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();
@@ -612,12 +613,12 @@ function renderOrdens() {
     return `
       <div class="ordem-card ${collapsedClass} ${waStatusClass}" id="ordem-${o.id}">
         <div class="ordem-header-click" onclick="toggleOrdem(${o.id})">
-          <div style="display:flex; align-items:center; gap:12px; flex-wrap: wrap;">
+          <div style="display:flex; align-items:center; gap:12px; flex: 1; min-width: 0;">
             <i class="fas fa-chevron-down expand-icon"></i>
-            <div class="ordem-codigo" style="margin-bottom:0">${esc(osTitle)}</div>
-            ${globalStatusHtml}
+            <div class="ordem-codigo" style="margin-bottom:0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(osTitle)}</div>
           </div>
-          <div class="item-actions" onclick="event.stopPropagation()">
+          <div class="item-actions" style="display: flex; align-items: center; gap: 5px;" onclick="event.stopPropagation()">
+            ${globalStatusHtml}
             <button class="btn btn-xs btn-outline" onclick="editOrdem(${o.id})" title="Editar ordem"><i class="fas fa-edit"></i></button>
             <button class="btn btn-xs btn-danger" onclick="delOrdem(${o.id})" title="Excluir ordem"><i class="fas fa-trash"></i></button>
             <button class="btn btn-xs btn-wa ${waStatusClass}" onclick="shareWA(${o.id})" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>

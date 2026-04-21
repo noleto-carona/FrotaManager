@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    container_name: frota-manager-app
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persistência de dados: Mapeia as pastas do seu PC para dentro do container
+      # Assim, mesmo que você pare o Docker, os dados e fotos continuam no seu PC
+      - ./db:/app/db
+      - ./uploads:/app/uploads
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - RENDER=false
+    restart: always
+
+# Define os volumes para garantir que o Docker trate as pastas como persistentes
+volumes:
+  db:
+  uploads:

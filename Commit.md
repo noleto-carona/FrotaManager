@@ -109,5 +109,11 @@
 - **Flexibilidade de Mídia:** Remoção da captura forçada de câmera. Agora o usuário pode escolher entre **Tirar Foto** ou **Selecionar da Galeria**, facilitando o uso de fotos já existentes no aparelho.
 - **Estabilidade de Banco:** Tratamento de erros em exclusões de status. O sistema agora identifica e avisa quando um status não pode ser removido por estar em uso em alguma ordem de serviço, evitando erros genéricos 500.
 
+### 17. Dockerização e Preparação para Servidores Profissionais (21/04/2026 11:30)
+- **Containerização:** Criação do `Dockerfile` oficial utilizando a imagem leve do Node 22-slim.
+- **Orquestração Local:** Implementação do `docker-compose.yml` para facilitar o rodar do sistema completo em qualquer máquina com um único comando.
+- **Persistência Blindada:** Configuração de volumes no Docker para garantir que o banco de dados SQLite e a pasta de fotos (uploads) nunca sejam apagados ao reiniciar o container.
+- **Pronto para VPS:** O projeto agora está pronto para ser migrado para qualquer servidor profissional (Hostinger, DigitalOcean, etc.) mantendo a mesma estabilidade do ambiente local.
+
 ---
 *Relatório gerado automaticamente pelo assistente de desenvolvimento.*

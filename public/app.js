@@ -68,14 +68,18 @@ function toast(msg, type = 'success') {
   toastTimer = setTimeout(() => { el.className = 'toast'; }, 3000);
 }
 
-function customConfirm(message) {
+function customConfirm(message, icon = 'fa-question-circle') {
   return new Promise((resolve) => {
     const modal = document.getElementById('confirm-modal');
     const msgEl = document.getElementById('confirm-message');
+    const iconEl = document.querySelector('#confirm-modal .confirm-icon i');
     const okBtn = document.getElementById('confirm-btn-ok');
     const cancelBtn = document.getElementById('confirm-btn-cancel');
 
     msgEl.textContent = message;
+    if (iconEl) {
+      iconEl.className = `fas ${icon}`;
+    }
     modal.style.display = 'flex';
 
     const onOk = () => {
@@ -1066,7 +1070,7 @@ async function addServicModal(pi) {
     // Sempre limpa os campos e atualiza a lista no modal, independente da escolha de fotos
     renderModalPlacas();
 
-    if (await customConfirm('Deseja adicionar fotos para este serviço agora?')) {
+    if (await customConfirm('Deseja adicionar fotos para este serviço agora?', 'fa-camera')) {
       // Localiza o ID do serviço que acabamos de salvar
       const placaSalva = savedOrdem.placas[pi];
       const servicoSalvo = placaSalva.servicos[placaSalva.servicos.length - 1];

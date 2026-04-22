@@ -184,5 +184,7 @@
 - **Efeito de Sombra:** Adicionado sombra ao botão OS-0000 para melhorar a visibilidade em telas claras.
 - **Versão 2.5:** Atualização do Cache Buster para v2.5.
 
+### 32. Nova alteção no box shadow do OS-0000 (22/04/2026  00:35)
+- **Efeito de Sombra:** Adicionado sombra ao botão OS-0000 para melhorar a visibilidade em telas claras.
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

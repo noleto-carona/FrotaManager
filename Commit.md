@@ -166,5 +166,11 @@
 - **Centralização Automática:** O conteúdo agora se mantém centralizado em telas largas (como tablets ou celulares em modo paisagem), preservando a proporção ideal de leitura.
 - **Versão 2.4:** Atualização do Cache Buster para v2.4.
 
+### 28. Consolidação de Layout Mobile e Proteção de DPI (v2.5) (21/04/2026 18:00)
+- **Blindagem de UI:** Reforçadas as regras de CSS com `!important` para garantir que o código da OS nunca seja cortado, mesmo em dispositivos com a DPI padrão de 360.
+- **Eficiência de Espaço:** Padronização final dos botões de ação para 28px e gaps mínimos, garantindo que o layout caiba perfeitamente em telas estreitas.
+- **Cache Busting v2.5:** Atualização forçada das versões de CSS e JS para garantir que todos os usuários recebam as melhorias de layout instantaneamente.
+- **Manutenção:** Limpeza e organização final do histórico de atualizações.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

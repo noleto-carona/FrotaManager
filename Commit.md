@@ -161,5 +161,10 @@
 - **Hierarquia de Flexbox:** Ajustado o `flex-shrink` dos botões para 0, garantindo que eles fiquem no final da linha sem invadir o espaço do código.
 - **Versão 2.3:** Atualização do Cache Buster para v2.3.
 
+### 27. Padronização de Experiência Mobile (v2.4) (21/04/2026 17:45)
+- **Container Inteligente:** Implementada restrição de largura máxima (`420px`) para dispositivos móveis, garantindo que a visualização seja consistente com o padrão de teste de 400px, independente do tamanho físico do aparelho.
+- **Centralização Automática:** O conteúdo agora se mantém centralizado em telas largas (como tablets ou celulares em modo paisagem), preservando a proporção ideal de leitura.
+- **Versão 2.4:** Atualização do Cache Buster para v2.4.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

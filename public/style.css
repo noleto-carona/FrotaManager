@@ -29,6 +29,14 @@ body {
   margin: 0 auto;
 }
 
+/* Ajuste de visualização padronizada para Mobile */
+@media (max-width: 600px) {
+  .container {
+    max-width: 420px; /* Aproxima da dimensão 400px que você gostou */
+    margin: 0 auto;
+  }
+}
+
 /* Header */
 .app-header {
   margin-bottom: 18px;

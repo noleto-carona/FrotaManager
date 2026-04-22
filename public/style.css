@@ -470,6 +470,7 @@ input[type="color"] {
   border: 1px solid rgba(44, 125, 160, 0.2);
   flex-shrink: 0; /* Impede que o componente encolha */
   min-width: fit-content; /* Garante que o tamanho seja o do texto */
+  box-shadow: 0 2px 8px rgba(0,119,211,0.25);
 }
 
 /* Ajustes específicos para mobile */
@@ -494,7 +495,7 @@ input[type="color"] {
     min-width: 65px; /* Força um tamanho mínimo para caber OS-0000 */
     text-align: center;
     background: rgba(44, 125, 160, 0.15);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0,119,211,0.25);
   }
   
   .item-actions {

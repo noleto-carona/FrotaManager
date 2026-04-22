@@ -180,5 +180,9 @@
 - **Cor da Sombra:** Alterada a cor da sombra para preto para melhorar a visibilidade em telas claras.
 - **Versão 2.5:** Atualização do Cache Buster para v2.5.
 
+### 31. Adicionado Box Shadow ao botão OS-0000 (21/04/2026 18:45)
+- **Efeito de Sombra:** Adicionado sombra ao botão OS-0000 para melhorar a visibilidade em telas claras.
+- **Versão 2.5:** Atualização do Cache Buster para v2.5.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

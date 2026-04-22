@@ -172,5 +172,9 @@
 - **Cache Busting v2.5:** Atualização forçada das versões de CSS e JS para garantir que todos os usuários recebam as melhorias de layout instantaneamente.
 - **Manutenção:** Limpeza e organização final do histórico de atualizações.
 
+### 29. adicionando sombra o botão OS-0000 (21/04/2026 18:15)
+- **Efeito de Sombra:** Adicionado sombra ao botão OS-0000 para melhorar a visibilidade em telas claras.
+- **Versão 2.5:** Atualização do Cache Buster para v2.5.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

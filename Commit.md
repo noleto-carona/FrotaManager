@@ -155,5 +155,11 @@
 - **Ajuste de Escala:** Leve redução na fonte da OS para 0.72rem para garantir o encaixe perfeito em dispositivos com alta densidade de pixels (como o Redmi 14C).
 - **Versão 2.2:** Atualização do Cache Buster para v2.2 em todos os arquivos estáticos.
 
+### 26. Ajuste de Layout Mobile Extremo (v2.3) (21/04/2026 17:30)
+- **Minimização de Botões:** Redução dos botões de ação de 32px para 28px em dispositivos móveis, maximizando o espaço para os dados da OS.
+- **Área Reservada:** Implementado `min-width: 65px` no código da OS para impedir que o navegador tente comprimir o texto.
+- **Hierarquia de Flexbox:** Ajustado o `flex-shrink` dos botões para 0, garantindo que eles fiquem no final da linha sem invadir o espaço do código.
+- **Versão 2.3:** Atualização do Cache Buster para v2.3.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

@@ -475,23 +475,30 @@ input[type="color"] {
   }
   
   .header-main-info {
-    gap: 2px; /* Reduzido de 4px para 2px para ganhar cada milímetro */
+    gap: 2px;
+    flex: 1; /* Ocupa todo o espaço possível */
+    min-width: 0;
   }
 
   .ordem-codigo {
-    font-size: 0.72rem; /* Leve redução para garantir encaixe em telas muito estreitas */
-    padding: 3px 6px;
+    font-size: 0.7rem; /* Redução estratégica */
+    padding: 2px 4px;
+    min-width: 65px; /* Força um tamanho mínimo para caber OS-0000 */
+    text-align: center;
     background: rgba(44, 125, 160, 0.15);
   }
   
   .item-actions {
-    gap: 4px;
+    gap: 2px;
+    flex-shrink: 0; /* Impede que os botões empurrem a OS */
   }
 
   .btn-xs {
-    width: 32px; /* Botões de ação levemente menores para sobrar espaço para a OS */
-    height: 32px;
-    font-size: 0.85rem;
+    width: 28px; /* Reduzido de 32px para 28px no mobile */
+    height: 28px;
+    padding: 0;
+    justify-content: center;
+    font-size: 0.8rem;
   }
 }
 .ordem-motorista {

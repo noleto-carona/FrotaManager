@@ -454,12 +454,14 @@ input[type="color"] {
   font-size: 0.72rem;
   color: var(--primary-blue);
   white-space: nowrap;
-  overflow: visible; /* Permitir que o conteúdo apareça 100% */
+  overflow: visible !important; /* Força a visibilidade total */
+  text-overflow: clip !important; /* Proíbe os três pontinhos (...) */
   background: rgba(44, 125, 160, 0.1);
   padding: 2px 8px;
   border-radius: 8px;
   border: 1px solid rgba(44, 125, 160, 0.2);
-  flex-shrink: 0; /* Impede que o botão da OS encolha */
+  flex-shrink: 0; /* Impede que o componente encolha */
+  min-width: fit-content; /* Garante que o tamanho seja o do texto */
 }
 
 /* Ajustes específicos para mobile */
@@ -473,13 +475,13 @@ input[type="color"] {
   }
   
   .header-main-info {
-    gap: 4px; 
+    gap: 2px; /* Reduzido de 4px para 2px para ganhar cada milímetro */
   }
 
   .ordem-codigo {
-    font-size: 0.75rem; /* Aumentado de 0.69 para 0.75 para ficar bem visível */
-    padding: 3px 8px;
-    background: rgba(44, 125, 160, 0.15); /* Destaque um pouco mais forte */
+    font-size: 0.72rem; /* Leve redução para garantir encaixe em telas muito estreitas */
+    padding: 3px 6px;
+    background: rgba(44, 125, 160, 0.15);
   }
   
   .item-actions {

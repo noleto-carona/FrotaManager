@@ -144,5 +144,16 @@
 - **Sincronização de Dados:** Realizada a sincronização completa do banco de dados `frota.db` e pastas de `uploads` entre o ambiente local e o servidor Oracle.
 - **Workflow de Deploy:** Garantida a atualização do servidor via `git pull` e `docker compose` para refletir as mudanças de UI.
 
+### 24. Forçamento de Atualização de Cache (Cache Busting) (21/04/2026 17:00)
+- **Versão de Arquivos:** Implementada técnica de "Cache Busting" no `index.html` adicionando sufixos de versão (`?v=2.1`) aos arquivos `style.css` e `app.js`.
+- **Resolução de Conflitos:** Isso garante que dispositivos Android/iOS que já acessaram o sistema baixem obrigatoriamente a nova lógica de interface, eliminando estilos antigos (como estilos inline de truncamento) que estavam travados na memória do navegador.
+- **Uniformidade:** Garantia de que a visualização seja idêntica em todos os aparelhos, seguindo o padrão testado no emulador.
+
+### 25. Refinamento Crítico de Layout Mobile (21/04/2026 17:15)
+- **Proibição de Truncamento:** Adicionada a regra `!important` para `overflow: visible` e `text-overflow: clip` no código da OS, impedindo cortes em qualquer dispositivo.
+- **Otimização de Milímetros:** Reduzido o `gap` (espaço) entre elementos do cabeçalho de 4px para 2px em telas pequenas.
+- **Ajuste de Escala:** Leve redução na fonte da OS para 0.72rem para garantir o encaixe perfeito em dispositivos com alta densidade de pixels (como o Redmi 14C).
+- **Versão 2.2:** Atualização do Cache Buster para v2.2 em todos os arquivos estáticos.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

@@ -469,7 +469,7 @@ input[type="color"] {
   }
 
   .ordem-header-click {
-    padding: 8px 6px; /* Padding lateral mínimo */
+    padding: 0px 0px; /* Sincronizado com o ajuste manual do usuário */
   }
   
   .header-main-info {

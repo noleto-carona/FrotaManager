@@ -1,26 +1,10 @@
 # Histórico de Atualizações - Frota Manager
 
-**Data:** 20 de Abril de 2026  
 **Projeto:** Sistema de Gerenciamento de Frota (Full Stack)
 
 ---
 
-### 15. Infraestrutura e Deploy Oracle Cloud (21/04/2026 10:00)
-- **Infraestrutura (OCI):** Configuração completa de VCN, Sub-redes públicas, Internet Gateway e Security Lists para liberação das portas 22 (SSH) e 3000 (App).
-- **Automação:** Criação do script `setup-server.sh` para instalação automatizada do Docker e Docker Compose V2 no Ubuntu 24.04.
-- **Persistência em Nuvem:** Ajuste do Docker Compose para sincronização de dados via *bind mounts*, garantindo a persistência do banco SQLite mesmo após reinicializações do container.
-- **Firewall:** Liberação manual de portas no `iptables` do servidor para acesso externo.
-
-### 16. Otimização Android e Mobile UX (21/04/2026 11:30)
-- **Busca Retrátil:** Filtros de pesquisa agora são minimizados por padrão com o nome "Pesquisar", economizando 40% de espaço na tela inicial do celular.
-- **Título OS Simplificado:** Remoção do nome do motorista do título do card para garantir que o código (Ex: OS-0001) apareça 100% visível em telas pequenas.
-- **Responsividade:** Ajuste de paddings e gaps no cabeçalho das ordens para maximizar o aproveitamento horizontal no Android.
-- **Correção de Renderização:** Ajuste na lógica de escape de caracteres para permitir a exibição correta de tags HTML dinâmicas nos títulos.
-
-### 17. Sincronização em Tempo Real (Desenvolvimento) (21/04/2026 12:00)
-- **Volumes de Desenvolvimento:** Atualização do `docker-compose.yml` para mapear as pastas `public` e `server` como volumes.
-- **Hot-Reload de Estilos:** Agora as alterações feitas no `style.css` e `app.js` no VS Code são refletidas instantaneamente no navegador (após refresh), sem necessidade de reconstruir a imagem Docker.
-- **Produtividade:** Facilidade para testar ajustes finos de layout diretamente no `localhost:3000`.
+## 📅 20 de Abril de 2026
 
 ### 1. Migração para Full Stack (20/04/2026 14:30)
 - **Backend:** Criado servidor robusto em Node.js com Express.
@@ -107,12 +91,7 @@
 
 ---
 
-**Data:** 21 de Abril de 2026  
-**Projeto:** Sistema de Gerenciamento de Frota (Full Stack)
-
----
-
-## 🚀 Implementações Realizadas
+## 📅 21 de Abril de 2026
 
 ### 15. Deploy e Infraestrutura no Render (21/04/2026 09:30)
 - **Produção:** Configuração completa para o ambiente Render com detecção automática via variáveis de ambiente.
@@ -120,45 +99,50 @@
 - **Logs de Diagnóstico:** Inclusão de logs detalhados de inicialização do banco de dados para facilitar a manutenção no painel do Render.
 - **Keep-Alive:** Sistema de auto-ping integrado para evitar que o servidor entre em modo de hibernação no plano gratuito.
 
-### 16. Melhorias de Acessibilidade Mobile (21/04/2026 10:15)
+### 16. Infraestrutura e Deploy Oracle Cloud (21/04/2026 10:00)
+- **Infraestrutura (OCI):** Configuração completa de VCN, Sub-redes públicas, Internet Gateway e Security Lists para liberação das portas 22 (SSH) e 3000 (App).
+- **Automação:** Criação do script `setup-server.sh` para instalação automatizada do Docker e Docker Compose V2 no Ubuntu 24.04.
+- **Persistência em Nuvem:** Ajuste do Docker Compose para sincronização de dados via *bind mounts*, garantindo a persistência do banco SQLite mesmo após reinicializações do container.
+- **Firewall:** Liberação manual de portas no `iptables` do servidor para acesso externo.
+
+### 17. Melhorias de Acessibilidade Mobile (21/04/2026 10:15)
 - **Flexibilidade de Mídia:** Remoção da captura forçada de câmera. Agora o usuário pode escolher entre **Tirar Foto** ou **Selecionar da Galeria**, facilitando o uso de fotos já existentes no aparelho.
 - **Estabilidade de Banco:** Tratamento de erros em exclusões de status. O sistema agora identifica e avisa quando um status não pode ser removido por estar em uso em alguma ordem de serviço, evitando erros genéricos 500.
 
-### 17. Dockerização e Preparação para Servidores Profissionais (21/04/2026 11:30)
+### 18. Otimização Android e Mobile UX (21/04/2026 11:30)
+- **Busca Retrátil:** Filtros de pesquisa agora são minimizados por padrão com o nome "Pesquisar", economizando 40% de espaço na tela inicial do celular.
+- **Título OS Simplificado:** Remoção do nome do motorista do título do card para garantir que o código (Ex: OS-0001) apareça 100% visível em telas pequenas.
+- **Responsividade:** Ajuste de paddings e gaps no cabeçalho das ordens para maximizar o aproveitamento horizontal no Android.
+- **Correção de Renderização:** Ajuste na lógica de escape de caracteres para permitir a exibição correta de tags HTML dinâmicas nos títulos.
+
+### 19. Dockerização e Preparação para Servidores Profissionais (21/04/2026 11:30)
 - **Containerização:** Criação do `Dockerfile` oficial utilizando a imagem leve do Node 22-slim.
 - **Orquestração Local:** Implementação do `docker-compose.yml` para facilitar o rodar do sistema completo em qualquer máquina com um único comando.
 - **Persistência Blindada:** Configuração de volumes no Docker para garantir que o banco de dados SQLite e a pasta de fotos (uploads) nunca sejam apagados ao reiniciar o container.
-- **Pronto para VPS:** O projeto agora está pronto para ser migrado para qualquer servidor profissional (Hostinger, DigitalOcean, etc.) mantendo a mesma estabilidade do ambiente local.
 
----
-*Relatório gerado automaticamente pelo assistente de desenvolvimento.*
+### 20. Sincronização em Tempo Real (Desenvolvimento) (21/04/2026 12:00)
+- **Volumes de Desenvolvimento:** Atualização do `docker-compose.yml` para mapear as pastas `public` e `server` como volumes.
+- **Hot-Reload de Estilos:** Agora as alterações feitas no `style.css` e `app.js` no VS Code são refletidas instantaneamente no navegador (após refresh), sem necessidade de reconstruir a imagem Docker.
+- **Produtividade:** Facilidade para testar ajustes finos de layout diretamente no `localhost:3000`.
 
-**Data:** 21 de Abril de 2026  
-**Projeto:** Sistema de Gerenciamento de Frota (Full Stack)
+### 21. Automação de Deploy VPS (21/04/2026 13:30)
+- **Script de Setup:** Criado o `setup-server.sh` para automatizar a instalação do Docker e Docker Compose em servidores Linux (Ubuntu/Oracle Linux).
+- **Configuração de Permissões:** O script já configura o usuário para rodar Docker sem necessidade de `sudo`.
+- **Documentação de Deploy:** Atualização do `README.md` com o guia passo a passo para deploy na infraestrutura da Oracle Cloud.
 
----
-
-## 🚀 Implementações Realizadas
-
-### 20. Otimização de Interface Mobile e Simplificação (21/04/2026 16:30)
-- **Filtros Retráteis:** Implementada seção de busca minimizada com botão "PESQUISAR", economizando espaço em telas de Android.
-- **Simplificação de Títulos:** Título das Ordens de Serviço simplificado para exibir apenas o código (ex: `OS-0001`), removendo o nome do motorista para evitar cortes e poluição visual.
-- **Ajuste de Estilo:** Adicionado destaque visual (fundo azul claro e bordas) para o código da OS, melhorando a leitura rápida.
-- **Sincronização de Dados:** Realizada a sincronização completa do banco de dados `frota.db` e pastas de `uploads` entre o ambiente local e o servidor Oracle.
-- **Workflow de Deploy:** Garantida a atualização do servidor via `git pull` e `docker compose` para refletir as mudanças de UI.
-
-### 19. Finalização do Deploy na Oracle Cloud (21/04/2026 15:50)
+### 22. Finalização do Deploy na Oracle Cloud (21/04/2026 15:50)
 - **Sucesso no Acesso SSH:** Resolução de problemas de permissão de chave privada no Windows e configuração de porta 22.
 - **Configuração de Firewall OCI:** Abertura das portas 22 (SSH) e 3000 (Aplicação) nas Ingress Rules.
 - **Firewall Interno (Ubuntu):** Aplicação de regras de `iptables` para permitir tráfego na porta 3000.
 - **Docker Compose V2:** Migração para o comando `docker compose` (V2) para maior estabilidade e compatibilidade.
 - **Deploy Ativo:** Sistema rodando em produção no IP `137.131.205.215:3000`.
 
-### 18. Automação de Deploy VPS (21/04/2026 13:30)
-- **Script de Setup:** Criado o `setup-server.sh` para automatizar a instalação do Docker e Docker Compose em servidores Linux (Ubuntu/Oracle Linux).
-- **Configuração de Permissões:** O script já configura o usuário para rodar Docker sem necessidade de `sudo`.
-- **Documentação de Deploy:** Atualização do `README.md` com o guia passo a passo para deploy na infraestrutura da Oracle Cloud.
-- **Preparação de Rede:** Concluída a orientação para configuração de VCN, Sub-rede Pública, Internet Gateway e Ingress Rules (Porta 3000).
+### 23. Otimização de Interface Mobile e Simplificação (21/04/2026 16:30)
+- **Filtros Retráteis:** Implementada seção de busca minimizada com botão "PESQUISAR", economizando espaço em telas de Android.
+- **Simplificação de Títulos:** Título das Ordens de Serviço simplificado para exibir apenas o código (ex: `OS-0001`), removendo o nome do motorista para evitar cortes e poluição visual.
+- **Ajuste de Estilo:** Adicionado destaque visual (fundo azul claro e bordas) para o código da OS, melhorando a leitura rápida.
+- **Sincronização de Dados:** Realizada a sincronização completa do banco de dados `frota.db` e pastas de `uploads` entre o ambiente local e o servidor Oracle.
+- **Workflow de Deploy:** Garantida a atualização do servidor via `git pull` e `docker compose` para refletir as mudanças de UI.
 
-### foi criado um novo reposório para o projeto FrotaManenger
-O endereço do pasta raiz estava incorreto.
+---
+*Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

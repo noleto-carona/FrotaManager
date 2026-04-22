@@ -6,7 +6,6 @@ services:
       - "3000:3000"
     volumes:
       # Persistência de dados: Mapeia as pastas do seu PC para dentro do container
-      # Assim, mesmo que você pare o Docker, os dados e fotos continuam no seu PC
       - ./db:/app/db
       - ./uploads:/app/uploads
     environment:

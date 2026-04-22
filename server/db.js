@@ -39,7 +39,13 @@ const db = {
 };
 
 try {
-  _db.exec('PRAGMA journal_mode = WAL');
+  // WAL mode can cause "disk I/O error" on Docker for Windows/WSL2 because of shared memory mapping.
+  // We use a fallback if it fails.
+  try {
+    _db.exec('PRAGMA journal_mode = WAL');
+  } catch (e) {
+    console.log('[DB] Falha ao ativar WAL mode, usando padrão. Erro:', e.message);
+  }
   _db.exec('PRAGMA foreign_keys = ON');
 
   db.exec(`

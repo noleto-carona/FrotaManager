@@ -5,7 +5,22 @@
 
 ---
 
-## 🚀 Implementações Realizadas
+### 15. Infraestrutura e Deploy Oracle Cloud (21/04/2026 10:00)
+- **Infraestrutura (OCI):** Configuração completa de VCN, Sub-redes públicas, Internet Gateway e Security Lists para liberação das portas 22 (SSH) e 3000 (App).
+- **Automação:** Criação do script `setup-server.sh` para instalação automatizada do Docker e Docker Compose V2 no Ubuntu 24.04.
+- **Persistência em Nuvem:** Ajuste do Docker Compose para sincronização de dados via *bind mounts*, garantindo a persistência do banco SQLite mesmo após reinicializações do container.
+- **Firewall:** Liberação manual de portas no `iptables` do servidor para acesso externo.
+
+### 16. Otimização Android e Mobile UX (21/04/2026 11:30)
+- **Busca Retrátil:** Filtros de pesquisa agora são minimizados por padrão com o nome "Pesquisar", economizando 40% de espaço na tela inicial do celular.
+- **Título OS Simplificado:** Remoção do nome do motorista do título do card para garantir que o código (Ex: OS-0001) apareça 100% visível em telas pequenas.
+- **Responsividade:** Ajuste de paddings e gaps no cabeçalho das ordens para maximizar o aproveitamento horizontal no Android.
+- **Correção de Renderização:** Ajuste na lógica de escape de caracteres para permitir a exibição correta de tags HTML dinâmicas nos títulos.
+
+### 17. Sincronização em Tempo Real (Desenvolvimento) (21/04/2026 12:00)
+- **Volumes de Desenvolvimento:** Atualização do `docker-compose.yml` para mapear as pastas `public` e `server` como volumes.
+- **Hot-Reload de Estilos:** Agora as alterações feitas no `style.css` e `app.js` no VS Code são refletidas instantaneamente no navegador (após refresh), sem necessidade de reconstruir a imagem Docker.
+- **Produtividade:** Facilidade para testar ajustes finos de layout diretamente no `localhost:3000`.
 
 ### 1. Migração para Full Stack (20/04/2026 14:30)
 - **Backend:** Criado servidor robusto em Node.js com Express.

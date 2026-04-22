@@ -397,7 +397,7 @@ input[type="color"] {
 }
 
 .ordem-header-click {
-  padding: 10px 0px; /* Reduzido de 18px para 12px nas laterais */
+  padding: 0px 0px; /* Reduzido de 18px para 12px nas laterais */
   cursor: pointer;
   display: flex;
   justify-content: space-between;

@@ -238,5 +238,11 @@
 - **Visual (style.css)**: Adicionado `cursor: help` às badges para sinalizar informação extra e efeito de `brightness` no hover para melhor feedback visual.
 - **Cache Busting v3.4**: Atualização dos ativos para `v3.4` no `index.html`.
 
+### 39. Refatoração Final de Status com Siglas (v3.5) (23/04/2026 12:30)
+- **Banco de Dados (db.js)**: Adicionado comando de fallback `ALTER TABLE` para garantir a existência da coluna `sigla` em ambientes já inicializados.
+- **API (servicos.js)**: Verificada a inclusão de `status_sigla` nos joins de serviços.
+- **Visual (style.css)**: Ajustadas as dimensões das badges de status para o padrão final de **40px x 20px** com fonte de **10px**, garantindo uniformidade visual para 3 letras.
+- **Cache Busting v3.5**: Atualização dos ativos para `v3.5` no `index.html`.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

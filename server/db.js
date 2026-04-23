@@ -92,6 +92,14 @@ try {
     )
   `);
 
+  // Comando de correção rápida: garante que a coluna sigla exista caso a tabela tenha sido criada anteriormente sem ela
+  try {
+    db.exec("ALTER TABLE status_servico ADD COLUMN sigla TEXT;");
+    // Se a coluna foi adicionada agora, ela estará NULL. O script de auto-fill abaixo cuidará disso e o NOT NULL será aplicado em futuras criações.
+  } catch (e) {
+    // A coluna provavelmente já existe
+  }
+
   db.exec(`
     CREATE TABLE IF NOT EXISTS ordens (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

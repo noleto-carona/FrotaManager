@@ -179,10 +179,11 @@ function fmtDate(isoStr) {
 function statusBadgeHtml(statusObj) {
   if (!statusObj) return '';
   const cor = statusObj.cor || '#94a3b8';
-  const sigla = statusObj.sigla || statusObj.nome.substring(0, 3).toUpperCase();
+  const nome = statusObj.nome || '';
+  const sigla = (statusObj.sigla || nome.substring(0, 3)).toUpperCase();
   const text = isDark(cor) ? '#ffffff' : '#1e293b';
   
-  return `<span class="status-badge" title="${esc(statusObj.nome)}" style="background:${esc(cor)};color:${text}">${esc(sigla)}</span>`;
+  return `<span class="status-badge" title="${esc(nome)}" style="background:${esc(cor)};color:${text}">${esc(sigla)}</span>`;
 }
 
 function isDark(hex) {
@@ -972,7 +973,7 @@ function renderModalPlacas() {
   }
 
   const statusOptions = state.statusList.map(s => {
-    const sigla = s.sigla || s.nome.substring(0, 3).toUpperCase();
+    const sigla = (s.sigla || s.nome.substring(0, 3)).toUpperCase();
     return `<option value="${s.id}">${esc(sigla)} - ${esc(s.nome)}</option>`;
   }).join('');
 
@@ -1297,7 +1298,7 @@ async function openPanel(servicoId, idx, pi, si) {
   // Populate status select
   const statusSel = document.getElementById('panel-status');
   statusSel.innerHTML = state.statusList.map(s => {
-    const sigla = s.sigla || s.nome.substring(0, 3).toUpperCase();
+    const sigla = (s.sigla || s.nome.substring(0, 3)).toUpperCase();
     return `<option value="${s.id}">${esc(sigla)} - ${esc(s.nome)}</option>`;
   }).join('');
 

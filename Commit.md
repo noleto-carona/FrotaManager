@@ -215,5 +215,12 @@
 - **Identificação de Versão**: Adicionado selo visual `v3.0 SIGLAS` no cabeçalho do sistema para facilitar a verificação da versão ativa.
 - **Manutenção de Regras**: Inclusão de regras de commit e manutenção do arquivo `Commit.md` no topo do documento e na memória do assistente.
 
+### 35. Correção Definitiva de Siglas e UI (v3.1) (23/04/2026 10:30)
+- **Refatoração de Badges**: Atualizada a função `statusBadgeHtml` para garantir o uso de siglas e tooltips nativos em todos os contextos (lista principal e modais).
+- **Ajuste de Visual (CSS)**: Implementada largura fixa de `45px` e design retangular otimizado para as siglas de 3 letras, garantindo alinhamento perfeito.
+- **Dropdowns Inteligentes**: Refatoração dos seletores de status nos modais para o formato `SIGLA - NOME` (Ex: PEN - PENDENTE).
+- **Correção de UI de Status**: Garantida a exibição do campo de entrada de **SIGLA** e do botão de **EDITAR** na aba de gerenciamento de status.
+- **Cache Busting v3.1**: Atualização forçada dos ativos para `v3.1` no `index.html` para invalidar caches antigos e aplicar as correções visuais.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

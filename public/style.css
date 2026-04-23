@@ -690,15 +690,14 @@ input[type="color"] {
 
 /* Status badge */
 .status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: 40px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: white;
-  white-space: nowrap;
+  display: inline-block;
+  width: 45px;
+  text-align: center;
+  font-weight: bold;
+  padding: 4px 0;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
   flex-shrink: 0;
 }
 

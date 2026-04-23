@@ -86,7 +86,7 @@ try {
     CREATE TABLE IF NOT EXISTS status_servico (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL,
-      sigla TEXT,
+      sigla TEXT NOT NULL,
       cor TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )

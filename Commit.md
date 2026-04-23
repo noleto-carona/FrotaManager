@@ -222,5 +222,11 @@
 - **Correção de UI de Status**: Garantida a exibição do campo de entrada de **SIGLA** e do botão de **EDITAR** na aba de gerenciamento de status.
 - **Cache Busting v3.1**: Atualização forçada dos ativos para `v3.1` no `index.html` para invalidar caches antigos e aplicar as correções visuais.
 
+### 36. Refatoração de Backend e Persistência de Siglas (v3.2) (23/04/2026 11:00)
+- **Banco de Dados**: Atualizada a definição da tabela `status_servico` para tornar a coluna `sigla` como `TEXT NOT NULL`.
+- **API de Status**: Refatoradas as rotas de `POST` e `PUT` em `status.js` para garantir que a sigla seja sempre processada e retornada ao front-end.
+- **Sincronização de Dados**: Aprimorada a lógica de Consulta (GET) para garantir que o campo `status_sigla` seja enviado corretamente em todas as requisições de Ordens e Serviços.
+- **Cache Busting v3.2**: Atualização forçada dos ativos para `v3.1` no `index.html` (mantida v3.1 para visual, mas com backend v3.2).
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

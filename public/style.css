@@ -264,6 +264,7 @@ body {
   background: none;
   appearance: none;
   -webkit-appearance: none;
+  height: 42px; /* Garante altura igual aos outros inputs */
 }
 
 .form-group-status input[type="color"]::-webkit-color-swatch-wrapper {

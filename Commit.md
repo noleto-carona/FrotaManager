@@ -282,5 +282,11 @@
 - **Simetria**: Ajuste de altura e margens no formulário de status para simetria perfeita.
 - **Versão**: Incremento de versão para `v4.2 FINAL` no header e ativos (Cache Busting v4.2).
 
+### 46. Padronização e v4.3 (23/04/2026 17:30)
+- **Alterado**: Remoção definitiva da borda verde do input de Sigla para padronização.
+- **Layout**: Ajuste de altura de todos os elementos do formulário de status (Status, Sigla, Cor) para 42px.
+- **Alinhamento**: Alinhamento horizontal perfeito de todos os campos com o botão "Adicionar".
+- **Versão**: Incremento de versão para `v4.3 FINAL` no header e ativos.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

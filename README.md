@@ -46,6 +46,7 @@ Após criar sua instância na Oracle Cloud e abrir a porta **3000** nas Ingress 
 2. Rode o comando final:
    ```bash
    docker compose up -d --build
+   Executar fluxo Git completo (Commit.md + push).
    ```
 
 ## Deploy no Render

@@ -258,8 +258,21 @@ body {
 }
 
 .form-group-status input[type="color"] {
-  padding: 2px;
+  padding: 0;
   cursor: pointer;
+  border: 2px solid #e2e8f0;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-group-status input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-group-status input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 10px; /* Mantém um leve arredondado para combinar com os inputs */
 }
 
 #input-status-sigla {

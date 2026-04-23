@@ -276,5 +276,11 @@
 - **Volumes**: Mapeamento das pastas `public` e `server` como volumes.
 - **Workflow**: Isso permite que qualquer alteração no HTML, CSS ou JavaScript do backend reflita instantaneamente no Docker sem necessidade de `build`.
 
+### 45. Refinamento Visual e v4.2 (23/04/2026 17:00)
+- **Alterado**: Refinamento visual do input de cor (removido círculo externo, agora quadrado/arredondado).
+- **Layout**: Alinhamento vertical do botão "Adicionar" com os campos de input.
+- **Simetria**: Ajuste de altura e margens no formulário de status para simetria perfeita.
+- **Versão**: Incremento de versão para `v4.2 FINAL` no header e ativos (Cache Busting v4.2).
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

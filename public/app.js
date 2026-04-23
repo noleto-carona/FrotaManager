@@ -758,8 +758,8 @@ function renderOrdens() {
     return `
       <div class="ordem-card ${collapsedClass} ${waStatusClass}" id="ordem-${o.id}">
         <div class="ordem-header-click" onclick="toggleOrdem(${o.id})">
-          <div class="header-main-info">
-            <i class="fas fa-chevron-down expand-icon"></i>
+          <div class="header-main-info" style="gap: 12px; margin-left: 4px;">
+            <i class="fas fa-chevron-down expand-icon" style="margin-left: 0;"></i>
             ${globalStatusHtml}
             <div class="ordem-codigo">${esc(osTitle)}</div>
           </div>

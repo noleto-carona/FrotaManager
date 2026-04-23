@@ -295,5 +295,10 @@
 - **Layout**: Garantida a largura fixa de 42px para manter o alinhamento visual.
 - **Versão**: Incremento de versão para `v4.4 FINAL` no header e ativos (Cache Busting v4.4).
 
+### 48. Ajuste de Layout e v4.5 (23/04/2026 18:30)
+- **Alterado**: Ajuste de margem (4px para a direita) no bloco de informações principais da OS (Chevron, Status e Código).
+- **Layout**: Aumento do gap entre os elementos do cabeçalho da OS para 12px para melhor legibilidade.
+- **Versão**: Incremento de versão para `v4.5 FINAL` no header e ativos (Cache Busting v4.5).
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

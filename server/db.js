@@ -112,12 +112,22 @@ try {
       previsao TEXT,
       observacao TEXT,
       enviada_whatsapp INTEGER DEFAULT 0,
+      status_id INTEGER,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (motorista_id) REFERENCES motoristas(id),
       FOREIGN KEY (gestor_id) REFERENCES gestores(id),
-      FOREIGN KEY (encarregado_id) REFERENCES encarregados(id)
+      FOREIGN KEY (encarregado_id) REFERENCES encarregados(id),
+      FOREIGN KEY (status_id) REFERENCES status_servico(id)
     )
   `);
+
+  // Migration: Adicionar status_id na tabela ordens se não existir
+  try {
+    db.prepare("ALTER TABLE ordens ADD COLUMN status_id INTEGER REFERENCES status_servico(id)").run();
+    console.log('[DB] Coluna status_id adicionada em ordens');
+  } catch (e) {
+    // A coluna provavelmente já existe
+  }
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS ordem_placas (
@@ -172,10 +182,21 @@ try {
       { nome: 'PENDENTE', sigla: 'PEN', cor: '#f59e0b' },
       { nome: 'EM ANDAMENTO', sigla: 'AND', cor: '#3b82f6' },
       { nome: 'FINALIZADO', sigla: 'FIN', cor: '#10b981' },
-      { nome: 'TESTE', sigla: 'TST', cor: '#8b5cf6' }
+      { nome: 'TESTE', sigla: 'TST', cor: '#8b5cf6' },
+      { nome: 'FINALIZADO COM PENDÊNCIA', sigla: 'FIP', cor: '#fa0000' }
     ];
     const stmt = db.prepare('INSERT INTO status_servico (nome, sigla, cor) VALUES (?, ?, ?)');
     defaultStatus.forEach(s => stmt.run(s.nome, s.sigla, s.cor));
+  }
+
+  // Migration: Adicionar FIP se não existir
+  try {
+    const fipExists = db.prepare("SELECT COUNT(*) as total FROM status_servico WHERE sigla = 'FIP'").get().total;
+    if (fipExists === 0) {
+      db.prepare("INSERT INTO status_servico (nome, sigla, cor) VALUES ('FINALIZADO COM PENDÊNCIA', 'FIP', '#fa0000')").run();
+    }
+  } catch (e) {
+    console.error('[DB] Erro ao garantir status FIP:', e.message);
   }
 
   // Migration: Renomear REVISÃO para TESTE (Sigla: TST)

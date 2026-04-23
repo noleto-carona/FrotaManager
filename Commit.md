@@ -300,5 +300,13 @@
 - **Layout**: Aumento do gap entre os elementos do cabeçalho da OS para 12px para melhor legibilidade.
 - **Versão**: Incremento de versão para `v4.5 FINAL` no header e ativos (Cache Busting v4.5).
 
+### 49. Implementação do Status FIP e Segurança (23/04/2026 19:00)
+- **Banco de Dados**: Adicionado status "Finalizado com Pendência" (FIP) em vermelho.
+- **Banco de Dados**: Criada coluna `status_id` na tabela `ordens` para permitir controle manual do status global.
+- **Lógica de Bloqueio**: Implementada validação que impede selecionar "Finalizado" (FIN) no status global se houver itens de serviço pendentes.
+- **Segurança**: Restrição de edição de status (Global e Itens) apenas para usuários com nível de Encarregado ou Gestor (Motoristas têm apenas leitura).
+- **Interface**: Adicionado select de Status Global no modal de ordens e animação de pulsação no badge FIP.
+- **Versão**: Incremento para `v5.0 FINAL` (Cache Busting v5.0).
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

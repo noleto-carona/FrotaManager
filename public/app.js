@@ -700,7 +700,10 @@ function renderOrdens() {
     
     let globalStatusText = 'PEN';
     
-    if (totalS > 0) {
+    // Prioriza o status manual se definido na ordem
+    if (o.status_sigla) {
+      globalStatusText = o.status_sigla;
+    } else if (totalS > 0) {
       if (!hasNaoFinalizado) {
         globalStatusText = 'FIN';
       } else if (hasAndamento) {
@@ -866,6 +869,48 @@ function buildSelects(ordem) {
   fill('modal-motorista', state.motoristas, ordem && ordem.motorista_id, 'MOTORISTA');
   fill('modal-gestor', state.gestores, ordem && ordem.gestor_id, 'GESTOR');
   fill('modal-encarregado', state.encarregados, ordem && ordem.encarregado_id, 'ENCARREGADO');
+
+  // Fill status global
+  const statusEl = document.getElementById('modal-status-global');
+  if (statusEl) {
+    const hasPending = state.modal.tempPlacas.some(p => p.servicos.some(s => {
+      const st = state.statusList.find(x => x.id === s.status_id);
+      return st && st.sigla !== 'FIN';
+    }));
+
+    const options = state.statusList.map(s => {
+      const isFin = s.sigla === 'FIN';
+      const hasPendingForOption = state.modal.tempPlacas.some(p => p.servicos.some(sv => {
+        const st = state.statusList.find(x => x.id === sv.status_id);
+        return st && st.sigla !== 'FIN';
+      }));
+
+      const disabled = (isFin && hasPendingForOption) ? 'disabled' : '';
+      const selected = (ordem && ordem.status_id == s.id) ? 'selected' : '';
+      const label = isFin && hasPendingForOption ? `${esc(s.nome)} (BLOQUEADO - HÁ PENDÊNCIAS)` : esc(s.nome);
+      return `<option value="${s.id}" ${selected} ${disabled}>${label}</option>`;
+    }).join('');
+
+    statusEl.innerHTML = `<option value="" ${!(ordem && ordem.status_id) ? 'selected' : ''} disabled>SELECIONE STATUS...</option>` + options;
+    
+    // Permission restriction: Only Encarregado or Gestor can change Global Status
+    const userRole = localStorage.getItem('userRole');
+    
+    // Se não houver role definida, vamos assumir GESTOR para teste, 
+    // mas o ideal é que o sistema de login defina isso.
+    // Para resolver o problema de "não clicável", vamos garantir que só bloqueie se for explicitamente MOTORISTA.
+    if (userRole === 'MOTORISTA') {
+      statusEl.disabled = true;
+      statusEl.style.backgroundColor = '#f1f5f9';
+      statusEl.style.cursor = 'not-allowed';
+      statusEl.title = 'Apenas Encarregados ou Gestores podem alterar o status global';
+    } else {
+      statusEl.disabled = false;
+      statusEl.style.backgroundColor = '';
+      statusEl.style.cursor = '';
+      statusEl.title = '';
+    }
+  }
 }
 
 function openNovaOrdem() {
@@ -1129,6 +1174,9 @@ async function addServicModal(pi) {
   if (savedOrdem) {
     // Sempre limpa os campos e atualiza a lista no modal, independente da escolha de fotos
     renderModalPlacas();
+    
+    // Re-build selects to update Global Status validation if needed
+    buildSelects(savedOrdem);
 
     if (await customConfirm('Deseja adicionar fotos para este serviço agora?', 'fa-camera')) {
       // Localiza o ID do serviço que acabamos de salvar
@@ -1163,21 +1211,22 @@ async function saveOrdemSilent() {
     previsaoFmt = `${d}/${m}/${y.slice(-2)} ${pHora}`;
   }
 
-  const body = {
-    motorista_id,
-    gestor_id,
-    encarregado_id,
-    destino: document.getElementById('modal-destino').value.trim().toUpperCase(),
-    situacao: document.getElementById('modal-situacao').value.trim().toUpperCase(),
-    previsao: previsaoFmt,
-    observacao: document.getElementById('modal-observacao').value.trim().toUpperCase(),
-    placas: state.modal.tempPlacas.map(p => ({
-      id: p.id || undefined,
-      placa_id: p.placa_id,
-      km_horimetro: p.km_horimetro,
-      servicos: p.servicos.map(s => ({ id: s.id, descricao: s.descricao, status_id: s.status_id }))
-    }))
-  };
+    const body = {
+      motorista_id,
+      gestor_id,
+      encarregado_id,
+      status_id: parseInt(document.getElementById('modal-status-global').value) || null,
+      destino: document.getElementById('modal-destino').value.trim().toUpperCase(),
+      situacao: document.getElementById('modal-situacao').value.trim().toUpperCase(),
+      previsao: previsaoFmt,
+      observacao: document.getElementById('modal-observacao').value.trim().toUpperCase(),
+      placas: state.modal.tempPlacas.map(p => ({
+        id: p.id || undefined,
+        placa_id: p.placa_id,
+        km_horimetro: p.km_horimetro,
+        servicos: p.servicos.map(s => ({ id: s.id, descricao: s.descricao, status_id: s.status_id }))
+      }))
+    };
 
   try {
     let result;
@@ -1211,6 +1260,10 @@ async function saveOrdemSilent() {
 function removeServicModal(pi, si) {
   state.modal.tempPlacas[pi].servicos.splice(si, 1);
   renderModalPlacas();
+  
+  // Re-build selects to update Global Status validation if needed
+  const o = state.modal.ordemId ? state.ordens.find(x => x.id === state.modal.ordemId) : null;
+  buildSelects(o);
 }
 
 async function saveOrdemModal() {
@@ -1239,6 +1292,7 @@ async function saveOrdemModal() {
     motorista_id: parseInt(document.getElementById('modal-motorista').value),
     gestor_id: parseInt(document.getElementById('modal-gestor').value),
     encarregado_id: parseInt(document.getElementById('modal-encarregado').value),
+    status_id: parseInt(document.getElementById('modal-status-global').value) || null,
     destino: document.getElementById('modal-destino').value.trim().toUpperCase(),
     situacao: document.getElementById('modal-situacao').value.trim().toUpperCase(),
     previsao: previsaoFmt,
@@ -1306,6 +1360,20 @@ async function openPanel(servicoId, idx, pi, si) {
     const sigla = (s.sigla || s.nome.substring(0, 3)).toUpperCase();
     return `<option value="${s.id}">${esc(sigla)} - ${esc(s.nome)}</option>`;
   }).join('');
+
+  // Permission restriction for service status
+  const userRole = localStorage.getItem('userRole');
+  if (userRole === 'MOTORISTA') {
+    statusSel.disabled = true;
+    statusSel.style.backgroundColor = '#f1f5f9';
+    statusSel.style.cursor = 'not-allowed';
+    statusSel.title = 'Apenas Encarregados ou Gestores podem alterar o status do serviço';
+  } else {
+    statusSel.disabled = false;
+    statusSel.style.backgroundColor = '';
+    statusSel.style.cursor = '';
+    statusSel.title = '';
+  }
 
   try {
     const s = await api.get('/servicos/' + servicoId);

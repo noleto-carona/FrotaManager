@@ -25,6 +25,7 @@ Após criar sua instância na Oracle Cloud e abrir a porta **3000** nas Ingress 
    1.a Iniciar servidor
    ```bash
    docker compose up -d
+   cd ~/FrotaManager && git pull origin main
    ```
 
 2. No servidor, crie o arquivo de setup:

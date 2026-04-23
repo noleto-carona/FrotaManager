@@ -10,11 +10,13 @@ function getNextCodigo() {
 
 function getOrdemFull(ordemId) {
   const ordem = db.prepare(`
-    SELECT o.*, m.nome as motorista_nome, g.nome as gestor_nome, e.nome as encarregado_nome
+    SELECT o.*, m.nome as motorista_nome, g.nome as gestor_nome, e.nome as encarregado_nome,
+           ss.nome as status_nome, ss.sigla as status_sigla, ss.cor as status_cor
     FROM ordens o
     LEFT JOIN motoristas m ON o.motorista_id = m.id
     LEFT JOIN gestores g ON o.gestor_id = g.id
     LEFT JOIN encarregados e ON o.encarregado_id = e.id
+    LEFT JOIN status_servico ss ON o.status_id = ss.id
     WHERE o.id = ?
   `).get(ordemId);
 
@@ -60,15 +62,15 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { motorista_id, gestor_id, encarregado_id, destino, situacao, previsao, observacao, placas } = req.body;
+  const { motorista_id, gestor_id, encarregado_id, status_id, destino, situacao, previsao, observacao, placas } = req.body;
 
   try {
     let ordemId;
     db.transaction(() => {
       const codigo = getNextCodigo();
       const result = db.prepare(
-        'INSERT INTO ordens (codigo, motorista_id, gestor_id, encarregado_id, destino, situacao, previsao, observacao) VALUES (?,?,?,?,?,?,?,?)'
-      ).run(codigo, motorista_id, gestor_id, encarregado_id, destino || '', situacao || '', previsao || '', observacao || '');
+        'INSERT INTO ordens (codigo, motorista_id, gestor_id, encarregado_id, status_id, destino, situacao, previsao, observacao) VALUES (?,?,?,?,?,?,?,?,?)'
+      ).run(codigo, motorista_id, gestor_id, encarregado_id, status_id || null, destino || '', situacao || '', previsao || '', observacao || '');
 
       ordemId = result.lastInsertRowid;
 
@@ -89,13 +91,13 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   const ordemId = parseInt(req.params.id);
-  const { motorista_id, gestor_id, encarregado_id, destino, situacao, previsao, observacao, placas } = req.body;
+  const { motorista_id, gestor_id, encarregado_id, status_id, destino, situacao, previsao, observacao, placas } = req.body;
 
   try {
     db.transaction(() => {
       db.prepare(
-        'UPDATE ordens SET motorista_id=?, gestor_id=?, encarregado_id=?, destino=?, situacao=?, previsao=?, observacao=?, enviada_whatsapp=0 WHERE id=?'
-      ).run(motorista_id, gestor_id, encarregado_id, destino || '', situacao || '', previsao || '', observacao || '', ordemId);
+        'UPDATE ordens SET motorista_id=?, gestor_id=?, encarregado_id=?, status_id=?, destino=?, situacao=?, previsao=?, observacao=?, enviada_whatsapp=0 WHERE id=?'
+      ).run(motorista_id, gestor_id, encarregado_id, status_id || null, destino || '', situacao || '', previsao || '', observacao || '', ordemId);
 
       if (!Array.isArray(placas)) return;
 

@@ -251,5 +251,10 @@
 - **Documentação**: Atualizada a documentação visual para refletir as novas siglas e padrões.
 - **Cache Busting v3.6**: Ativos sincronizados na versão `v3.6`.
 
+### 41. Ajuste de Layout do Formulário de Status (v3.8) (23/04/2026 13:30)
+- **Interface (index.html)**: Corrigido o layout do formulário de criação de status. O campo **Sigla** agora está posicionado horizontalmente entre o **Nome do Status** e o **Seletor de Cores**, atendendo à solicitação visual do usuário.
+- **Visual**: Removidos labels internos do formulário de status para um visual mais limpo e direto, combinando com o placeholder "EX: EM REVISÃO".
+- **Cache Busting v3.8**: Incrementada a versão dos ativos para `v3.8` para garantir que as mudanças de layout sejam carregadas imediatamente.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

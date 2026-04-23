@@ -176,17 +176,13 @@ function fmtDate(isoStr) {
   return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
 
-function statusBadgeHtml(nome, cor) {
-  if (!nome) return '';
+function statusBadgeHtml(statusObj) {
+  if (!statusObj) return '';
+  const cor = statusObj.cor || '#94a3b8';
+  const sigla = statusObj.sigla || statusObj.nome.substring(0, 3).toUpperCase();
   const text = isDark(cor) ? '#ffffff' : '#1e293b';
   
-  // Abreviação do status
-  let displayNome = nome;
-  if (nome === 'PENDENTE') displayNome = 'PEN';
-  else if (nome === 'EM ANDAMENTO') displayNome = 'AND';
-  else if (nome === 'FINALIZADO') displayNome = 'FIN';
-
-  return `<span class="status-badge" style="background:${esc(cor)};color:${text}">${esc(displayNome)}</span>`;
+  return `<span class="status-badge" title="${esc(statusObj.nome)}" style="background:${esc(cor)};color:${text}">${esc(sigla)}</span>`;
 }
 
 function isDark(hex) {
@@ -523,25 +519,78 @@ function renderStatus() {
   el.innerHTML = state.statusList.map(s => `
     <div class="list-item">
       <div class="item-header">
-        <div style="display:flex;align-items:center;gap:8px">
+        <div style="display:flex;align-items:center;gap:12px">
           <span class="status-swatch" style="background:${esc(s.cor)}"></span>
+          <span class="status-badge" style="background:${esc(s.cor)}; color:${isDark(s.cor) ? '#fff' : '#1e293b'}">${esc(s.sigla)}</span>
           <span class="item-title">${esc(s.nome)}</span>
         </div>
-        <button class="btn btn-xs btn-danger" onclick="delStatus(${s.id})"><i class="fas fa-trash"></i></button>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-xs btn-outline" onclick="editStatus(${s.id})" title="Editar"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-xs btn-danger" onclick="delStatus(${s.id})" title="Excluir"><i class="fas fa-trash"></i></button>
+        </div>
       </div>
     </div>
   `).join('');
 }
 
+async function editStatus(id) {
+  const s = state.statusList.find(x => x.id === id);
+  if (!s) return;
+
+  const novoNome = await customPrompt('Nome do status:', s.nome);
+  if (novoNome === null) return;
+  if (!novoNome.trim()) { toast('Nome obrigatório', 'error'); return; }
+
+  const novaSigla = await customPrompt('Sigla (3 letras):', s.sigla || s.nome.substring(0, 3).toUpperCase());
+  if (novaSigla === null) return;
+  const siglaFinal = novaSigla.trim().substring(0, 3).toUpperCase();
+
+  // Para cor, como não temos um color picker no customPrompt simples, podemos manter ou pedir hex
+  // Mas para simplificar e não complicar o UI agora, vamos manter a cor ou pedir se o usuário quiser.
+  // Por enquanto, vamos focar em Nome e Sigla que é o que o usuário pediu.
+  
+  try {
+    await api.put('/status/' + id, { 
+      nome: novoNome.trim().toUpperCase(), 
+      sigla: siglaFinal,
+      cor: s.cor 
+    });
+    
+    // Atualiza localmente
+    s.nome = novoNome.trim().toUpperCase();
+    s.sigla = siglaFinal;
+    
+    // Atualiza as ordens na memória para refletir a mudança de nome/sigla imediatamente
+    state.ordens.forEach(o => {
+      o.placas.forEach(p => {
+        p.servicos.forEach(ser => {
+          if (ser.status_id === id) {
+            ser.status_nome = s.nome;
+            ser.status_sigla = s.sigla;
+          }
+        });
+      });
+    });
+
+    renderStatus();
+    renderOrdens();
+    toast('Status atualizado');
+  } catch (err) { toast(err.message, 'error'); }
+}
+
 async function addStatus() {
   const nome = document.getElementById('input-status').value.trim().toUpperCase();
+  const sigla = document.getElementById('input-status-sigla').value.trim().toUpperCase();
   const cor = document.getElementById('input-status-cor').value;
+  
   if (!nome) { toast('Informe o nome do status', 'error'); return; }
+  
   try {
-    const s = await api.post('/status', { nome, cor });
+    const s = await api.post('/status', { nome, sigla, cor });
     state.statusList.push(s);
     renderStatus();
     document.getElementById('input-status').value = '';
+    document.getElementById('input-status-sigla').value = '';
     toast('Status adicionado');
   } catch (err) { toast(err.message, 'error'); }
 }
@@ -582,8 +631,8 @@ function renderOrdens() {
       o.placas.forEach(p => {
         p.servicos.forEach(s => {
           totalServicos++;
-          const statusClean = (s.status_nome || '').trim().toUpperCase();
-          if (statusClean !== 'FINALIZADO') hasServicoAtivo = true;
+          const sigla = (s.status_sigla || '').trim().toUpperCase();
+          if (sigla !== 'FIN') hasServicoAtivo = true;
         });
       });
     }
@@ -637,11 +686,11 @@ function renderOrdens() {
     o.placas.forEach(p => {
       p.servicos.forEach(s => {
         totalS++;
-        const statusClean = (s.status_nome || '').trim().toUpperCase();
-        if (statusClean !== 'FINALIZADO') {
+        const sigla = (s.status_sigla || '').trim().toUpperCase();
+        if (sigla !== 'FIN') {
           hasNaoFinalizado = true;
         }
-        if (statusClean === 'EM ANDAMENTO') {
+        if (sigla === 'AND') {
           hasAndamento = true;
         }
       });
@@ -680,7 +729,7 @@ function renderOrdens() {
               <div class="servico-desc"><span style="color:#2c7da0;font-weight:800;margin-right:4px">${idx + 1}.</span>${esc(s.descricao)}</div>
               ${obsCount ? `<div class="servico-obs-count"><i class="fas fa-comment-dots"></i> ${obsCount} observaç${obsCount > 1 ? 'ões' : 'ão'}</div>` : ''}
             </div>
-            ${statusBadgeHtml(s.status_nome, s.status_cor)}
+            ${statusBadgeHtml({ nome: s.status_nome, sigla: s.status_sigla, cor: s.status_cor })}
           </div>
         `;
       }).join('');
@@ -773,7 +822,8 @@ function shareWA(ordemId) {
     const kmStr = p.km_horimetro != null ? ` | ${kmLabel}: ${p.km_horimetro}` : '';
     msg += `\n*${p.tipo} ${p.numero}${p.modelo ? ` (${p.modelo})` : ''}${kmStr}*\n`;
     p.servicos.forEach((s, idx) => {
-      msg += `   *${idx + 1}. ${s.descricao} [${s.status_nome || 'S/Status'}]*\n`;
+      const statusLabel = s.status_sigla || s.status_nome || 'S/Status';
+      msg += `   *${idx + 1}. ${s.descricao} [${statusLabel}]*\n`;
       if (s.fotos && s.fotos.length) {
         msg += `      _📷 Possui ${s.fotos.length} foto(s)_\n`;
       }
@@ -921,7 +971,10 @@ function renderModalPlacas() {
     return;
   }
 
-  const statusOptions = state.statusList.map(s => `<option value="${s.id}">${esc(s.nome)}</option>`).join('');
+  const statusOptions = state.statusList.map(s => {
+    const sigla = s.sigla || s.nome.substring(0, 3).toUpperCase();
+    return `<option value="${s.id}">${esc(sigla)} - ${esc(s.nome)}</option>`;
+  }).join('');
 
   container.innerHTML = state.modal.tempPlacas.map((p, pi) => {
     const tipoUp = (p.tipo || '').toUpperCase();
@@ -937,7 +990,7 @@ function renderModalPlacas() {
           <div class="modal-servico-text">
             <span style="color:var(--primary-blue);font-weight:800;margin-right:4px">${si + 1}.</span>
             <span style="font-size:0.8rem">${esc(s.descricao)}</span>
-            ${stObj ? statusBadgeHtml(stObj.nome, stObj.cor) : ''}
+            ${stObj ? statusBadgeHtml(stObj) : ''}
           </div>
           <div class="modal-servico-actions">
             <button class="btn btn-xs btn-outline" onclick="openPanel(${s.id || 'null'}, ${si + 1}, ${pi}, ${si})"><i class="fas fa-camera"></i></button>
@@ -1243,7 +1296,10 @@ async function openPanel(servicoId, idx, pi, si) {
 
   // Populate status select
   const statusSel = document.getElementById('panel-status');
-  statusSel.innerHTML = state.statusList.map(s => `<option value="${s.id}">${esc(s.nome)}</option>`).join('');
+  statusSel.innerHTML = state.statusList.map(s => {
+    const sigla = s.sigla || s.nome.substring(0, 3).toUpperCase();
+    return `<option value="${s.id}">${esc(sigla)} - ${esc(s.nome)}</option>`;
+  }).join('');
 
   try {
     const s = await api.get('/servicos/' + servicoId);

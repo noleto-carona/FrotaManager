@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frota Manager — Componentes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-blue: #0077d3;
+      --accent-green: #00ffa3;
+      --dark-blue: #003b4c;
+      --bg-color: #0077d3;
+      --card-bg: #f5f4f4;
+      --text-main: #ffffff;
+      --text-dark: #1e293b;
+      --border-color: rgba(255,255,255,0.2);
+      --sidebar-w: 240px;
+      --header-h: 58px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, 'Segoe UI', Roboto, sans-serif; }
+
+    /* ===== LAYOUT ===== */
+    body { background: #f0f4f8; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+    /* HEADER */
+    .doc-header {
+      height: var(--header-h);
+      background: var(--dark-blue);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+      z-index: 10;
+    }
+    .doc-header .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .doc-header .logo i { color: var(--accent-green); font-size: 1.3rem; }
+    .doc-header .logo h1 { color: #fff; font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; }
+    .doc-header .logo span {
+      background: var(--accent-green);
+      color: var(--dark-blue);
+      font-size: 0.55rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 40px;
+    }
+    .doc-header .subtitle {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.75rem;
+      border-left: 1.5px solid rgba(255,255,255,0.15);
+      padding-left: 16px;
+      margin-left: 4px;
+    }
+    .doc-header .total-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.5);
+      font-size: 0.68rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* BODY = SIDEBAR + MAIN */
+    .doc-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+    .doc-sidebar {
+      width: var(--sidebar-w);
+      background: #fff;
+      border-right: 1px solid #e2e8f0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar-section {
+      padding: 14px 0 4px;
+    }
+    .sidebar-section-label {
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 18px 6px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 18px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #475569;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .sidebar-item:hover { background: #f8fafc; color: var(--dark-blue); }
+    .sidebar-item.active {
+      background: #eff9ff;
+      color: var(--primary-blue);
+      border-left-color: var(--primary-blue);
+      font-weight: 700;
+    }
+    .sidebar-item i { width: 16px; text-align: center; font-size: 0.8rem; opacity: 0.7; }
+
+    /* MAIN */
+    .doc-main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px;
+    }
+
+    /* COMPONENT PANEL */
+    .comp-panel { display: none; }
+    .comp-panel.active { display: block; }
+
+    .comp-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--dark-blue);
+      margin-bottom: 6px;
+    }
+    .comp-desc {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    /* Preview box */
+    .preview-box {
+      background: #fff;
+      border-radius: 20px;
+      border: 1.5px solid #e2e8f0;
+      padding: 32px 28px;
+      margin-bottom: 20px;
+    }
+    .preview-box.bg-blue {
+      background: var(--primary-blue);
+    }
+    .preview-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preview-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #f1f5f9;
+    }
+
+    /* Code box */
+    .code-box {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 20px 22px;
+      overflow-x: auto;
+      margin-bottom: 28px;
+    }
+    .code-box pre {
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: #e2e8f0;
+      white-space: pre;
+    }
+    .code-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .code-label i { color: var(--accent-green); }
+
+    /* Syntax highlight */
+    .ck { color: #7dd3fc; }   /* keyword/property */
+    .cv { color: #a5f3fc; }   /* value/string */
+    .cc { color: #94a3b8; }   /* comment */
+    .cs { color: #f0abfc; }   /* selector */
+    .cp { color: #fde68a; }   /* pseudo */
+
+    /* ===== FROTA COMPONENTS ===== */
+
+    /* BUTTONS */
+    .btn { background: var(--accent-green); color: var(--dark-blue); border: none; padding: 12px 22px; border-radius: 40px; font-weight: 800; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,255,163,0.3); }
+    .btn-sm { padding: 9px 18px; font-size: 0.78rem; }
+    .btn-xs { padding: 6px 12px; font-size: 0.7rem; }
+    .btn-danger { background: #ff4d4d; color: white; box-shadow: 0 4px 12px rgba(255,77,77,0.3); }
+    .btn-wa { background: #25D366; color: white; box-shadow: 0 4px 12px rgba(37,211,102,0.3); }
+    .btn-wa.sent { background: #94a3b8; box-shadow: none; }
+    .btn-icon { background: none; border: none; cursor: pointer; padding: 8px; color: #64748b; font-size: 1.1rem; border-radius: 50%; display: inline-flex; align-items: center; }
+    .btn-icon:hover { background: #f1f5f9; }
+    .btn-icon-round { background: var(--accent-green); color: var(--dark-blue); border: none; border-radius: 50%; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,255,163,0.35); }
+    .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+    /* STATUS BADGE */
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 40px; font-size: 0.68rem; font-weight: 700; color: white; white-space: nowrap; }
+    .status-swatch { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+
+    /* TABS */
+    .tabs-demo { display: flex; flex-wrap: wrap; gap: 6px; background: rgba(0,119,211,0.1); border-radius: 60px; padding: 6px; }
+    .tab-btn-demo { flex: 1; background: transparent; border: solid 2px rgba(0,119,211,0.2); padding: 10px 4px; border-radius: 40px; font-weight: 700; font-size: 0.75rem; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 70px; }
+    .tab-btn-demo.active { background: var(--accent-green); color: var(--dark-blue); box-shadow: 0 4px 12px rgba(0,255,163,0.4); }
+
+    /* LIST ITEM */
+    .list-item-demo { background: #f8fafc; border-radius: 18px; padding: 12px 14px; margin-bottom: 10px; border: 1.5px solid #e2e8f0; }
+    .item-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .item-title { font-weight: 700; font-size: 0.9rem; color: var(--text-dark); }
+    .item-desc { font-size: 0.75rem; color: #475569; margin-top: 3px; }
+    .item-actions { display: flex; gap: 5px; align-items: center; }
+
+    /* ORDEM CARD */
+    .ordem-card-demo { background: var(--card-bg); border-radius: 24px; border: 2px solid var(--accent-green); box-shadow: 0 0 15px rgba(0,255,163,0.15); overflow: hidden; }
+    .ordem-header-demo { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); cursor: pointer; }
+    .header-main-info { display: flex; align-items: center; gap: 8px; }
+    .expand-icon { color: var(--primary-blue); font-size: 1rem; }
+    .ordem-codigo-demo { font-weight: 800; font-size: 0.72rem; color: var(--primary-blue); background: rgba(44,125,160,0.1); padding: 2px 8px; border-radius: 8px; border: 1px solid rgba(44,125,160,0.2); }
+    .ordem-body-demo { padding: 0 18px 18px; }
+    .ordem-motorista-demo { font-size: 1rem; font-weight: 800; color: var(--dark-blue); margin-top: 10px; }
+    .ordem-meta-demo { font-size: 0.78rem; color: #64748b; margin-top: 4px; line-height: 1.6; }
+    .placa-block-demo { background: var(--primary-blue); border-radius: 16px; padding: 14px; margin-top: 10px; color: white; }
+    .placa-label-demo { font-size: 0.82rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .servico-item-demo { background: #fff; border-radius: 10px; padding: 8px 10px; margin-bottom: 5px; border: 1.5px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .servico-desc-demo { font-size: 0.8rem; font-weight: 600; color: #1e293b; }
+
+    /* TOAST */
+    .toast-demo { display: inline-flex; background: #1e293b; color: white; padding: 10px 22px; border-radius: 40px; font-size: 0.82rem; font-weight: 600; gap: 10px; align-items: center; }
+    .toast-demo.error { background: #ef4444; }
+    .toast-demo.success { background: #22c55e; color: #052e16; }
+
+    /* INPUT / FORM */
+    .form-group-demo { margin-bottom: 14px; }
+    .form-label { font-weight: 700; font-size: 0.75rem; color: var(--dark-blue); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .input-demo { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 18px; font-size: 0.9rem; background: #fff; color: var(--text-dark); outline: none; }
+    .input-demo:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 4px rgba(0,119,211,0.1); }
+    .form-row-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* MODAL */
+    .modal-demo-wrapper { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 24px; display: flex; align-items: center; justify-content: center; min-height: 300px; }
+    .modal-box-demo { background: var(--card-bg); border-radius: 28px; padding: 22px 20px; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: var(--text-dark); }
+    .modal-header-demo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-header-demo h3 { font-size: 1.1rem; color: var(--dark-blue); font-weight: 800; }
+    .modal-footer-demo { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+    /* PANEL (bottom sheet) */
+    .panel-demo-wrapper { background: rgba(0,0,0,0.3); border-radius: 16px; overflow: hidden; min-height: 280px; position: relative; }
+    .panel-box-demo { background: white; border-radius: 24px 24px 0 0; padding: 20px 18px 24px; position: absolute; bottom: 0; left: 0; right: 0; }
+    .panel-header-demo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .panel-header-demo h4 { font-size: 1rem; color: var(--dark-blue); font-weight: 800; }
+
+    /* OBS TIMELINE */
+    .obs-entry-demo { background: #f8fafc; border-radius: 10px; padding: 8px 12px; margin-bottom: 8px; border-left: 4px solid var(--accent-green); }
+    .obs-time-demo { font-size: 0.62rem; color: #94a3b8; font-weight: 600; margin-bottom: 2px; }
+    .obs-text-demo { font-size: 0.8rem; color: #334155; }
+
+    /* SEARCH/FILTER */
+    .search-container-demo { background: white; border-radius: 20px; border: 1.5px solid #e2e8f0; overflow: hidden; }
+    .search-toggle-demo { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; font-weight: 800; font-size: 0.82rem; color: var(--dark-blue); }
+    .search-filters-demo { padding: 16px; border-top: 1px solid #f1f5f9; display: grid; gap: 12px; }
+
+    /* CONFIRM DIALOG */
+    .confirm-box-demo { background: var(--card-bg); padding: 28px 22px; border-radius: 28px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); max-width: 320px; margin: 0 auto; }
+    .confirm-icon-demo { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 12px; }
+    .confirm-msg-demo { font-weight: 800; font-size: 1rem; color: var(--dark-blue); margin-bottom: 18px; }
+    .confirm-buttons-demo { display: flex; gap: 10px; justify-content: center; }
+    .btn-cancel { background: #f1f5f9; color: #64748b; border: none; padding: 10px 20px; border-radius: 40px; font-weight: 700; cursor: pointer; font-size: 0.82rem; }
+
+    /* BADGE */
+    .badge-demo { background: var(--accent-green); padding: 3px 10px; border-radius: 40px; font-size: 0.65rem; font-weight: 800; color: var(--dark-blue); }
+
+    /* FOTO GRID */
+    .fotos-grid-demo { display: flex; gap: 10px; flex-wrap: wrap; }
+    .foto-box-demo { width: 70px; height: 70px; border-radius: 12px; border: 2px dashed #e2e8f0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #fff; transition: 0.2s; }
+    .foto-box-demo.has { background: var(--primary-blue); border: 2px solid var(--primary-blue); }
+    .foto-box-demo.has span { font-size: 0.6rem; color: white; font-weight: 700; }
+
+    /* PLACA CHIP */
+    .placa-chip-demo { display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1.5px solid #e2e8f0; border-radius: 40px; padding: 6px 12px; font-size: 0.75rem; font-weight: 600; cursor: pointer; margin: 4px; }
+    .placa-chip-demo:hover { background: rgba(0,255,163,0.1); border-color: var(--accent-green); }
+
+    /* APP HEADER */
+    .app-header-demo { text-align: center; padding: 24px; background: var(--primary-blue); border-radius: 16px; }
+    .app-header-demo h1 { font-size: 1.6rem; color: #f5f4f4; display: flex; align-items: center; justify-content: center; gap: 12px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .app-header-demo p { font-size: 0.82rem; color: #f5f4f4; margin-top: 6px; opacity: 0.85; }
+
+    /* SCROLLBAR sidebar */
+    .doc-sidebar::-webkit-scrollbar { width: 4px; }
+    .doc-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .doc-sidebar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+    .doc-main::-webkit-scrollbar { width: 6px; }
+    .doc-main::-webkit-scrollbar-track { background: transparent; }
+    .doc-main::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="doc-header">
+  <div class="logo">
+    <i class="fas fa-truck-fast"></i>
+    <h1>Frota Manager</h1>
+    <span>v2.0</span>
+  </div>
+  <span class="subtitle">Documentação de Componentes</span>
+  <span class="total-badge">14 componentes</span>
+</header>
+
+<!-- BODY -->
+<div class="doc-body">
+
+  <!-- SIDEBAR -->
+  <nav class="doc-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Layout</div>
+      <div class="sidebar-item active" onclick="show('app-header')"><i class="fas fa-heading"></i> App Header</div>
+      <div class="sidebar-item" onclick="show('tabs')"><i class="fas fa-layer-group"></i> Tabs</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Formulários</div>
+      <div class="sidebar-item" onclick="show('inputs')"><i class="fas fa-keyboard"></i> Inputs & Labels</div>
+      <div class="sidebar-item" onclick="show('search')"><i class="fas fa-search"></i> Busca & Filtros</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Ações</div>
+      <div class="sidebar-item" onclick="show('buttons')"><i class="fas fa-hand-pointer"></i> Botões</div>
+      <div class="sidebar-item" onclick="show('placa-chip')"><i class="fas fa-tag"></i> Placa Chip</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Indicadores</div>
+      <div class="sidebar-item" onclick="show('badge')"><i class="fas fa-certificate"></i> Badge</div>
+      <div class="sidebar-item" onclick="show('status-badge')"><i class="fas fa-circle"></i> Status Badge</div>
+      <div class="sidebar-item" onclick="show('toast')"><i class="fas fa-bell"></i> Toast</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Listas</div>
+      <div class="sidebar-item" onclick="show('list-item')"><i class="fas fa-list"></i> List Item</div>
+      <div class="sidebar-item" onclick="show('ordem-card')"><i class="fas fa-clipboard-list"></i> Ordem Card</div>
+      <div class="sidebar-item" onclick="show('obs-timeline')"><i class="fas fa-history"></i> Obs. Timeline</div>
+      <div class="sidebar-item" onclick="show('foto-grid')"><i class="fas fa-camera"></i> Fotos Grid</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Sobreposições</div>
+      <div class="sidebar-item" onclick="show('modal')"><i class="fas fa-window-maximize"></i> Modal (Ordem)</div>
+      <div class="sidebar-item" onclick="show('panel')"><i class="fas fa-align-bottom"></i> Painel Serviço</div>
+      <div class="sidebar-item" onclick="show('confirm')"><i class="fas fa-question-circle"></i> Confirm Dialog</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="doc-main">
+
+    <!-- APP HEADER -->
+    <div id="app-header" class="comp-panel active">
+      <div class="comp-title">App Header</div>
+      <div class="comp-desc">Cabeçalho principal do app. Exibe o logotipo, nome do sistema, badge de versão e subtítulo descritivo. Centralizado sobre fundo azul.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="app-header-demo">
+          <h1><i class="fas fa-truck-fast"></i> Frota Manager <span class="badge-demo">v2.0 API</span></h1>
+          <p>Gestão de frota com ordens de serviço rastreáveis</p>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .app-header</div>
+      <div class="code-box"><pre><span class="cs">.app-header</span> {
+  <span class="ck">margin-bottom</span>: <span class="cv">18px</span>;
+  <span class="ck">text-align</span>: <span class="cv">center</span>;
+}
+<span class="cs">.app-header h1</span> {
+  <span class="ck">font-size</span>: <span class="cv">1.8rem</span>;
+  <span class="ck">color</span>: <span class="cv">var(--card-bg)</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">center</span>;
+  <span class="ck">justify-content</span>: <span class="cv">center</span>;
+  <span class="ck">gap</span>: <span class="cv">12px</span>;
+  <span class="ck">text-shadow</span>: <span class="cv">0 2px 4px rgba(0,0,0,0.2)</span>;
+}
+<span class="cs">.app-header p</span> {
+  <span class="ck">font-size</span>: <span class="cv">0.85rem</span>;
+  <span class="ck">color</span>: <span class="cv">var(--card-bg)</span>;
+  <span class="ck">margin-top</span>: <span class="cv">6px</span>;
+}</pre></div>
+    </div>
+
+    <!-- TABS -->
+    <div id="tabs" class="comp-panel">
+      <div class="comp-title">Tabs</div>
+      <div class="comp-desc">Navegação principal do app com 6 abas. Fundo translúcido com backdrop-filter. A aba ativa recebe destaque verde.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="tabs-demo">
+          <div class="tab-btn-demo active"><i class="fas fa-clipboard-list"></i> Ordens</div>
+          <div class="tab-btn-demo"><i class="fas fa-user"></i> Motoristas</div>
+          <div class="tab-btn-demo"><i class="fas fa-user-tie"></i> Gestores</div>
+          <div class="tab-btn-demo"><i class="fas fa-car"></i> Placas</div>
+          <div class="tab-btn-demo"><i class="fas fa-tag"></i> Status</div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .tabs / .tab-btn</div>
+      <div class="code-box"><pre><span class="cs">.tabs</span> {
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">flex-wrap</span>: <span class="cv">wrap</span>;
+  <span class="ck">gap</span>: <span class="cv">6px</span>;
+  <span class="ck">background</span>: <span class="cv">rgba(255,255,255,0.1)</span>;
+  <span class="ck">border-radius</span>: <span class="cv">60px</span>;
+  <span class="ck">padding</span>: <span class="cv">6px</span>;
+  <span class="ck">backdrop-filter</span>: <span class="cv">blur(10px)</span>;
+}
+<span class="cs">.tab-btn</span> {
+  <span class="ck">flex</span>: <span class="cv">1</span>;
+  <span class="ck">background</span>: <span class="cv">transparent</span>;
+  <span class="ck">border</span>: <span class="cv">solid 2px var(--border-color)</span>;
+  <span class="ck">padding</span>: <span class="cv">12px 4px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">40px</span>;
+  <span class="ck">font-weight</span>: <span class="cv">700</span>;
+  <span class="ck">font-size</span>: <span class="cv">0.75rem</span>;
+  <span class="ck">color</span>: <span class="cv">white</span>;
+  <span class="ck">transition</span>: <span class="cv">0.3s</span>;
+}
+<span class="cs">.tab-btn.active</span> {
+  <span class="ck">background</span>: <span class="cv">var(--accent-green)</span>;
+  <span class="ck">color</span>: <span class="cv">var(--dark-blue)</span>;
+  <span class="ck">box-shadow</span>: <span class="cv">0 4px 12px rgba(0,255,163,0.4)</span>;
+}</pre></div>
+    </div>
+
+    <!-- INPUTS -->
+    <div id="inputs" class="comp-panel">
+      <div class="comp-title">Inputs & Labels</div>
+      <div class="comp-desc">Campos de texto, selects e textareas com bordas arredondadas. Ao focar, a borda muda para azul com anel de foco. Labels em uppercase negrito.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="form-row-demo">
+          <div class="form-group-demo">
+            <label class="form-label">Motorista</label>
+            <input class="input-demo" type="text" placeholder="NOME DO MOTORISTA">
+          </div>
+          <div class="form-group-demo">
+            <label class="form-label">Data de Chegada</label>
+            <input class="input-demo" type="date">
+          </div>
+        </div>
+        <div class="form-group-demo" style="margin-top:4px">
+          <label class="form-label">Observação</label>
+          <textarea class="input-demo" rows="2" placeholder="OBSERVAÇÃO GERAL..." style="resize:vertical"></textarea>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — input / label / .form-group</div>
+      <div class="code-box"><pre><span class="ck">label</span> {
+  <span class="ck">font-weight</span>: <span class="cv">700</span>;
+  <span class="ck">font-size</span>: <span class="cv">0.75rem</span>;
+  <span class="ck">color</span>: <span class="cv">var(--dark-blue)</span>;
+  <span class="ck">display</span>: <span class="cv">block</span>;
+  <span class="ck">margin-bottom</span>: <span class="cv">6px</span>;
+  <span class="ck">text-transform</span>: <span class="cv">uppercase</span>;
+  <span class="ck">letter-spacing</span>: <span class="cv">0.05em</span>;
+}
+<span class="cs">input, select, textarea</span> {
+  <span class="ck">width</span>: <span class="cv">100%</span>;
+  <span class="ck">padding</span>: <span class="cv">12px 16px</span>;
+  <span class="ck">border</span>: <span class="cv">2px solid #e2e8f0</span>;
+  <span class="ck">border-radius</span>: <span class="cv">18px</span>;
+  <span class="ck">font-size</span>: <span class="cv">0.9rem</span>;
+  <span class="ck">text-transform</span>: <span class="cv">uppercase</span>;
+}
+<span class="cs">input:focus</span> {
+  <span class="ck">border-color</span>: <span class="cv">var(--primary-blue)</span>;
+  <span class="ck">box-shadow</span>: <span class="cv">0 0 0 4px rgba(0,119,211,0.1)</span>;
+}</pre></div>
+    </div>
+
+    <!-- SEARCH -->
+    <div id="search" class="comp-panel">
+      <div class="comp-title">Busca & Filtros</div>
+      <div class="comp-desc">Container colapsável com toggle animado. Ao clicar no cabeçalho o painel de filtros expande/colapsa com transição suave. Ícone chevron rotaciona.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="search-container-demo">
+          <div class="search-toggle-demo">
+            <span><i class="fas fa-search" style="margin-right:8px;color:var(--primary-blue)"></i> PESQUISAR</span>
+            <i class="fas fa-chevron-down" style="color:var(--primary-blue);transition:transform 0.3s"></i>
+          </div>
+          <div class="search-filters-demo">
+            <div class="form-group-demo">
+              <label class="form-label"><i class="fas fa-filter" style="margin-right:4px"></i> Status</label>
+              <select class="input-demo"><option>ATIVOS (PEN/AND)</option><option>FINALIZADOS</option></select>
+            </div>
+            <div class="form-group-demo">
+              <label class="form-label"><i class="fas fa-search" style="margin-right:4px"></i> Nº OS</label>
+              <input class="input-demo" type="text" placeholder="0001" maxlength="4">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .search-container / .search-filters</div>
+      <div class="code-box"><pre><span class="cs">.search-container</span> {
+  <span class="ck">background</span>: <span class="cv">white</span>;
+  <span class="ck">border-radius</span>: <span class="cv">24px</span>;
+  <span class="ck">border</span>: <span class="cv">1.5px solid #e2e8f0</span>;
+  <span class="ck">overflow</span>: <span class="cv">hidden</span>;
+}
+<span class="cs">.search-toggle</span> {
+  <span class="ck">padding</span>: <span class="cv">12px 20px</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">justify-content</span>: <span class="cv">space-between</span>;
+  <span class="ck">background</span>: <span class="cv">#f8fafc</span>;
+  <span class="ck">font-weight</span>: <span class="cv">800</span>;
+  <span class="ck">cursor</span>: <span class="cv">pointer</span>;
+}
+<span class="cs">.search-filters.collapsed</span> {
+  <span class="ck">max-height</span>: <span class="cv">0</span>;
+  <span class="ck">opacity</span>: <span class="cv">0</span>;
+  <span class="ck">overflow</span>: <span class="cv">hidden</span>;
+  <span class="ck">transition</span>: <span class="cv">all 0.4s cubic-bezier(0.4, 0, 0.2, 1)</span>;
+}</pre></div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div id="buttons" class="comp-panel">
+      <div class="comp-title">Botões</div>
+      <div class="comp-desc">Família completa de botões: primário (verde), perigo (vermelho), WhatsApp (verde WhatsApp), ícone arredondado e ícone simples. Variações de tamanho: padrão, sm e xs.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview — Tipos</div>
+        <div class="demo-row" style="margin-bottom:16px">
+          <button class="btn"><i class="fas fa-plus"></i> Nova Ordem</button>
+          <button class="btn btn-danger"><i class="fas fa-trash"></i> Excluir</button>
+          <button class="btn btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+          <button class="btn btn-wa sent"><i class="fab fa-whatsapp"></i> Enviado</button>
+        </div>
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview — Tamanhos</div>
+        <div class="demo-row" style="margin-bottom:16px">
+          <button class="btn"><i class="fas fa-save"></i> Padrão</button>
+          <button class="btn btn-sm"><i class="fas fa-save"></i> Small</button>
+          <button class="btn btn-xs"><i class="fas fa-save"></i> XSmall</button>
+        </div>
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview — Ícone</div>
+        <div class="demo-row">
+          <button class="btn-icon-round"><i class="fas fa-plus"></i></button>
+          <button class="btn-icon"><i class="fas fa-times"></i></button>
+          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .btn e variações</div>
+      <div class="code-box"><pre><span class="cs">.btn</span> {
+  <span class="ck">background</span>: <span class="cv">var(--accent-green)</span>;
+  <span class="ck">color</span>: <span class="cv">var(--dark-blue)</span>;
+  <span class="ck">border</span>: <span class="cv">none</span>;
+  <span class="ck">padding</span>: <span class="cv">12px 22px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">40px</span>;
+  <span class="ck">font-weight</span>: <span class="cv">800</span>;
+  <span class="ck">box-shadow</span>: <span class="cv">0 4px 12px rgba(0,255,163,0.3)</span>;
+}
+<span class="cs">.btn-sm</span>  { <span class="ck">padding</span>: <span class="cv">9px 18px</span>; <span class="ck">font-size</span>: <span class="cv">0.78rem</span>; }
+<span class="cs">.btn-xs</span>  { <span class="ck">padding</span>: <span class="cv">6px 12px</span>;  <span class="ck">font-size</span>: <span class="cv">0.7rem</span>;  }
+<span class="cs">.btn-danger</span> { <span class="ck">background</span>: <span class="cv">#ff4d4d</span>; <span class="ck">color</span>: <span class="cv">white</span>; }
+<span class="cs">.btn-wa</span>     { <span class="ck">background</span>: <span class="cv">#25D366</span>; <span class="ck">color</span>: <span class="cv">white</span>; }
+<span class="cs">.btn-wa.sent</span> { <span class="ck">background</span>: <span class="cv">#94a3b8</span>; <span class="ck">box-shadow</span>: <span class="cv">none</span>; }
+<span class="cs">.btn-icon-round</span> {
+  <span class="ck">background</span>: <span class="cv">var(--accent-green)</span>;
+  <span class="ck">border-radius</span>: <span class="cv">50%</span>;
+  <span class="ck">width</span>: <span class="cv">44px</span>; <span class="ck">height</span>: <span class="cv">44px</span>;
+}</pre></div>
+    </div>
+
+    <!-- PLACA CHIP -->
+    <div id="placa-chip" class="comp-panel">
+      <div class="comp-title">Placa Chip</div>
+      <div class="comp-desc">Pílulas clicáveis exibidas no picker de placas dentro do modal de ordem. Ao passar o mouse, a borda muda para verde (accent-green).</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div>
+          <span class="placa-chip-demo"><i class="fas fa-truck"></i> CV ABC-1234 (Scania R450)</span>
+          <span class="placa-chip-demo"><i class="fas fa-truck"></i> CR XYZ-5678</span>
+          <span class="placa-chip-demo"><i class="fas fa-truck"></i> TRUCK DEF-9012 (Volvo FH)</span>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .placa-chip</div>
+      <div class="code-box"><pre><span class="cs">.placa-chip</span> {
+  <span class="ck">display</span>: <span class="cv">inline-flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">center</span>;
+  <span class="ck">gap</span>: <span class="cv">6px</span>;
+  <span class="ck">background</span>: <span class="cv">#f1f5f9</span>;
+  <span class="ck">border</span>: <span class="cv">1.5px solid #e2e8f0</span>;
+  <span class="ck">border-radius</span>: <span class="cv">40px</span>;
+  <span class="ck">padding</span>: <span class="cv">6px 12px</span>;
+  <span class="ck">font-size</span>: <span class="cv">0.75rem</span>;
+  <span class="ck">font-weight</span>: <span class="cv">600</span>;
+  <span class="ck">cursor</span>: <span class="cv">pointer</span>;
+  <span class="ck">margin</span>: <span class="cv">4px</span>;
+  <span class="ck">transition</span>: <span class="cv">0.15s</span>;
+}
+<span class="cs">.placa-chip:hover</span> {
+  <span class="ck">background</span>: <span class="cv">rgba(0,255,163,0.1)</span>;
+  <span class="ck">border-color</span>: <span class="cv">var(--accent-green)</span>;
+}</pre></div>
+    </div>
+
+    <!-- BADGE -->
+    <div id="badge" class="comp-panel">
+      <div class="comp-title">Badge</div>
+      <div class="comp-desc">Pequena pílula verde usada para indicar versão no header. Fundo accent-green, texto dark-blue em uppercase bold.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="demo-row">
+          <span style="font-size:1.4rem;font-weight:800;color:var(--dark-blue)">Frota Manager</span>
+          <span class="badge-demo">v2.0 API</span>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .badge</div>
+      <div class="code-box"><pre><span class="cs">.badge</span> {
+  <span class="ck">background</span>: <span class="cv">var(--accent-green)</span>;
+  <span class="ck">padding</span>: <span class="cv">3px 10px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">40px</span>;
+  <span class="ck">font-size</span>: <span class="cv">0.65rem</span>;
+  <span class="ck">font-weight</span>: <span class="cv">800</span>;
+  <span class="ck">color</span>: <span class="cv">var(--dark-blue)</span>;
+}</pre></div>
+    </div>
+
+    <!-- STATUS BADGE -->
+    <div id="status-badge" class="comp-panel">
+      <div class="comp-title">Status Badge</div>
+      <div class="comp-desc">Pílula colorida para exibir o status de serviços e ordens. Cor de fundo e texto definidos dinamicamente. Abreviações: PEN, AND, FIN.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview — Status de Serviço</div>
+        <div class="demo-row" style="margin-bottom:16px">
+          <span class="status-badge" style="background:#f59e0b">PEN</span>
+          <span class="status-badge" style="background:#3b82f6">AND</span>
+          <span class="status-badge" style="background:#10b981">FIN</span>
+          <span class="status-badge" style="background:#8b5cf6">EM REVISÃO</span>
+        </div>
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview — Status Global da OS</div>
+        <div class="demo-row">
+          <span class="status-badge" style="background:#f59e0b;font-size:0.65rem;min-width:42px;justify-content:center;height:22px;box-shadow:0 2px 8px #f59e0b66">PEN</span>
+          <span class="status-badge" style="background:#3b82f6;font-size:0.65rem;min-width:42px;justify-content:center;height:22px;box-shadow:0 2px 8px #3b82f666">AND</span>
+          <span class="status-badge" style="background:#10b981;font-size:0.65rem;min-width:42px;justify-content:center;height:22px;box-shadow:0 2px 8px #10b98166">FIN</span>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .status-badge</div>
+      <div class="code-box"><pre><span class="cs">.status-badge</span> {
+  <span class="ck">display</span>: <span class="cv">inline-flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">center</span>;
+  <span class="ck">padding</span>: <span class="cv">3px 10px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">40px</span>;
+  <span class="ck">font-size</span>: <span class="cv">0.68rem</span>;
+  <span class="ck">font-weight</span>: <span class="cv">700</span>;
+  <span class="ck">color</span>: <span class="cv">white</span>;
+  <span class="ck">white-space</span>: <span class="cv">nowrap</span>;
+  <span class="ck">flex-shrink</span>: <span class="cv">0</span>;
+}
+<span class="cc">/* Cor dinâmica via JS (isDark para texto) */</span>
+<span class="cc">/* background e color definidos inline */</span>
+
+<span class="cs">.status-swatch</span> {
+  <span class="ck">width</span>: <span class="cv">14px</span>; <span class="ck">height</span>: <span class="cv">14px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">50%</span>;
+}</pre></div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="comp-panel">
+      <div class="comp-title">Toast</div>
+      <div class="comp-desc">Notificação temporária fixada na base da tela. Anima com translateY. Variações: padrão (dark), error (vermelho) e success (verde). Desaparece após 3 segundos.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="demo-row" style="flex-direction:column;align-items:flex-start">
+          <div class="toast-demo"><i class="fas fa-info-circle"></i> Ordem criada — OS-0042</div>
+          <div class="toast-demo error"><i class="fas fa-times-circle"></i> Motorista obrigatório</div>
+          <div class="toast-demo success"><i class="fas fa-check-circle"></i> Serviço atualizado</div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .toast</div>
+      <div class="code-box"><pre><span class="cs">.toast</span> {
+  <span class="ck">position</span>: <span class="cv">fixed</span>;
+  <span class="ck">bottom</span>: <span class="cv">24px</span>;
+  <span class="ck">left</span>: <span class="cv">50%</span>;
+  <span class="ck">transform</span>: <span class="cv">translateX(-50%) translateY(80px)</span>;
+  <span class="ck">background</span>: <span class="cv">#1e293b</span>;
+  <span class="ck">color</span>: <span class="cv">white</span>;
+  <span class="ck">padding</span>: <span class="cv">10px 22px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">40px</span>;
+  <span class="ck">font-weight</span>: <span class="cv">600</span>;
+  <span class="ck">opacity</span>: <span class="cv">0</span>;
+  <span class="ck">transition</span>: <span class="cv">transform 0.3s, opacity 0.3s</span>;
+}
+<span class="cs">.toast.show</span> {
+  <span class="ck">transform</span>: <span class="cv">translateX(-50%) translateY(0)</span>;
+  <span class="ck">opacity</span>: <span class="cv">1</span>;
+}
+<span class="cs">.toast.error</span>   { <span class="ck">background</span>: <span class="cv">#ef4444</span>; }
+<span class="cs">.toast.success</span> { <span class="ck">background</span>: <span class="cv">#22c55e</span>; }</pre></div>
+    </div>
+
+    <!-- LIST ITEM -->
+    <div id="list-item" class="comp-panel">
+      <div class="comp-title">List Item</div>
+      <div class="comp-desc">Card simples para listar motoristas, gestores, encarregados, placas e status. Fundo cinza claro, bordas arredondadas. Contém título, descrição opcional e ações (editar/excluir).</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="list-item-demo">
+          <div class="item-header">
+            <span class="item-title"><i class="fas fa-user" style="margin-right:6px;color:var(--primary-blue)"></i> CARLOS PEREIRA</span>
+            <div class="item-actions">
+              <button class="btn btn-xs" style="background:var(--accent-green);color:var(--dark-blue)"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-xs btn-danger"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="list-item-demo">
+          <div class="item-header">
+            <span class="item-title"><i class="fas fa-truck" style="margin-right:6px;color:var(--primary-blue)"></i> CV — ABC-1234</span>
+            <div class="item-actions">
+              <button class="btn btn-xs" style="background:var(--accent-green);color:var(--dark-blue)"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-xs btn-danger"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="item-desc">Scania R450 / 2021</div>
+        </div>
+        <div class="list-item-demo">
+          <div class="item-header">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="status-swatch" style="background:#3b82f6"></span>
+              <span class="item-title">EM ANDAMENTO</span>
+            </div>
+            <button class="btn btn-xs btn-danger"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .list-item / .item-header</div>
+      <div class="code-box"><pre><span class="cs">.list-item</span> {
+  <span class="ck">background</span>: <span class="cv">#f8fafc</span>;
+  <span class="ck">border-radius</span>: <span class="cv">18px</span>;
+  <span class="ck">padding</span>: <span class="cv">12px 14px</span>;
+  <span class="ck">margin-bottom</span>: <span class="cv">10px</span>;
+  <span class="ck">border</span>: <span class="cv">1.5px solid #e2e8f0</span>;
+}
+<span class="cs">.item-header</span> {
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">justify-content</span>: <span class="cv">space-between</span>;
+  <span class="ck">align-items</span>: <span class="cv">center</span>;
+  <span class="ck">flex-wrap</span>: <span class="cv">wrap</span>;
+  <span class="ck">gap</span>: <span class="cv">6px</span>;
+}
+<span class="cs">.item-title</span> { <span class="ck">font-weight</span>: <span class="cv">700</span>; <span class="ck">font-size</span>: <span class="cv">0.9rem</span>; }
+<span class="cs">.item-desc</span>  { <span class="ck">font-size</span>: <span class="cv">0.75rem</span>; <span class="ck">color</span>: <span class="cv">#475569</span>; <span class="ck">margin-top</span>: <span class="cv">3px</span>; }</pre></div>
+    </div>
+
+    <!-- ORDEM CARD -->
+    <div id="ordem-card" class="comp-panel">
+      <div class="comp-title">Ordem Card</div>
+      <div class="comp-desc">Card principal da OS. Colapsável ao clicar no header. Estado <code>not-sent</code> tem borda verde animada; <code>sent</code> tem borda cinza. Internamente exibe blocos de placa (fundo azul) com itens de serviço (fundo branco).</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview — OS expandida</div>
+        <div class="ordem-card-demo">
+          <div class="ordem-header-demo">
+            <div class="header-main-info">
+              <i class="fas fa-chevron-down expand-icon"></i>
+              <span class="status-badge" style="background:#3b82f6;font-size:0.65rem;min-width:42px;justify-content:center;height:22px">AND</span>
+              <span class="ordem-codigo-demo">OS-0042</span>
+            </div>
+            <div style="display:flex;gap:5px">
+              <button class="btn btn-xs" style="background:var(--accent-green);color:var(--dark-blue)"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-xs btn-danger"><i class="fas fa-trash"></i></button>
+              <button class="btn btn-xs btn-wa"><i class="fab fa-whatsapp"></i></button>
+            </div>
+          </div>
+          <div class="ordem-body-demo">
+            <div class="ordem-motorista-demo"><i class="fas fa-user" style="margin-right:6px"></i>CARLOS PEREIRA</div>
+            <div class="ordem-meta-demo">Gestor: <b>JOÃO SILVA</b> &nbsp;|&nbsp; Encarregado: <b>MARCOS</b><br>Destino: <b>SÃO PAULO</b> &nbsp;|&nbsp; Previsão: <b>22/04/26 14:00</b></div>
+            <div class="placa-block-demo">
+              <div class="placa-label-demo"><i class="fas fa-truck" style="margin-right:6px"></i> CV — ABC-1234 <span style="font-weight:400;opacity:0.8">(Scania)</span> <span style="font-size:0.7rem;opacity:0.85;margin-left:6px">KM: <b>123456</b></span></div>
+              <div class="servico-item-demo">
+                <div><span style="color:#2c7da0;font-weight:800;margin-right:4px">1.</span><span class="servico-desc-demo">TROCA DE ÓLEO E FILTROS</span></div>
+                <span class="status-badge" style="background:#3b82f6">AND</span>
+              </div>
+              <div class="servico-item-demo">
+                <div><span style="color:#2c7da0;font-weight:800;margin-right:4px">2.</span><span class="servico-desc-demo">REVISÃO DE FREIOS</span></div>
+                <span class="status-badge" style="background:#f59e0b">PEN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .ordem-card / .placa-block / .servico-item</div>
+      <div class="code-box"><pre><span class="cs">.ordem-card</span> {
+  <span class="ck">background</span>: <span class="cv">var(--card-bg)</span>;
+  <span class="ck">border-radius</span>: <span class="cv">32px</span>;
+  <span class="ck">border</span>: <span class="cv">1.5px solid #dbd9d9</span>;
+  <span class="ck">overflow</span>: <span class="cv">hidden</span>;
+}
+<span class="cs">.ordem-card.not-sent</span> {
+  <span class="ck">border</span>: <span class="cv">2px solid var(--accent-green)</span>;
+  <span class="ck">box-shadow</span>: <span class="cv">0 0 15px rgba(0,255,163,0.15)</span>;
+}
+<span class="cs">.ordem-card.collapsed .ordem-body</span> {
+  <span class="ck">max-height</span>: <span class="cv">0</span>;
+  <span class="ck">opacity</span>: <span class="cv">0</span>;
+}
+<span class="cs">.placa-block</span> {
+  <span class="ck">background</span>: <span class="cv">var(--primary-blue)</span>;
+  <span class="ck">border-radius</span>: <span class="cv">20px</span>;
+  <span class="ck">padding</span>: <span class="cv">16px</span>;
+  <span class="ck">color</span>: <span class="cv">white</span>;
+}
+<span class="cs">.servico-item</span> {
+  <span class="ck">background</span>: <span class="cv">#fff</span>;
+  <span class="ck">border-radius</span>: <span class="cv">12px</span>;
+  <span class="ck">padding</span>: <span class="cv">10px 12px</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">justify-content</span>: <span class="cv">space-between</span>;
+  <span class="ck">cursor</span>: <span class="cv">pointer</span>;
+}
+<span class="cs">.servico-item:hover</span> {
+  <span class="ck">background</span>: <span class="cv">#f0fdf4</span>;
+  <span class="ck">border-color</span>: <span class="cv">var(--accent-green)</span>;
+}</pre></div>
+    </div>
+
+    <!-- OBS TIMELINE -->
+    <div id="obs-timeline" class="comp-panel">
+      <div class="comp-title">Observações Timeline</div>
+      <div class="comp-desc">Linha do tempo imutável de observações de um serviço. Cada entrada tem borda esquerda verde, timestamp em cinza e texto da obs. Campo de input com botão arredondado e contador de caracteres (máx 150).</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="obs-entry-demo">
+          <div class="obs-time-demo"><i class="fas fa-clock"></i> 22/04/26 09:15</div>
+          <div class="obs-text-demo">PEÇA SOLICITADA AO ALMOXARIFADO</div>
+        </div>
+        <div class="obs-entry-demo">
+          <div class="obs-time-demo"><i class="fas fa-clock"></i> 22/04/26 11:30</div>
+          <div class="obs-text-demo">AGUARDANDO CHEGADA DA PEÇA</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:12px">
+          <input class="input-demo" type="text" placeholder="Nova observação..." style="border-radius:18px;font-size:0.85rem;padding:10px 16px">
+          <button class="btn-icon-round"><i class="fas fa-plus"></i></button>
+        </div>
+        <div style="font-size:0.68rem;color:#94a3b8;text-align:right;margin-top:4px">0/150</div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .obs-entry / .obs-timeline</div>
+      <div class="code-box"><pre><span class="cs">.obs-entry</span> {
+  <span class="ck">background</span>: <span class="cv">#f8fafc</span>;
+  <span class="ck">border-radius</span>: <span class="cv">12px</span>;
+  <span class="ck">padding</span>: <span class="cv">8px 12px</span>;
+  <span class="ck">margin-bottom</span>: <span class="cv">8px</span>;
+  <span class="ck">border-left</span>: <span class="cv">4px solid var(--accent-green)</span>;
+}
+<span class="cs">.obs-time</span> {
+  <span class="ck">font-size</span>: <span class="cv">0.65rem</span>;
+  <span class="ck">color</span>: <span class="cv">#94a3b8</span>;
+  <span class="ck">font-weight</span>: <span class="cv">600</span>;
+}
+<span class="cs">.obs-text</span> {
+  <span class="ck">font-size</span>: <span class="cv">0.82rem</span>;
+  <span class="ck">color</span>: <span class="cv">#334155</span>;
+}
+<span class="cs">.obs-char-count</span> {
+  <span class="ck">font-size</span>: <span class="cv">0.68rem</span>;
+  <span class="ck">color</span>: <span class="cv">#94a3b8</span>;
+  <span class="ck">text-align</span>: <span class="cv">right</span>;
+}</pre></div>
+    </div>
+
+    <!-- FOTO GRID -->
+    <div id="foto-grid" class="comp-panel">
+      <div class="comp-title">Fotos Grid</div>
+      <div class="comp-desc">Grid de até 5 fotos por serviço. Caixas de 70×70px com borda tracejada. A última caixa (se houver espaço) é o botão de adicionar. Fotos existentes têm borda sólida azul e botão de exclusão vermelho no canto.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="fotos-grid-demo">
+          <div class="foto-box-demo has"><span>FOTO 1</span></div>
+          <div class="foto-box-demo has"><span>FOTO 2</span></div>
+          <div class="foto-box-demo has"><span>FOTO 3</span></div>
+          <div class="foto-box-demo" style="border-color:var(--accent-green);background:#f0fff4"><i class="fas fa-plus" style="color:var(--accent-green);font-size:1.2rem"></i></div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .fotos-grid / .foto-box</div>
+      <div class="code-box"><pre><span class="cs">.fotos-grid</span> {
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">gap</span>: <span class="cv">10px</span>;
+  <span class="ck">flex-wrap</span>: <span class="cv">wrap</span>;
+}
+<span class="cs">.foto-box</span> {
+  <span class="ck">width</span>: <span class="cv">70px</span>; <span class="ck">height</span>: <span class="cv">70px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">12px</span>;
+  <span class="ck">border</span>: <span class="cv">2px dashed #e2e8f0</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">center</span>;
+  <span class="ck">justify-content</span>: <span class="cv">center</span>;
+  <span class="ck">background-size</span>: <span class="cv">cover</span>;
+  <span class="ck">position</span>: <span class="cv">relative</span>;
+}
+<span class="cs">.foto-box.has-image</span> {
+  <span class="ck">border-style</span>: <span class="cv">solid</span>;
+  <span class="ck">border-color</span>: <span class="cv">var(--primary-blue)</span>;
+}
+<span class="cs">.btn-del-foto</span> {
+  <span class="ck">position</span>: <span class="cv">absolute</span>;
+  <span class="ck">top</span>: <span class="cv">-5px</span>; <span class="ck">right</span>: <span class="cv">-5px</span>;
+  <span class="ck">width</span>: <span class="cv">20px</span>; <span class="ck">height</span>: <span class="cv">20px</span>;
+  <span class="ck">background</span>: <span class="cv">#ff4d4d</span>;
+  <span class="ck">border-radius</span>: <span class="cv">50%</span>;
+}</pre></div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="comp-panel">
+      <div class="comp-title">Modal — Ordem de Serviço</div>
+      <div class="comp-desc">Overlay fixo com fundo semitransparente. Caixa de conteúdo centralizada com bordas muito arredondadas. Seção de campos colapsável com toggle. Footer com botões Cancelar e Salvar.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div class="modal-demo-wrapper">
+          <div class="modal-box-demo">
+            <div class="modal-header-demo">
+              <h3>Nova Ordem de Serviço</h3>
+              <button class="btn-icon"><i class="fas fa-times"></i></button>
+            </div>
+            <div style="background:rgba(0,119,211,0.05);border-radius:14px;padding:10px 14px;font-size:0.75rem;font-weight:800;color:var(--primary-blue);display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border:1.5px solid rgba(0,119,211,0.1)">
+              <span><i class="fas fa-info-circle" style="margin-right:6px"></i> Detalhes da Ordem</span>
+              <i class="fas fa-chevron-up"></i>
+            </div>
+            <div class="form-group-demo">
+              <label class="form-label">Motorista</label>
+              <select class="input-demo"><option>CARLOS PEREIRA</option></select>
+            </div>
+            <div class="form-row-demo">
+              <div class="form-group-demo"><label class="form-label">Destino</label><input class="input-demo" placeholder="DESTINO"></div>
+              <div class="form-group-demo"><label class="form-label">Data</label><input class="input-demo" type="date"></div>
+            </div>
+            <div class="modal-footer-demo">
+              <button class="btn-cancel">Cancelar</button>
+              <button class="btn btn-sm"><i class="fas fa-save"></i> Salvar Ordem</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .modal-overlay / .modal-box</div>
+      <div class="code-box"><pre><span class="cs">.modal-overlay</span> {
+  <span class="ck">position</span>: <span class="cv">fixed</span>;
+  <span class="ck">inset</span>: <span class="cv">0</span>;
+  <span class="ck">background</span>: <span class="cv">rgba(0,0,0,0.55)</span>;
+  <span class="ck">z-index</span>: <span class="cv">100</span>;
+  <span class="ck">overflow-y</span>: <span class="cv">auto</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">flex-start</span>;
+  <span class="ck">justify-content</span>: <span class="cv">center</span>;
+}
+<span class="cs">.modal-box</span> {
+  <span class="ck">background</span>: <span class="cv">var(--card-bg)</span>;
+  <span class="ck">border-radius</span>: <span class="cv">36px</span>;
+  <span class="ck">padding</span>: <span class="cv">24px 20px</span>;
+  <span class="ck">width</span>: <span class="cv">100%</span>;
+  <span class="ck">max-width</span>: <span class="cv">680px</span>;
+  <span class="ck">box-shadow</span>: <span class="cv">0 20px 50px rgba(0,0,0,0.3)</span>;
+}
+<span class="cs">.modal-collapsible.collapsed</span> {
+  <span class="ck">max-height</span>: <span class="cv">0</span>;
+  <span class="ck">opacity</span>: <span class="cv">0</span>;
+  <span class="ck">pointer-events</span>: <span class="cv">none</span>;
+}</pre></div>
+    </div>
+
+    <!-- PANEL -->
+    <div id="panel" class="comp-panel">
+      <div class="comp-title">Painel de Serviço (Bottom Sheet)</div>
+      <div class="comp-desc">Painel que sobe da base da tela (bottom sheet) com animação slideUp. Exibe edição de descrição, status, fotos e histórico de observações de um serviço.</div>
+      <div class="preview-box" style="padding:0;overflow:hidden">
+        <div class="panel-demo-wrapper">
+          <div style="padding:24px;color:rgba(255,255,255,0.4);font-size:0.82rem;text-align:center">Conteúdo do app ao fundo...</div>
+          <div class="panel-box-demo">
+            <div class="panel-header-demo">
+              <h4><i class="fas fa-wrench" style="margin-right:6px"></i> Editar Serviço #1</h4>
+              <button class="btn-icon"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group-demo">
+              <label class="form-label">Descrição do Serviço</label>
+              <textarea class="input-demo" rows="2" style="text-transform:none">Troca de óleo e filtros</textarea>
+            </div>
+            <div class="form-group-demo">
+              <label class="form-label">Status</label>
+              <select class="input-demo"><option>EM ANDAMENTO</option><option>FINALIZADO</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .panel-overlay / .panel-box</div>
+      <div class="code-box"><pre><span class="cs">.panel-overlay</span> {
+  <span class="ck">position</span>: <span class="cv">fixed</span>;
+  <span class="ck">inset</span>: <span class="cv">0</span>;
+  <span class="ck">background</span>: <span class="cv">rgba(0,0,0,0.45)</span>;
+  <span class="ck">z-index</span>: <span class="cv">200</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">flex-end</span>;
+  <span class="ck">justify-content</span>: <span class="cv">center</span>;
+}
+<span class="cs">.panel-box</span> {
+  <span class="ck">background</span>: <span class="cv">white</span>;
+  <span class="ck">border-radius</span>: <span class="cv">28px 28px 0 0</span>;
+  <span class="ck">padding</span>: <span class="cv">22px 18px 40px</span>;
+  <span class="ck">max-height</span>: <span class="cv">90vh</span>;
+  <span class="ck">overflow-y</span>: <span class="cv">auto</span>;
+  <span class="ck">animation</span>: <span class="cv">slideUp 0.25s ease</span>;
+}
+<span class="cp">@keyframes slideUp</span> {
+  <span class="ck">from</span> { <span class="ck">transform</span>: <span class="cv">translateY(100%)</span>; }
+  <span class="ck">to</span>   { <span class="ck">transform</span>: <span class="cv">translateY(0)</span>; }
+}</pre></div>
+    </div>
+
+    <!-- CONFIRM -->
+    <div id="confirm" class="comp-panel">
+      <div class="comp-title">Confirm Dialog</div>
+      <div class="comp-desc">Substitui o <code>confirm()</code> nativo. Overlay com backdrop-filter blur, caixa centralizada com animação de pop (scale). Ícone configurável por parâmetro. Retorna Promise booleana.</div>
+      <div class="preview-box">
+        <div class="preview-label"><i class="fas fa-eye"></i> Preview</div>
+        <div style="background:rgba(0,59,76,0.7);border-radius:16px;padding:24px;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;min-height:220px">
+          <div class="confirm-box-demo">
+            <div class="confirm-icon-demo"><i class="fas fa-question-circle"></i></div>
+            <div class="confirm-msg-demo">Excluir esta ordem permanentemente?</div>
+            <div class="confirm-buttons-demo">
+              <button class="btn-cancel">Não</button>
+              <button class="btn btn-sm"><i class="fas fa-check"></i> Sim</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-label"><i class="fas fa-code"></i> CSS — .confirm-overlay / .confirm-box</div>
+      <div class="code-box"><pre><span class="cs">.confirm-overlay</span> {
+  <span class="ck">position</span>: <span class="cv">fixed</span>;
+  <span class="ck">inset</span>: <span class="cv">0</span>;
+  <span class="ck">background</span>: <span class="cv">rgba(0,59,76,0.85)</span>;
+  <span class="ck">z-index</span>: <span class="cv">1000</span>;
+  <span class="ck">display</span>: <span class="cv">flex</span>;
+  <span class="ck">align-items</span>: <span class="cv">center</span>;
+  <span class="ck">justify-content</span>: <span class="cv">center</span>;
+  <span class="ck">backdrop-filter</span>: <span class="cv">blur(4px)</span>;
+}
+<span class="cs">.confirm-box</span> {
+  <span class="ck">background</span>: <span class="cv">var(--card-bg)</span>;
+  <span class="ck">padding</span>: <span class="cv">30px 25px</span>;
+  <span class="ck">border-radius</span>: <span class="cv">32px</span>;
+  <span class="ck">max-width</span>: <span class="cv">400px</span>;
+  <span class="ck">animation</span>: <span class="cv">modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)</span>;
+}
+<span class="cp">@keyframes modalPop</span> {
+  <span class="ck">from</span> { <span class="ck">transform</span>: <span class="cv">scale(0.8)</span>; <span class="ck">opacity</span>: <span class="cv">0</span>; }
+  <span class="ck">to</span>   { <span class="ck">transform</span>: <span class="cv">scale(1)</span>;   <span class="ck">opacity</span>: <span class="cv">1</span>; }
+}</pre></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.comp-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  const clicked = [...document.querySelectorAll('.sidebar-item')].find(i => i.getAttribute('onclick')?.includes("'" + id + "'"));
+  if (clicked) clicked.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -7,16 +7,20 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { nome, cor } = req.body;
+  const { nome, sigla, cor } = req.body;
   if (!nome || !nome.trim()) return res.status(400).json({ error: 'Nome obrigatório' });
-  const result = db.prepare('INSERT INTO status_servico (nome, cor) VALUES (?, ?)').run(nome.trim(), cor || '#94a3b8');
-  res.json({ id: result.lastInsertRowid, nome: nome.trim(), cor: cor || '#94a3b8' });
+  const finalSigla = sigla ? sigla.trim().substring(0, 3).toUpperCase() : nome.trim().substring(0, 3).toUpperCase();
+  const result = db.prepare('INSERT INTO status_servico (nome, sigla, cor) VALUES (?, ?, ?)')
+    .run(nome.trim(), finalSigla, cor || '#94a3b8');
+  res.json({ id: result.lastInsertRowid, nome: nome.trim(), sigla: finalSigla, cor: cor || '#94a3b8' });
 });
 
 router.put('/:id', (req, res) => {
-  const { nome, cor } = req.body;
+  const { nome, sigla, cor } = req.body;
   if (!nome || !nome.trim()) return res.status(400).json({ error: 'Nome obrigatório' });
-  db.prepare('UPDATE status_servico SET nome = ?, cor = ? WHERE id = ?').run(nome.trim(), cor || '#94a3b8', req.params.id);
+  const finalSigla = sigla ? sigla.trim().substring(0, 3).toUpperCase() : nome.trim().substring(0, 3).toUpperCase();
+  db.prepare('UPDATE status_servico SET nome = ?, sigla = ?, cor = ? WHERE id = ?')
+    .run(nome.trim(), finalSigla, cor || '#94a3b8', req.params.id);
   res.json({ success: true });
 });
 

@@ -1,3 +1,12 @@
+# Regras de Atualização do Histórico (Commit.md)
+1. **Sempre atualize este arquivo**: Cada alteração significativa no código deve ser registrada aqui.
+2. **Ordem Cronológica**: Mantenha os registros organizados por data (mais recente por último) e de forma sequencial.
+3. **Não Excluir**: Nunca exclua um commit deste histórico sem autorização expressa.
+4. **Git Sync**: Sempre execute `git add .` e `git pull` antes de finalizar as alterações para manter o repositório sincronizado.
+5. **Formato Sequencial**: Siga o padrão de numeração e data/hora para cada entrada, similar ao `git commit`.
+
+---
+
 # Histórico de Atualizações - Frota Manager
 
 **Projeto:** Sistema de Gerenciamento de Frota (Full Stack)
@@ -91,13 +100,20 @@
 
 ---
 
-## 📅 21 de Abril de 2026
+## 📅 22 de Abril de 2026
 
-### 15. Deploy e Infraestrutura no Render (21/04/2026 09:30)
-- **Produção:** Configuração completa para o ambiente Render com detecção automática via variáveis de ambiente.
-- **Persistência Estruturada:** Adaptação do banco de dados para utilizar o diretório `/data` em produção, preparando para o uso de discos persistentes.
-- **Logs de Diagnóstico:** Inclusão de logs detalhados de inicialização do banco de dados para facilitar a manutenção no painel do Render.
-- **Keep-Alive:** Sistema de auto-ping integrado para evitar que o servidor entre em modo de hibernação no plano gratuito.
+### 16. Refatoração de Status - Siglas de 3 Letras (22/04/2026 10:00)
+- **Banco de Dados:** Inclusão da coluna `sigla` (VARCHAR 3) na tabela de status, com migração automática para preencher siglas existentes (Ex: PENDENTE → PEN).
+- **Componentização UI:** Criação de um padrão global de "Status Badge" em formato de pílula (pill-shaped) com cores dinâmicas e texto em caixa alta.
+- **Interatividade (Tooltip):** Implementação de tooltips nativos em todas as siglas. Ao passar o mouse ou clicar na tag, o nome completo do status é exibido para evitar ambiguidades.
+- **Otimização de Espaço:** Substituição dos nomes completos por siglas em todas as listagens, cards de serviço e modais de edição, tornando a interface mais compacta e limpa.
+- **Dropdowns Inteligentes:** Atualização de todos os seletores (dropdowns) para exibir o formato `SIGLA - NOME` (Ex: PEN - PENDENTE), facilitando a identificação rápida.
+- **Filtros de Busca:** Atualização do dropdown de pesquisa principal para refletir as siglas entre parênteses, como `ATIVOS (PEN/AND)` e `FINALIZADOS (FIN)`.
+    - **WhatsApp Compacto:** Atualização da mensagem enviada via WhatsApp para utilizar siglas nos status dos serviços, mantendo a consistência visual e economizando espaço na mensagem.
+    - **Gestão de Status:** Inclusão do campo de sigla na tela de cadastro de novos status, permitindo personalização total pelo administrador.
+- **Contraste Dinâmico:** Algoritmo de detecção de brilho da cor de fundo para ajustar automaticamente a cor do texto da sigla (Branco ou Escuro) para legibilidade máxima.
+
+---
 
 ### 16. Infraestrutura e Deploy Oracle Cloud (21/04/2026 10:00)
 - **Infraestrutura (OCI):** Configuração completa de VCN, Sub-redes públicas, Internet Gateway e Security Lists para liberação das portas 22 (SSH) e 3000 (App).
@@ -192,5 +208,12 @@
 - **Inputs Separados**: Adicionado input específico com `capture="environment"` para garantir a abertura da câmera.
 - **Refatoração**: Unificada a lógica de processamento e upload de imagens para maior consistência.
 - **Versão 2.7**: Novo modal de escolha com botões grandes (Câmera/Galeria) e botão fechar (X), removendo o select anterior.
+### 34. Edição de Status e Cache Busting v3.0 (22/04/2026 13:30)
+- **Funcionalidade de Edição**: Adicionado botão de editar na aba de Status, permitindo alterar o Nome e a Sigla de status existentes.
+- **Sincronização em Tempo Real**: Ao editar um status, todas as ordens de serviço na memória são atualizadas instantaneamente para refletir as novas siglas/nomes.
+- **Cache Busting v3.0**: Atualização forçada das versões de CSS e JS para `v3.0` no `index.html`, garantindo que os usuários recebam as novas funções de sigla e edição.
+- **Identificação de Versão**: Adicionado selo visual `v3.0 SIGLAS` no cabeçalho do sistema para facilitar a verificação da versão ativa.
+- **Manutenção de Regras**: Inclusão de regras de commit e manutenção do arquivo `Commit.md` no topo do documento e na memória do assistente.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

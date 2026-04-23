@@ -867,8 +867,12 @@ input[type="color"] {
   margin-top: 8px;
   flex-wrap: wrap;
 }
-.add-servico-form input { flex: 1; min-width: 120px; }
-.add-servico-form select { max-width: 160px; }
+.add-servico-form input { flex: 1; min-width: 100px; }
+.add-servico-form select { max-width: 110px; font-size: 0.8rem; padding: 10px 8px; }
+
+#panel-status {
+  max-width: 200px;
+}
 
 /* Service panel (bottom sheet) */
 .panel-overlay {

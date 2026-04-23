@@ -86,6 +86,7 @@ try {
     CREATE TABLE IF NOT EXISTS status_servico (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT NOT NULL,
+      sigla TEXT,
       cor TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
@@ -156,23 +157,42 @@ try {
     )
   `);
 
+  // Seed default status if empty
+  const statusCount = db.prepare('SELECT COUNT(*) as total FROM status_servico').get().total;
+  if (statusCount === 0) {
+    const defaultStatus = [
+      { nome: 'PENDENTE', sigla: 'PEN', cor: '#f59e0b' },
+      { nome: 'EM ANDAMENTO', sigla: 'AND', cor: '#3b82f6' },
+      { nome: 'FINALIZADO', sigla: 'FIN', cor: '#10b981' }
+    ];
+    const stmt = db.prepare('INSERT INTO status_servico (nome, sigla, cor) VALUES (?, ?, ?)');
+    defaultStatus.forEach(s => stmt.run(s.nome, s.sigla, s.cor));
+  }
+
+  // Migrations
+  try {
+    db.exec('ALTER TABLE status_servico ADD COLUMN sigla TEXT');
+  } catch (e) {
+    // Column already exists
+  }
+
+  // Auto-fill siglas if they are null
+  const missingSiglas = db.prepare('SELECT id, nome FROM status_servico WHERE sigla IS NULL').all();
+  if (missingSiglas.length > 0) {
+    const updateStmt = db.prepare('UPDATE status_servico SET sigla = ? WHERE id = ?');
+    missingSiglas.forEach(s => {
+      let sigla = s.nome.substring(0, 3).toUpperCase();
+      // Handle special cases
+      if (s.nome === 'EM ANDAMENTO') sigla = 'AND';
+      updateStmt.run(sigla, s.id);
+    });
+  }
+
   // Migrations
   try {
     db.exec('ALTER TABLE ordens ADD COLUMN enviada_whatsapp INTEGER DEFAULT 0');
   } catch (e) {
     // Column already exists or other error we can ignore for now
-  }
-
-  // Seed default status if empty
-  const statusCount = db.prepare('SELECT COUNT(*) as total FROM status_servico').get().total;
-  if (statusCount === 0) {
-    const defaultStatus = [
-      { nome: 'PENDENTE', cor: '#f59e0b' },
-      { nome: 'EM ANDAMENTO', cor: '#3b82f6' },
-      { nome: 'FINALIZADO', cor: '#10b981' }
-    ];
-    const stmt = db.prepare('INSERT INTO status_servico (nome, cor) VALUES (?, ?)');
-    defaultStatus.forEach(s => stmt.run(s.nome, s.cor));
   }
 
   // TRIGGERS para resetar enviada_whatsapp = 0 em qualquer alteração

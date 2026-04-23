@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   try {
     const serv = db.prepare(`
-      SELECT s.id, s.descricao, s.status_id, ss.nome as status_nome, ss.cor as status_cor, s.created_at
+      SELECT s.id, s.descricao, s.status_id, ss.nome as status_nome, ss.sigla as status_sigla, ss.cor as status_cor, s.created_at
       FROM servicos s
       LEFT JOIN status_servico ss ON s.status_id = ss.id
       WHERE s.id = ?

@@ -186,5 +186,11 @@
 
 ### 32. Nova alteção no box shadow do OS-0000 (22/04/2026  00:35)
 - **Efeito de Sombra:** Adicionado sombra ao botão OS-0000 para melhorar a visibilidade em telas claras.
+
+### 33. Correção de Seleção de Mídia no Android (22/04/2026 10:45)
+- **Flexibilidade de Mídia**: Implementado menu de escolha entre "Câmera" e "Galeria" para resolver problemas de compatibilidade no Android.
+- **Inputs Separados**: Adicionado input específico com `capture="environment"` para garantir a abertura da câmera.
+- **Refatoração**: Unificada a lógica de processamento e upload de imagens para maior consistência.
+- **Versão 2.6**: Atualização do Cache Buster no `index.html` para forçar a atualização nos dispositivos.
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

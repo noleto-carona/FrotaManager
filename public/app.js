@@ -1289,7 +1289,7 @@ function renderFotosGrid(fotos) {
     const addBox = document.createElement('div');
     addBox.className = 'foto-box';
     addBox.innerHTML = '<i class="fas fa-plus"></i>';
-    addBox.onclick = () => document.getElementById('input-foto-file').click();
+    addBox.onclick = () => selectPhotoSource();
     grid.appendChild(addBox);
   }
 }
@@ -1305,9 +1305,8 @@ async function deleteFoto(fotoId) {
   } catch (err) { toast(err.message, 'error'); }
 }
 
-// Handler para o input de arquivo
-document.getElementById('input-foto-file').addEventListener('change', async (e) => {
-  const file = e.target.files[0];
+// Handler para os inputs de arquivo
+async function handleImageSelection(file) {
   if (!file) return;
 
   // Compressor simples usando Canvas
@@ -1347,8 +1346,30 @@ document.getElementById('input-foto-file').addEventListener('change', async (e) 
     img.src = event.target.result;
   };
   reader.readAsDataURL(file);
+}
+
+document.getElementById('input-foto-file').addEventListener('change', async (e) => {
+  await handleImageSelection(e.target.files[0]);
   e.target.value = ''; // Limpa input
 });
+
+document.getElementById('input-foto-camera').addEventListener('change', async (e) => {
+  await handleImageSelection(e.target.files[0]);
+  e.target.value = ''; // Limpa input
+});
+
+async function selectPhotoSource() {
+  const choice = await customPrompt('Como deseja adicionar a foto?', 'camera', [
+    { value: 'camera', label: 'TIRAR FOTO (CÂMERA)' },
+    { value: 'gallery', label: 'ESCOLHER DA GALERIA' }
+  ]);
+
+  if (choice === 'camera') {
+    document.getElementById('input-foto-camera').click();
+  } else if (choice === 'gallery') {
+    document.getElementById('input-foto-file').click();
+  }
+}
 
 async function uploadFotoFile(blob, fileName) {
   try {

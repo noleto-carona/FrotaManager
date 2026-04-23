@@ -20,7 +20,11 @@ Após criar sua instância na Oracle Cloud e abrir a porta **3000** nas Ingress 
 
 1. Conecte-se ao servidor via SSH:
    ```bash
-   ssh -i "sua-chave.key" ubuntu@seu-ip-publico
+   ssh -i "ssh-key-2026-04-21.key" ubuntu@137.131.205.215
+   ```
+   1.a Iniciar servidor
+   ```bash
+   docker compose up -d
    ```
 
 2. No servidor, crie o arquivo de setup:

@@ -180,7 +180,8 @@ function statusBadgeHtml(statusObj) {
   if (!statusObj) return '';
   const cor = statusObj.cor || '#94a3b8';
   const nome = statusObj.nome || '';
-  const sigla = (statusObj.sigla || nome.substring(0, 3)).toUpperCase();
+  // Fallback para ??? se não houver sigla nem nome
+  const sigla = (statusObj.sigla || (nome ? nome.substring(0, 3) : '???')).toUpperCase();
   const text = isDark(cor) ? '#ffffff' : '#1e293b';
   
   return `<span class="status-badge" title="${esc(nome)}" style="background:${esc(cor)};color:${text}">${esc(sigla)}</span>`;
@@ -714,7 +715,7 @@ function renderOrdens() {
     }
     
     const globalStatusName = globalStatusText === 'FIN' ? 'FINALIZADO' : (globalStatusText === 'AND' ? 'EM ANDAMENTO' : 'PENDENTE');
-    const globalStatusHtml = `<span class="status-badge" title="${globalStatusName}" style="background:${globalStatusColor}; font-size: 0.65rem; min-width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
+    const globalStatusHtml = `<span class="status-badge" title="${globalStatusName}" style="background:${globalStatusColor}; font-size: 0.65rem; width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();

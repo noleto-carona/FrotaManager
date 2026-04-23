@@ -244,5 +244,12 @@
 - **Visual (style.css)**: Ajustadas as dimensões das badges de status para o padrão final de **40px x 20px** com fonte de **10px**, garantindo uniformidade visual para 3 letras.
 - **Cache Busting v3.5**: Atualização dos ativos para `v3.5` no `index.html`.
 
+### 40. Check-list Final e Padronização de Siglas (v3.6) (23/04/2026 13:00)
+- **Banco de Dados (db.js)**: Substituído o status padrão 'REVISÃO' por 'TESTE' (Sigla: TST) e adicionada migração para converter registros existentes.
+- **Visual (style.css)**: Largura das badges ajustada para **42px** para simetria absoluta em siglas de 3 letras.
+- **Front-end (app.js)**: Implementada lógica de fallback robusta `${sigla || '???'}` em todas as renderizações de status.
+- **Documentação**: Atualizada a documentação visual para refletir as novas siglas e padrões.
+- **Cache Busting v3.6**: Ativos sincronizados na versão `v3.6`.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

@@ -171,10 +171,18 @@ try {
     const defaultStatus = [
       { nome: 'PENDENTE', sigla: 'PEN', cor: '#f59e0b' },
       { nome: 'EM ANDAMENTO', sigla: 'AND', cor: '#3b82f6' },
-      { nome: 'FINALIZADO', sigla: 'FIN', cor: '#10b981' }
+      { nome: 'FINALIZADO', sigla: 'FIN', cor: '#10b981' },
+      { nome: 'TESTE', sigla: 'TST', cor: '#8b5cf6' }
     ];
     const stmt = db.prepare('INSERT INTO status_servico (nome, sigla, cor) VALUES (?, ?, ?)');
     defaultStatus.forEach(s => stmt.run(s.nome, s.sigla, s.cor));
+  }
+
+  // Migration: Renomear REVISÃO para TESTE (Sigla: TST)
+  try {
+    db.prepare("UPDATE status_servico SET nome = 'TESTE', sigla = 'TST' WHERE nome = 'REVISÃO'").run();
+  } catch (e) {
+    // Erro ao atualizar ou não existe
   }
 
   // Migrations

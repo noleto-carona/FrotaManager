@@ -263,5 +263,13 @@
 - **Cache Busting v3.9**: Forçado refresh de cache para `app.js` e `style.css` via query string `?v=3.9`.
 - **UI/UX**: Correção de ícones e alinhamento flexbox no formulário de status.
 
+### 43. Reestruturação de Formulário e v4.0 (23/04/2026 15:00)
+- **Alterado**: Reestruturação completa do formulário de Status no `index.html`.
+- **Labels**: Adição de labels informativos (STATUS, SIGLA, COR) para melhor usabilidade.
+- **Layout**: Responsivo usando Grid CSS (colunas no desktop, lista no mobile).
+- **CSS**: Implementação de novos estilos no `style.css` para a classe `.status-form-container`.
+- **Visual**: Destaque visual contínuo na Sigla com borda verde.
+- **Versão**: Incremento de versão global para `v4.0 ESTÁVEL` para limpeza definitiva de cache.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

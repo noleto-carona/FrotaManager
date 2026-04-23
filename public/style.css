@@ -1107,4 +1107,61 @@ h3 { font-size: 1rem; color: #0f3b4c; margin-bottom: 16px; }
   color: #64748b;
   box-shadow: none;
 }
+
+/* Formulário de Status Otimizado (v4.0) */
+.status-form-container {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.form-row-status {
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.5fr 1fr;
+  gap: 12px;
+  align-items: end;
+}
+
+.form-group-status label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--dark-blue);
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.form-group-status input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  height: 42px;
+}
+
+.form-group-status input[type="color"] {
+  padding: 2px;
+  cursor: pointer;
+}
+
+#input-status-sigla {
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+  .form-row-status {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .form-group-status button {
+    margin-top: 0 !important;
+    width: 100%;
+  }
+}
 .btn-cancel:hover { background: #e2e8f0; }

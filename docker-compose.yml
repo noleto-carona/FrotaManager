@@ -5,9 +5,11 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Persistência de dados: Mapeia as pastas do seu PC para dentro do container
+      # Persistência de dados e Sincronização em Tempo Real
       - ./db:/app/db
       - ./uploads:/app/uploads
+      - ./public:/app/public
+      - ./server:/app/server
     environment:
       - PORT=3000
       - NODE_ENV=development

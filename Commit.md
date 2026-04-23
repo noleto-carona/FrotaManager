@@ -271,5 +271,10 @@
 - **Visual**: Destaque visual contínuo na Sigla com borda verde.
 - **Versão**: Incremento de versão global para `v4.0 ESTÁVEL` para limpeza definitiva de cache.
 
+### 44. Otimização Docker e v4.1 (23/04/2026 16:00)
+- **Alterado**: Otimização do `docker-compose.yml` para desenvolvimento ágil.
+- **Volumes**: Mapeamento das pastas `public` e `server` como volumes.
+- **Workflow**: Isso permite que qualquer alteração no HTML, CSS ou JavaScript do backend reflita instantaneamente no Docker sem necessidade de `build`.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

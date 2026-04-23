@@ -699,23 +699,26 @@ function renderOrdens() {
     });
     
     let globalStatusText = 'PEN';
-    let globalStatusColor = '#f59e0b';
-
+    
     if (totalS > 0) {
       if (!hasNaoFinalizado) {
         globalStatusText = 'FIN';
-        globalStatusColor = '#10b981';
       } else if (hasAndamento) {
         globalStatusText = 'AND';
-        globalStatusColor = '#3b82f6';
       } else {
         globalStatusText = 'PEN';
-        globalStatusColor = '#f59e0b';
       }
     }
     
-    const globalStatusName = globalStatusText === 'FIN' ? 'FINALIZADO' : (globalStatusText === 'AND' ? 'EM ANDAMENTO' : 'PENDENTE');
-    const globalStatusHtml = `<span class="status-badge" title="${globalStatusName}" style="background:${globalStatusColor}; font-size: 0.65rem; width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
+    // Busca o status real no banco de dados pela sigla para pegar a cor e nome corretos
+    const realStatus = state.statusList.find(s => (s.sigla || '').toUpperCase() === globalStatusText) || {
+      nome: globalStatusText === 'FIN' ? 'FINALIZADO' : (globalStatusText === 'AND' ? 'EM ANDAMENTO' : 'PENDENTE'),
+      cor: globalStatusText === 'FIN' ? '#10b981' : (globalStatusText === 'AND' ? '#3b82f6' : '#f59e0b'),
+      sigla: globalStatusText
+    };
+
+    const textColor = isDark(realStatus.cor) ? '#ffffff' : '#1e293b';
+    const globalStatusHtml = `<span class="status-badge" title="${esc(realStatus.nome)}" style="background:${esc(realStatus.cor)}; color:${textColor}; font-size: 0.65rem; width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${realStatus.cor}66;">${esc(realStatus.sigla)}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();

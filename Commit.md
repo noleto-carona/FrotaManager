@@ -288,5 +288,12 @@
 - **Alinhamento**: Alinhamento horizontal perfeito de todos os campos com o botão "Adicionar".
 - **Versão**: Incremento de versão para `v4.3 FINAL` no header e ativos.
 
+### 47. Sincronização de Status Global e v4.4 (23/04/2026 18:00)
+- **Alterado**: Padronização do Status Global da OS na lista principal.
+- **Sincronização**: O status global agora consome as cores e nomes reais definidos no banco de dados para as siglas PEN, AND e FIN.
+- **UI/UX**: Adicionado atributo `title` para mostrar o nome completo ao passar o mouse e cálculo de contraste de texto automático.
+- **Layout**: Garantida a largura fixa de 42px para manter o alinhamento visual.
+- **Versão**: Incremento de versão para `v4.4 FINAL` no header e ativos (Cache Busting v4.4).
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

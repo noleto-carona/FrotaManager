@@ -191,6 +191,6 @@
 - **Flexibilidade de Mídia**: Implementado menu de escolha entre "Câmera" e "Galeria" para resolver problemas de compatibilidade no Android.
 - **Inputs Separados**: Adicionado input específico com `capture="environment"` para garantir a abertura da câmera.
 - **Refatoração**: Unificada a lógica de processamento e upload de imagens para maior consistência.
-- **Versão 2.6**: Atualização do Cache Buster no `index.html` para forçar a atualização nos dispositivos.
+- **Versão 2.7**: Novo modal de escolha com botões grandes (Câmera/Galeria) e botão fechar (X), removendo o select anterior.
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

@@ -1359,16 +1359,17 @@ document.getElementById('input-foto-camera').addEventListener('change', async (e
 });
 
 async function selectPhotoSource() {
-  const choice = await customPrompt('Como deseja adicionar a foto?', 'camera', [
-    { value: 'camera', label: 'TIRAR FOTO (CÂMERA)' },
-    { value: 'gallery', label: 'ESCOLHER DA GALERIA' }
-  ]);
+  document.getElementById('photo-choice-modal').style.display = 'flex';
+}
 
-  if (choice === 'camera') {
-    document.getElementById('input-foto-camera').click();
-  } else if (choice === 'gallery') {
-    document.getElementById('input-foto-file').click();
-  }
+function triggerCamera() {
+  document.getElementById('photo-choice-modal').style.display = 'none';
+  document.getElementById('input-foto-camera').click();
+}
+
+function triggerGallery() {
+  document.getElementById('photo-choice-modal').style.display = 'none';
+  document.getElementById('input-foto-file').click();
 }
 
 async function uploadFotoFile(blob, fileName) {

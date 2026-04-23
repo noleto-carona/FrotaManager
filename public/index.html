@@ -266,6 +266,27 @@
   </div>
 </div>
 
-<script src="app.js?v=2.6"></script>
+<!-- Modal de Escolha de Foto -->
+<div id="photo-choice-modal" class="confirm-overlay" style="display:none">
+  <div class="confirm-box" style="position: relative; padding-top: 40px;">
+    <button class="close-modal-btn" onclick="document.getElementById('photo-choice-modal').style.display='none'">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="confirm-icon"><i class="fas fa-camera"></i></div>
+    <div class="confirm-msg">Como deseja adicionar a foto?</div>
+    <div class="choice-buttons-grid">
+      <button class="btn btn-choice" onclick="triggerCamera()">
+        <i class="fas fa-camera"></i>
+        <span>CÂMERA</span>
+      </button>
+      <button class="btn btn-choice" onclick="triggerGallery()">
+        <i class="fas fa-images"></i>
+        <span>GALERIA</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=2.7"></script>
 </body>
 </html>

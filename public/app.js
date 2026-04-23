@@ -522,7 +522,7 @@ function renderStatus() {
       <div class="item-header">
         <div style="display:flex;align-items:center;gap:12px">
           <span class="status-swatch" style="background:${esc(s.cor)}"></span>
-          <span class="status-badge" style="background:${esc(s.cor)}; color:${isDark(s.cor) ? '#fff' : '#1e293b'}">${esc(s.sigla)}</span>
+          <span class="status-badge" title="${esc(s.nome)}" style="background:${esc(s.cor)}; color:${isDark(s.cor) ? '#fff' : '#1e293b'}">${esc(s.sigla)}</span>
           <span class="item-title">${esc(s.nome)}</span>
         </div>
         <div style="display:flex;gap:4px">
@@ -713,7 +713,8 @@ function renderOrdens() {
       }
     }
     
-    const globalStatusHtml = `<span class="status-badge" style="background:${globalStatusColor}; font-size: 0.65rem; min-width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
+    const globalStatusName = globalStatusText === 'FIN' ? 'FINALIZADO' : (globalStatusText === 'AND' ? 'EM ANDAMENTO' : 'PENDENTE');
+    const globalStatusHtml = `<span class="status-badge" title="${globalStatusName}" style="background:${globalStatusColor}; font-size: 0.65rem; min-width: 42px; justify-content: center; height: 22px; box-shadow: 0 2px 8px ${globalStatusColor}66;">${globalStatusText}</span>`;
 
     const placasHtml = o.placas.map(p => {
       const tipoUp = (p.tipo || '').toUpperCase();

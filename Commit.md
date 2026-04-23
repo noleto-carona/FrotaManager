@@ -233,5 +233,10 @@
 - **UX**: Adicionado estilo `text-transform: uppercase` ao input de sigla para garantir consistência visual durante a digitação.
 - **Cache Busting v3.3**: Atualização forçada dos ativos para `v3.3` no `index.html` para garantir que as melhorias de formulário sejam carregadas.
 
+### 38. Interatividade e Tooltips de Status (v3.4) (23/04/2026 12:00)
+- **Front-end (app.js)**: Garantida a inclusão do atributo `title` em todas as badges de status (lista de ordens e aba de status), permitindo a visualização do nome completo ao passar o mouse.
+- **Visual (style.css)**: Adicionado `cursor: help` às badges para sinalizar informação extra e efeito de `brightness` no hover para melhor feedback visual.
+- **Cache Busting v3.4**: Atualização dos ativos para `v3.4` no `index.html`.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

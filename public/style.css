@@ -699,6 +699,13 @@ input[type="color"] {
   text-transform: uppercase;
   font-size: 0.75rem;
   flex-shrink: 0;
+  cursor: help; /* Indica que a tag tem informação extra ao passar o mouse */
+  position: relative;
+  transition: filter 0.2s; /* Suaviza o efeito de brilho */
+}
+
+.status-badge:hover {
+  filter: brightness(1.1); /* Dá um leve brilho na cor ao passar o mouse */
 }
 
 /* Status list color swatch */

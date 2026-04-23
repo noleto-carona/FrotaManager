@@ -1,13 +1,13 @@
 :root {
-  --primary-blue: #0077d3; /* Fundo dos blocos de placas */
-  --accent-green: #00ffa3; /* Botões, Destaques e Abas Ativas */
-  --bdr-accent-red: #fa0000; /* Border Animação, Destaque da Observação */
-  --dark-blue: #003b4c;    /* Títulos e Cor do texto nos botões */
-  --bg-color: #0077d3;     /* Cor de fundo principal do App */
-  --card-bg: #f5f4f4;      /* Fundo dos cards brancos e Modais */
-  --text-main: #ffffff;    /* Cor do texto sobre o fundo azul */
-  --text-dark: #1e293b;    /* Cor do texto dentro dos cards e inputs */
-  --border-color: rgba(255, 255, 255, 0.2); /* Bordas sutis */
+  --primary-blue: #0077d3;
+  --accent-green: #00ffa3;
+  --bdr-accent-red: #fa0000;
+  --dark-blue: #003b4c;
+  --bg-color: #0077d3;
+  --card-bg: #f5f4f4;
+  --text-main: #ffffff;
+  --text-dark: #1e293b;
+  --border-color: rgba(255, 255, 255, 0.2);
 }
 
 * {
@@ -29,15 +29,13 @@ body {
   margin: 0 auto;
 }
 
-/* Ajuste de visualização padronizada para Mobile */
 @media (max-width: 600px) {
   .container {
-    max-width: 420px; /* Aproxima da dimensão 400px que você gostou */
+    max-width: 420px;
     margin: 0 auto;
   }
 }
 
-/* Header */
 .app-header {
   margin-bottom: 18px;
   text-align: center;
@@ -65,7 +63,6 @@ body {
   color: var(--dark-blue);
 }
 
-/* Tabs */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -98,7 +95,27 @@ body {
   box-shadow: 0 4px 12px rgba(0,255,163,0.4);
 }
 
-/* Tab panes */
+.tab-pane {
+  display: none;
+  background: white;
+  border-radius: 32px;
+  padding: 24px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+.tab-pane.active-pane { display: block; }
+
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+.tab-header h3 { font-size: 1.1rem; color: var(--dark-blue); font-weight: 800; }
+
 /* Search Filters */
 .search-container {
   background: white;
@@ -204,26 +221,64 @@ body {
   transform: translateY(0);
 }
 
-.tab-pane {
-  display: none;
-  background: white;
-  border-radius: 32px;
-  padding: 24px 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+/* ==================== */
+/* FORMULÁRIO DE STATUS - V4.0 */
+/* ==================== */
+.status-form-container {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 20px;
   margin-bottom: 20px;
-  color: var(--text-dark);
+  border: 1px solid #e2e8f0;
 }
-.tab-pane.active-pane { display: block; }
 
-.tab-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  gap: 8px;
+.form-row-status {
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.5fr 1fr;
+  gap: 12px;
+  align-items: end;
 }
-.tab-header h3 { font-size: 1.1rem; color: var(--dark-blue); font-weight: 800; }
+
+.form-group-status label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--dark-blue);
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.form-group-status input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  height: 42px;
+}
+
+.form-group-status input[type="color"] {
+  padding: 2px;
+  cursor: pointer;
+}
+
+#input-status-sigla {
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+  .form-row-status {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .form-group-status button {
+    margin-top: 0 !important;
+    width: 100%;
+  }
+}
 
 /* Forms */
 .form-group {
@@ -251,7 +306,6 @@ input[type="text"], input[type="color"], input[type="date"], input[type="time"],
   text-transform: uppercase;
 }
 
-/* Custom styling for date and time to remove default browser weirdness on mobile */
 input[type="date"], input[type="time"] {
   min-height: 44px;
   -webkit-appearance: none;
@@ -264,7 +318,7 @@ input:focus, select:focus, textarea:focus {
 
 ::placeholder {
   color: #94a3b8;
-  opacity: 0.7; /* Padroniza a opacidade dos placeholders */
+  opacity: 0.7;
 }
 
 textarea { resize: vertical; }
@@ -387,25 +441,23 @@ input[type="color"] {
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
-  width: 98%; /* Aumenta a largura do card para ocupar quase toda a tela lateral */
+  width: 98%;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Destaque para OS não enviada ao WhatsApp */
 .ordem-card.not-sent {
   border: 2px solid var(--accent-green);
   box-shadow: 0 0 15px rgba(0, 255, 163, 0.15);
 }
 
-/* Estado da OS após envio ao WhatsApp */
 .ordem-card.sent {
   border: 1.5px solid #cbd5e1;
   box-shadow: none;
 }
 
 .ordem-header-click {
-  padding: 0px 0px; /* Reduzido de 18px para 12px nas laterais */
+  padding: 0px 0px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -417,7 +469,7 @@ input[type="color"] {
 .header-main-info {
   display: flex;
   align-items: center;
-  gap: 6px; /* Reduzido de 12px para 6px para ganhar espaço */
+  gap: 6px;
   flex: 1;
   min-width: 0;
 }
@@ -448,9 +500,8 @@ input[type="color"] {
   transform: rotate(-90deg);
 }
 
-/* Placa block within ordem - TROQUE A COR DO FUNDO AQUI */
 .placa-block {
-  background: var(--primary-blue); /* Fundo azul para contraste dentro do card branco */
+  background: var(--primary-blue);
   border-radius: 20px;
   padding: 16px;
   margin-top: 12px;
@@ -462,37 +513,36 @@ input[type="color"] {
   font-size: 0.72rem;
   color: var(--primary-blue);
   white-space: nowrap;
-  overflow: visible !important; /* Força a visibilidade total */
-  text-overflow: clip !important; /* Proíbe os três pontinhos (...) */
+  overflow: visible !important;
+  text-overflow: clip !important;
   background: rgba(44, 125, 160, 0.1);
   padding: 2px 8px;
   border-radius: 8px;
   border: 1px solid rgba(44, 125, 160, 0.2);
-  flex-shrink: 0; /* Impede que o componente encolha */
-  min-width: fit-content; /* Garante que o tamanho seja o do texto */
+  flex-shrink: 0;
+  min-width: fit-content;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* Ajustes específicos para mobile */
 @media (max-width: 480px) {
   .ordem-card {
-    border-radius: 20px; /* Bordas um pouco menos arredondadas no mobile para ganhar espaço interno */
+    border-radius: 20px;
   }
 
   .ordem-header-click {
-    padding: 0px 0px; /* Sincronizado com o ajuste manual do usuário */
+    padding: 0px 0px;
   }
   
   .header-main-info {
     gap: 2px;
-    flex: 1; /* Ocupa todo o espaço possível */
+    flex: 1;
     min-width: 0;
   }
 
   .ordem-codigo {
-    font-size: 0.7rem; /* Redução estratégica */
+    font-size: 0.7rem;
     padding: 2px 4px;
-    min-width: 65px; /* Força um tamanho mínimo para caber OS-0000 */
+    min-width: 65px;
     text-align: center;
     background: rgba(44, 125, 160, 0.15);
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -500,11 +550,11 @@ input[type="color"] {
   
   .item-actions {
     gap: 2px;
-    flex-shrink: 0; /* Impede que os botões empurrem a OS */
+    flex-shrink: 0;
   }
 
   .btn-xs {
-    width: 28px; /* Reduzido de 32px para 28px no mobile */
+    width: 28px;
     height: 28px;
     padding: 0;
     justify-content: center;
@@ -536,10 +586,9 @@ input[type="color"] {
   overflow: hidden;
 }
 
-/* Destaque de PRIORIDADE com animação */
 .ordem-obs.priority-active {
   border: 2px solid transparent;
-  background: #f8fafc; /* Voltando para a cor padrão de fundo das obs */
+  background: #f8fafc;
   color: var(--text-dark);
   font-weight: 800;
   border-radius: 14px;
@@ -576,7 +625,7 @@ input[type="color"] {
   content: attr(data-text);
   position: absolute;
   inset: 2px;
-  background: #f8fafc; /* Mesma cor de fundo para cobrir o centro do gradiente */
+  background: #f8fafc;
   border-radius: 12px;
   padding: 10px 14px;
   z-index: 1;
@@ -598,69 +647,6 @@ input[type="color"] {
   gap: 8px;
 }
 
-/* Modal de Escolha de Foto */
-.close-modal-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #f1f5f9;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: #64748b;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.close-modal-btn:hover {
-  background: #e2e8f0;
-  color: #ef4444;
-}
-
-.choice-buttons-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  width: 100%;
-  margin-top: 25px;
-}
-
-.btn-choice {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px 10px;
-  height: auto;
-  background: #ffffff;
-  border: 2px solid #e2e8f0;
-  color: #1e293b;
-  border-radius: 16px;
-  transition: all 0.2s;
-}
-
-.btn-choice i {
-  font-size: 1.8rem;
-  color: var(--accent-green);
-}
-
-.btn-choice span {
-  font-weight: 800;
-  font-size: 0.85rem;
-}
-
-.btn-choice:active {
-  transform: scale(0.95);
-  border-color: var(--accent-green);
-  background: #f0fdf4;
-}
-
-/* Service item */
 .servico-item {
   background: #fff;
   border-radius: 12px;
@@ -688,28 +674,26 @@ input[type="color"] {
   margin-top: 2px;
 }
 
-/* Status badge */
 .status-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px; /* Tamanho fixo para 3 letras (Simetria v3.6) */
+  width: 42px;
   height: 20px;
   font-size: 10px;
   font-weight: bold;
   border-radius: 4px;
   text-transform: uppercase;
   flex-shrink: 0;
-  cursor: help; /* Indica que há um title/tooltip */
+  cursor: help;
   position: relative;
   transition: filter 0.2s;
 }
 
 .status-badge:hover {
-  filter: brightness(1.1); /* Dá um leve brilho na cor ao passar o mouse */
+  filter: brightness(1.1);
 }
 
-/* Status list color swatch */
 .status-swatch {
   width: 14px;
   height: 14px;
@@ -742,7 +726,6 @@ input[type="color"] {
   color: var(--text-dark);
 }
 
-/* Modal Collapsible Section */
 .modal-collapsible {
   max-height: 1000px;
   opacity: 1;
@@ -814,7 +797,6 @@ input[type="color"] {
   gap: 7px;
 }
 
-/* Placa picker inside modal */
 .picker-label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -840,7 +822,7 @@ input[type="color"] {
 .btn-full {
   width: 100%;
   justify-content: center;
-  margin-top: 120px; /* 3x a altura média de um botão (~40px) */
+  margin-top: 120px;
 }
 
 .modal-placa-block {
@@ -881,7 +863,6 @@ input[type="color"] {
   max-width: 200px;
 }
 
-/* Service panel (bottom sheet) */
 .panel-overlay {
   position: fixed;
   inset: 0;
@@ -913,7 +894,6 @@ input[type="color"] {
 }
 .panel-header h4 { font-size: 1.1rem; color: var(--dark-blue); font-weight: 800; }
 
-/* Observation timeline */
 .obs-timeline {
   margin-bottom: 12px;
 }
@@ -945,7 +925,6 @@ input[type="color"] {
   margin-top: 4px;
 }
 
-/* Fotos Grid */
 .fotos-grid {
   display: flex;
   gap: 10px;
@@ -1003,7 +982,6 @@ input[type="color"] {
   align-items: center;
 }
 
-/* Toast */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -1027,7 +1005,6 @@ input[type="color"] {
 .toast.error { background: #ef4444; }
 .toast.success { background: #22c55e; }
 
-/* Misc */
 .empty-msg {
   text-align: center;
   padding: 28px;
@@ -1037,18 +1014,16 @@ input[type="color"] {
 hr { margin: 16px 0; border: none; border-top: 1.5px solid #f1f5f9; }
 h3 { font-size: 1rem; color: #0f3b4c; margin-bottom: 16px; }
 
-/* Mobile */
 @media (max-width: 560px) {
   .tab-btn span { display: none; }
   .tab-btn { padding: 10px 2px; }
   .form-row { grid-template-columns: 1fr; }
 }
 
-/* Custom Confirm Dialog */
 .confirm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 59, 76, 0.85); /* --dark-blue with opacity */
+  background: rgba(0, 59, 76, 0.85);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -1107,61 +1082,65 @@ h3 { font-size: 1rem; color: #0f3b4c; margin-bottom: 16px; }
   color: #64748b;
   box-shadow: none;
 }
-
-/* Formulário de Status Otimizado (v4.0) */
-.status-form-container {
-  background: #f8fafc;
-  padding: 16px;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
-}
-
-.form-row-status {
-  display: grid;
-  grid-template-columns: 2fr 1fr 0.5fr 1fr;
-  gap: 12px;
-  align-items: end;
-}
-
-.form-group-status label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: var(--dark-blue);
-  margin-bottom: 6px;
-  display: block;
-  text-transform: uppercase;
-}
-
-.form-group-status input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  height: 42px;
-}
-
-.form-group-status input[type="color"] {
-  padding: 2px;
-  cursor: pointer;
-}
-
-#input-status-sigla {
-  text-align: center;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-@media (max-width: 600px) {
-  .form-row-status {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  .form-group-status button {
-    margin-top: 0 !important;
-    width: 100%;
-  }
-}
 .btn-cancel:hover { background: #e2e8f0; }
+
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f1f5f9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-modal-btn:hover {
+  background: #e2e8f0;
+  color: #ef4444;
+}
+
+.choice-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+  margin-top: 25px;
+}
+
+.btn-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 10px;
+  height: auto;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  color: #1e293b;
+  border-radius: 16px;
+  transition: all 0.2s;
+}
+
+.btn-choice i {
+  font-size: 1.8rem;
+  color: var(--accent-green);
+}
+
+.btn-choice span {
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.btn-choice:active {
+  transform: scale(0.95);
+  border-color: var(--accent-green);
+  background: #f0fdf4;
+}

@@ -228,5 +228,10 @@
 - **Sincronização de Dados**: Aprimorada a lógica de Consulta (GET) para garantir que o campo `status_sigla` seja enviado corretamente em todas as requisições de Ordens e Serviços.
 - **Cache Busting v3.2**: Atualização forçada dos ativos para `v3.1` no `index.html` (mantida v3.1 para visual, mas com backend v3.2).
 
+### 37. Finalização da UI de Status e Validação (v3.3) (23/04/2026 11:30)
+- **Interface (index.html)**: Reestruturado o formulário de cadastro de status para incluir labels e o campo visual de **Sigla** com validações nativas (`minlength="3"`, `maxlength="3"`, `required`).
+- **UX**: Adicionado estilo `text-transform: uppercase` ao input de sigla para garantir consistência visual durante a digitação.
+- **Cache Busting v3.3**: Atualização forçada dos ativos para `v3.3` no `index.html` para garantir que as melhorias de formulário sejam carregadas.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

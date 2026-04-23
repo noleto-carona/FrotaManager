@@ -256,5 +256,12 @@
 - **Visual**: Removidos labels internos do formulário de status para um visual mais limpo e direto, combinando com o placeholder "EX: EM REVISÃO".
 - **Cache Busting v3.8**: Incrementada a versão dos ativos para `v3.8` para garantir que as mudanças de layout sejam carregadas imediatamente.
 
+### 42. Refatoração de Layout e Badge v3.9 (23/04/2026 14:00)
+- **Alterado**: Refatoração profunda do layout de cadastro de status no `index.html`.
+- **Visual**: Adição de borda verde no campo de Sigla para maior visibilidade.
+- **Header**: Atualização do badge de versão para `v3.9 ATUALIZADO` no header.
+- **Cache Busting v3.9**: Forçado refresh de cache para `app.js` e `style.css` via query string `?v=3.9`.
+- **UI/UX**: Correção de ícones e alinhamento flexbox no formulário de status.
+
 ---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*

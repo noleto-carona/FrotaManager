@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Frota Manager</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=3.8">
+  <link rel="stylesheet" href="style.css?v=3.9">
 </head>
 <body>
 <div class="container">
   <div class="app-header">
-    <h1><i class="fas fa-truck-fast"></i> Frota Manager <span class="badge" style="background:#3b82f6;color:white">v3.8 SIGLAS</span></h1>
+    <h1><i class="fas fa-truck-fast"></i> Frota Manager <span class="badge" style="background:#00ffa3;color:#003b4c">v3.9 ATUALIZADO</span></h1>
     <p>Gestão de frota com ordens de serviço rastreáveis</p>
   </div>
 
@@ -117,12 +117,12 @@
 
   <!-- Status -->
     <div id="tab-status" class="tab-pane">
-      <h3><i class="fas fa-tag"></i> Status dos Serviços</h3>
-      <div class="add-row">
-        <input type="text" id="input-status" placeholder="EX: EM REVISÃO" style="flex: 1;">
-        <input type="text" id="input-status-sigla" placeholder="SIGLA" maxlength="3" minlength="3" required style="width: 80px; text-align: center; text-transform: uppercase;">
-        <input type="color" id="input-status-cor" value="#94a3b8" title="Escolha a cor" style="width: 44px; height: 38px; padding: 2px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer;">
-        <button class="btn btn-sm" id="btn-add-status" style="height: 38px;"><i class="fas fa-plus"></i> Adicionar</button>
+      <h3><i class="fas fa-tags"></i> Status dos Serviços</h3>
+      <div class="add-row" style="display: flex; gap: 8px; align-items: center;">
+        <input type="text" id="input-status" placeholder="NOME DO STATUS" style="flex: 1; height: 38px;">
+        <input type="text" id="input-status-sigla" placeholder="SIGLA" maxlength="3" minlength="3" required style="width: 75px; height: 38px; text-align: center; text-transform: uppercase; font-weight: bold; border: 2px solid #00ffa3;">
+        <input type="color" id="input-status-cor" value="#94a3b8" title="Escolha a cor" style="width: 44px; height: 38px; padding: 2px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; flex-shrink: 0;">
+        <button class="btn btn-sm" id="btn-add-status" style="height: 38px; flex-shrink: 0;"><i class="fas fa-plus"></i> Adicionar</button>
       </div>
       <div id="lista-status"></div>
     </div>
@@ -288,6 +288,6 @@
   </div>
 </div>
 
-<script src="app.js?v=3.8"></script>
+<script src="app.js?v=3.9"></script>
 </body>
 </html>

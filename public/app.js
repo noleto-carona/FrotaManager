@@ -521,8 +521,7 @@ function renderStatus() {
   el.innerHTML = state.statusList.map(s => `
     <div class="list-item">
       <div class="item-header">
-        <div style="display:flex;align-items:center;gap:12px">
-          <span class="status-swatch" style="background:${esc(s.cor)}"></span>
+        <div style="display:flex;align-items:center;gap:8px">
           <span class="status-badge" title="${esc(s.nome)}" style="background:${esc(s.cor)}; color:${isDark(s.cor) ? '#fff' : '#1e293b'}">${esc(s.sigla)}</span>
           <span class="item-title">${esc(s.nome)}</span>
         </div>
@@ -1037,14 +1036,14 @@ function renderModalPlacas() {
     const servicosHtml = p.servicos.map((s, si) => {
       const stObj = state.statusList.find(x => x.id === s.status_id);
       return `
-        <div class="modal-servico-row">
+        <div class="modal-servico-row" onclick="openPanel(${s.id || 'null'}, ${si + 1}, ${pi}, ${si})" style="cursor:pointer;" title="Clique para editar">
           <div class="modal-servico-text">
             <span style="color:var(--primary-blue);font-weight:800;margin-right:4px">${si + 1}.</span>
             <span style="font-size:0.8rem">${esc(s.descricao)}</span>
             ${stObj ? statusBadgeHtml(stObj) : ''}
           </div>
-          <div class="modal-servico-actions">
-            <button class="btn btn-xs btn-outline" onclick="openPanel(${s.id || 'null'}, ${si + 1}, ${pi}, ${si})"><i class="fas fa-camera"></i></button>
+          <div class="modal-servico-actions" onclick="event.stopPropagation()">
+            <button class="btn btn-xs btn-outline" onclick="selectPhotoSourceForService(${s.id || 'null'}, ${si + 1}, ${pi}, ${si})" title="Adicionar foto"><i class="fas fa-camera"></i></button>
             <button class="btn btn-xs btn-danger" onclick="removeServicModal(${pi},${si})"><i class="fas fa-times"></i></button>
           </div>
         </div>
@@ -1262,6 +1261,33 @@ function removeServicModal(pi, si) {
   renderModalPlacas();
   
   // Re-build selects to update Global Status validation if needed
+  const o = state.modal.ordemId ? state.ordens.find(x => x.id === state.modal.ordemId) : null;
+  buildSelects(o);
+}
+
+function editServicoModal(pi, si) {
+  const servico = state.modal.tempPlacas[pi].servicos[si];
+  if (!servico) return;
+  
+  // Preencher o formulário de edição com os dados atuais
+  const descEl = document.getElementById(`new-serv-desc-${pi}`);
+  const statusEl = document.getElementById(`new-serv-status-${pi}`);
+  
+  if (descEl) {
+    descEl.value = servico.descricao || '';
+    descEl.focus();
+    descEl.select();
+  }
+  
+  if (statusEl) {
+    statusEl.value = servico.status_id || '';
+  }
+  
+  // Remover o serviço atual (será adicionado novamente quando salvar)
+  state.modal.tempPlacas[pi].servicos.splice(si, 1);
+  renderModalPlacas();
+  
+  // Re-build selects para atualizar validação
   const o = state.modal.ordemId ? state.ordens.find(x => x.id === state.modal.ordemId) : null;
   buildSelects(o);
 }
@@ -1492,6 +1518,16 @@ async function selectPhotoSource() {
   document.getElementById('photo-choice-modal').style.display = 'flex';
 }
 
+function selectPhotoSourceForService(servicoId, idx, pi, si) {
+  // Armazena o contexto do serviço atual para o upload
+  state.panel.servicoId = servicoId;
+  state.panel.placaIndex = pi;
+  state.panel.servicoIndex = si;
+  
+  // Abre diretamente o modal de escolha de foto
+  document.getElementById('photo-choice-modal').style.display = 'flex';
+}
+
 function triggerCamera() {
   document.getElementById('photo-choice-modal').style.display = 'none';
   document.getElementById('input-foto-camera').click();
@@ -1657,6 +1693,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggleBtn.addEventListener('click', () => {
       const container = toggleBtn.parentElement;
       const content = document.getElementById('filters-content');
+      container.classList.toggle('active');
+      content.classList.toggle('collapsed');
+    });
+  }
+
+  // Toggle Formulário de Status
+  const toggleStatusBtn = document.getElementById('btn-toggle-status-form');
+  if (toggleStatusBtn) {
+    toggleStatusBtn.addEventListener('click', () => {
+      const container = toggleStatusBtn.parentElement;
+      const content = document.getElementById('status-form-content');
       container.classList.toggle('active');
       content.classList.toggle('collapsed');
     });

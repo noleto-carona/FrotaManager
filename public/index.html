@@ -118,25 +118,36 @@
   <!-- Status -->
     <div id="tab-status" class="tab-pane">
       <h3><i class="fas fa-tags"></i> Status dos Serviços</h3>
-      <div class="status-form-container">
-        <div class="form-row-status">
-          <div class="form-group-status">
-            <label>STATUS</label>
-            <input type="text" id="input-status" placeholder="EX: EM REVISÃO">
-          </div>
-          <div class="form-group-status">
-            <label>SIGLA (3 LETRAS)</label>
-            <input type="text" id="input-status-sigla" placeholder="EX: REV" maxlength="3" minlength="3" required 
-                   style="text-transform: uppercase; text-align: center; font-weight: bold;">
-          </div>
-          <div class="form-group-status">
-            <label>COR</label>
-            <input type="color" id="input-status-cor" value="#94a3b8" title="Escolha a cor">
-          </div>
-          <div class="form-group-status">
-            <button class="btn btn-sm" id="btn-add-status" style="margin-top: 0; height: 42px;">
-              <i class="fas fa-plus"></i> Adicionar
-            </button>
+      
+      <!-- Formulário Collapsible -->
+      <div class="search-container">
+        <div class="search-toggle" id="btn-toggle-status-form">
+          <span><i class="fas fa-plus"></i> NOVO STATUS</span>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        
+        <div class="search-filters collapsed" id="status-form-content">
+          <div class="status-form-container">
+            <div class="form-row-status">
+              <div class="form-group-status">
+                <label>STATUS</label>
+                <input type="text" id="input-status" placeholder="EX: EM REVISÃO">
+              </div>
+              <div class="form-group-status">
+                <label>SIGLA (3 LETRAS)</label>
+                <input type="text" id="input-status-sigla" placeholder="EX: REV" maxlength="3" minlength="3" required 
+                       style="text-transform: uppercase; text-align: center; font-weight: bold;">
+              </div>
+              <div class="form-group-status">
+                <label>COR</label>
+                <input type="color" id="input-status-cor" value="#94a3b8" title="Escolha a cor">
+              </div>
+              <div class="form-group-status">
+                <button class="btn btn-sm" id="btn-add-status" style="margin-top: 0; height: 42px;">
+                  <i class="fas fa-plus"></i> Adicionar
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

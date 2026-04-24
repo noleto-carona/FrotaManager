@@ -309,4 +309,25 @@
 - **Versão**: Incremento para `v5.0 FINAL` (Cache Busting v5.0).
 
 ---
+
+## 📅 23 de Abril de 2026 (Continuação)
+
+### 50. Otimização de Interface e Navegação (23/04/2026 20:45)
+- **Lista de Status**: Removida bolinha colorida redundante da primeira coluna para interface mais limpa.
+- **Layout Compacto**: Reduzido padding (12→8px), margin-bottom (10→6px) e gaps (6→4px) para otimizar espaço vertical.
+- **Formulário Status**: Implementado comportamento collapsible igual aos filtros de pesquisa das Ordens.
+- **UX**: Cabeçalho "NOVO STATUS" com chevron animado para expandir/recolher formulário.
+- **Versão**: Cache Busting mantido em v5.0.
+
+### 51. Melhorias de Interação em Serviços (23/04/2026 21:00)
+- **Clique Universal**: Implementado clique em qualquer área do item de serviço para abrir edição (tela principal e modal).
+- **Botão Câmera Otimizado**: Modificado para acesso direto ao upload de fotos, pulando painel de edição completo.
+- **Navegação Separada**: Clique no texto = edição completa; clique na câmera = apenas fotos.
+- **Contexto Preservado**: Botões de excluir e ações individuais mantêm funcionamento independente.
+- **Fluxo Simplificado**: `selectPhotoSourceForService()` para acesso rápido às fotos.
+
+---
+*Relatório organizado cronologicamente pelo assistente de desenvolvimento.*
+
+---
 *Relatório organizado cronologicamente pelo assistente de desenvolvimento.*
